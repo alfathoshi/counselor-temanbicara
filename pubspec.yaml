@@ -1,0 +1,27 @@
+name: counselor_temanbicara
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  cupertino_icons: ^1.0.8
+  device_preview: ^1.2.0
+  flutter:
+    sdk: flutter
+  get: 4.6.6
+  google_fonts: ^6.2.1
+  iconsax: ^0.0.8
+  ionicons: ^0.2.2
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - "assets/images/"
+    - "assets/icons/"

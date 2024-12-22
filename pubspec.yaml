@@ -10,8 +10,11 @@ dependencies:
   device_preview: ^1.2.0
   flutter:
     sdk: flutter
+  flutter_quill: ^10.8.5
   get: 4.6.6
+  get_storage: ^2.1.1
   google_fonts: ^6.2.1
+  http: ^1.2.2
   iconsax: ^0.0.8
   ionicons: ^0.2.2
 

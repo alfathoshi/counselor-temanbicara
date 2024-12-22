@@ -12,11 +12,13 @@ import '../controllers/navigation_bar_controller.dart';
 
 class NavigationBarView extends GetView<NavigationBarController> {
   final List<Widget> _pages = [
-    HomeView(),
-    ArticlePageView(),
+    const HomeView(),
+    const ArticlePageView(),
     CounsultationPageView(),
     ProfilePageView(),
   ];
+
+  NavigationBarView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class NavigationBarView extends GetView<NavigationBarController> {
             items: const [
               BottomNavigationBarItem(icon: Icon(Iconsax.home), label: 'Home'),
               BottomNavigationBarItem(
-                  icon: Icon(Iconsax.book), label: 'Journal'),
+                  icon: Icon(Iconsax.book), label: 'Article'),
               BottomNavigationBarItem(
                   icon: Icon(Iconsax.message), label: 'Consult'),
               BottomNavigationBarItem(

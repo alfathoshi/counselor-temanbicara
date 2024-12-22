@@ -14,6 +14,8 @@ abstract class Routes {
   static const COUNSULTATION_PAGE = _Paths.COUNSULTATION_PAGE;
   static const SIGNIN_PAGE = _Paths.SIGNIN_PAGE;
   static const SIGNUP_PAGE = _Paths.SIGNUP_PAGE;
+  static const CREATE_ARTICLE = _Paths.CREATE_ARTICLE;
+  static const ARTICLE_DETAIL = _Paths.ARTICLE_DETAIL;
 }
 
 abstract class _Paths {
@@ -27,4 +29,6 @@ abstract class _Paths {
   static const COUNSULTATION_PAGE = '/counsultation-page';
   static const SIGNIN_PAGE = '/signin-page';
   static const SIGNUP_PAGE = '/signup-page';
+  static const CREATE_ARTICLE = '/create-article';
+  static const ARTICLE_DETAIL = '/article-detail';
 }

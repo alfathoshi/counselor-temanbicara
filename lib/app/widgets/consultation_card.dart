@@ -48,14 +48,14 @@ class ConsultationCard extends StatelessWidget {
                   Icon(Iconsax.calendar),
                   szbX8,
                   Text(
-                    'dd/mm/yyyy',
+                    'Tanggal',
                     style: h6Regular,
                   ),
                   szbX24,
                   Icon(Iconsax.clock),
                   szbX8,
                   Text(
-                    'hh:mm - hh:mm',
+                    'Jam',
                     style: h6Regular,
                   )
                 ],

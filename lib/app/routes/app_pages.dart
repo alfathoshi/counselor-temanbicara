@@ -6,6 +6,8 @@ import '../modules/article_page/bindings/article_page_binding.dart';
 import '../modules/article_page/views/article_page_view.dart';
 import '../modules/available_schedule/bindings/available_schedule_binding.dart';
 import '../modules/available_schedule/views/available_schedule_view.dart';
+import '../modules/consultation_detail/bindings/consultation_detail_binding.dart';
+import '../modules/consultation_detail/views/consultation_detail_view.dart';
 import '../modules/counsultation_page/bindings/counsultation_page_binding.dart';
 import '../modules/counsultation_page/views/counsultation_page_view.dart';
 import '../modules/create_article/bindings/create_article_binding.dart';
@@ -92,6 +94,11 @@ class AppPages {
       name: _Paths.EDIT_SCHEDULE,
       page: () => const EditScheduleView(),
       binding: EditScheduleBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONSULTATION_DETAIL,
+      page: () => const ConsultationDetailView(),
+      binding: ConsultationDetailBinding(),
     ),
   ];
 }

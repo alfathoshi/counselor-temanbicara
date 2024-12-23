@@ -12,6 +12,7 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         title: Text(
           'Counsultation',

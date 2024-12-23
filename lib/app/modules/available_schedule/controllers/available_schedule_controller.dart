@@ -1,23 +1,18 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AvailableScheduleController extends GetxController {
-  //TODO: Implement AvailableScheduleController
+  var startDate = Rxn<DateTime>();
+  var endDate = Rxn<DateTime>();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  void updateDates(List<DateTime>? selectedDates) {
+    if (selectedDates != null && selectedDates.length >= 2) {
+      startDate.value = selectedDates[0];
+      endDate.value = selectedDates[1];
+    }
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  String formatDate(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

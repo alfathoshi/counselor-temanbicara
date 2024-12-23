@@ -87,7 +87,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.AVAILABLE_SCHEDULE,
-      page: () => const AvailableScheduleView(),
+      page: () => AvailableScheduleView(),
       binding: AvailableScheduleBinding(),
     ),
     GetPage(

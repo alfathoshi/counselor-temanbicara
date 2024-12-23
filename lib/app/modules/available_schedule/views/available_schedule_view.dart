@@ -10,8 +10,8 @@ import '../../../themes/fonts.dart';
 import '../controllers/available_schedule_controller.dart';
 
 class AvailableScheduleView extends GetView<AvailableScheduleController> {
-  const AvailableScheduleView({Key? key}) : super(key: key);
-
+  AvailableScheduleView({Key? key}) : super(key: key);
+  List<DateTime>? dateTime;
   final bool schedule = false;
   @override
   Widget build(BuildContext context) {
@@ -51,12 +51,12 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        final List<DateTime>? dateTime =
-                            await showOmniDateTimeRangePicker(
+                        dateTime = await showOmniDateTimeRangePicker(
                           context: context,
                           isForceEndDateAfterStartDate: true,
                         );
                         debugPrint('dateTime: $dateTime');
+                        controller.updateDates(dateTime);
                       },
                       child: Container(
                         width: double.infinity,
@@ -82,43 +82,21 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                         ),
                       ),
                     ),
-                    // TextField(
-                    //   decoration: InputDecoration(
-                    //     border: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: primaryColor, width: 1),
-                    //       borderRadius: BorderRadius.circular(16),
-                    //     ),
-                    //     enabledBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: primaryColor, width: 1),
-                    //       borderRadius: BorderRadius.circular(16),
-                    //     ),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: primaryColor, width: 1),
-                    //       borderRadius: BorderRadius.circular(16),
-                    //     ),
-                    //     hintText: "Input Day",
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 24,
-                    // ),
-                    // TextField(
-                    //   decoration: InputDecoration(
-                    //     border: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: primaryColor, width: 1),
-                    //       borderRadius: BorderRadius.circular(16),
-                    //     ),
-                    //     enabledBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: primaryColor, width: 1),
-                    //       borderRadius: BorderRadius.circular(16),
-                    //     ),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: primaryColor, width: 1),
-                    //       borderRadius: BorderRadius.circular(16),
-                    //     ),
-                    //     hintText: "Input Time",
-                    //   ),
-                    // ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Obx(() {
+                      return Column(
+                        children: [
+                          Text(
+                            "Start Date : ${controller.startDate.value != null ? controller.formatDate(controller.startDate.value!) : ''}",
+                          ),
+                          Text(
+                            "End Date : ${controller.endDate.value != null ? controller.formatDate(controller.endDate.value!) : ''}",
+                          ),
+                        ],
+                      );
+                    }),
                     SizedBox(
                       height: 24,
                     ),

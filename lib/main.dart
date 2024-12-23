@@ -16,7 +16,7 @@ void main() {
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         title: "Teman Bicara",
-        initialRoute: Routes.CONSULTATION_DETAIL,
+        initialRoute: Routes.AVAILABLE_SCHEDULE,
         getPages: AppPages.routes,
       ),
     ),

@@ -4,10 +4,14 @@ import '../modules/article_detail/bindings/article_detail_binding.dart';
 import '../modules/article_detail/views/article_detail_view.dart';
 import '../modules/article_page/bindings/article_page_binding.dart';
 import '../modules/article_page/views/article_page_view.dart';
+import '../modules/available_schedule/bindings/available_schedule_binding.dart';
+import '../modules/available_schedule/views/available_schedule_view.dart';
 import '../modules/counsultation_page/bindings/counsultation_page_binding.dart';
 import '../modules/counsultation_page/views/counsultation_page_view.dart';
 import '../modules/create_article/bindings/create_article_binding.dart';
 import '../modules/create_article/views/create_article_view.dart';
+import '../modules/edit_schedule/bindings/edit_schedule_binding.dart';
+import '../modules/edit_schedule/views/edit_schedule_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/navigation_bar/bindings/navigation_bar_binding.dart';
@@ -78,6 +82,16 @@ class AppPages {
       name: _Paths.ARTICLE_DETAIL,
       page: () => const ArticleDetailView(),
       binding: ArticleDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.AVAILABLE_SCHEDULE,
+      page: () => const AvailableScheduleView(),
+      binding: AvailableScheduleBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_SCHEDULE,
+      page: () => const EditScheduleView(),
+      binding: EditScheduleBinding(),
     ),
   ];
 }

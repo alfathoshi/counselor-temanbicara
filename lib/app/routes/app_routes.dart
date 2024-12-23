@@ -16,6 +16,8 @@ abstract class Routes {
   static const SIGNUP_PAGE = _Paths.SIGNUP_PAGE;
   static const CREATE_ARTICLE = _Paths.CREATE_ARTICLE;
   static const ARTICLE_DETAIL = _Paths.ARTICLE_DETAIL;
+  static const AVAILABLE_SCHEDULE = _Paths.AVAILABLE_SCHEDULE;
+  static const EDIT_SCHEDULE = _Paths.EDIT_SCHEDULE;
 }
 
 abstract class _Paths {
@@ -31,4 +33,6 @@ abstract class _Paths {
   static const SIGNUP_PAGE = '/signup-page';
   static const CREATE_ARTICLE = '/create-article';
   static const ARTICLE_DETAIL = '/article-detail';
+  static const AVAILABLE_SCHEDULE = '/available-schedule';
+  static const EDIT_SCHEDULE = '/edit-schedule';
 }

@@ -37,7 +37,7 @@ class SigninPageController extends GetxController {
 
     try {
       var response = await http.post(
-        Uri.parse('http://localhost:8000/api/v1/login'),
+        Uri.parse('http://10.0.2.2:8000/api/v1/login'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'email': email,
@@ -49,6 +49,7 @@ class SigninPageController extends GetxController {
 
       if (response.statusCode == 200 && data['status']) {
         box.write('token', data['token']);
+        box.write('id', data['data']['id']);
         Get.snackbar(
           'Success',
           'Login berhasil',

@@ -6,19 +6,25 @@ import 'app/routes/app_pages.dart';
 
 void main() {
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        useInheritedMediaQuery: true,
-        locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
-        title: "Teman Bicara",
-        initialRoute: Routes.AVAILABLE_SCHEDULE,
-        getPages: AppPages.routes,
-      ),
+    // DevicePreview(
+    //   enabled: !kReleaseMode,
+    //   builder: (context) => GetMaterialApp(
+    //     debugShowCheckedModeBanner: false,
+    //     useInheritedMediaQuery: true,
+    //     locale: DevicePreview.locale(context),
+    //     builder: DevicePreview.appBuilder,
+    //     theme: ThemeData.light(),
+    //     darkTheme: ThemeData.dark(),
+    //     title: "Teman Bicara",
+    //     initialRoute: Routes.SPLASH_SCREEN,
+    //     getPages: AppPages.routes,
+    //   ),
+    // ),
+     GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Teman Bicara",
+      initialRoute: Routes.SPLASH_SCREEN,
+      getPages: AppPages.routes,
     ),
   );
 }

@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:counselor_temanbicara/app/routes/app_pages.dart';
+import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../themes/colors.dart';
 import '../../../themes/fonts.dart';
@@ -31,7 +34,8 @@ class ProfilePageView extends GetView<ProfilePageController> {
                           radius: 58,
                           backgroundColor: whiteColor,
                           child: Image.asset(
-                            'assets/images/profile_picture.png',scale: 2,
+                            'assets/images/profile_picture.png',
+                            scale: 2,
                           ),
                         ),
                       ),
@@ -124,18 +128,23 @@ class ProfilePageView extends GetView<ProfilePageController> {
                 SizedBox(
                   height: 16,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Available Schedule',
-                      style: h4SemiBold,
-                    ),
-                    Icon(
-                      Icons.chevron_right_outlined,
-                      size: 32,
-                    )
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.AVAILABLE_SCHEDULE);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Available Schedule',
+                        style: h4SemiBold,
+                      ),
+                      Icon(
+                        Icons.chevron_right_outlined,
+                        size: 32,
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 32,
@@ -182,6 +191,20 @@ class ProfilePageView extends GetView<ProfilePageController> {
                   ],
                 ),
               ],
+            ),
+            szbY24,
+            GestureDetector(
+              onTap: () {
+                Get.offAllNamed(
+                  Routes.SIGNIN_PAGE,
+                );
+                final box = GetStorage();
+                box.erase();
+              },
+              child: Text(
+                'Logout',
+                style: h4SemiBold.copyWith(color: error),
+              ),
             )
           ],
         ),

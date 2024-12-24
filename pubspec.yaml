@@ -16,7 +16,9 @@ dependencies:
   google_fonts: ^6.2.1
   http: ^1.2.2
   iconsax: ^0.0.8
+  intl: ^0.20.1
   ionicons: ^0.2.2
+  omni_datetime_picker: ^2.0.5
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -27,4 +29,3 @@ flutter:
   uses-material-design: true
   assets:
     - "assets/images/"
-    

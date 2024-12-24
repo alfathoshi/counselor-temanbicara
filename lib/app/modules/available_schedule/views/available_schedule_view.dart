@@ -12,12 +12,12 @@ import '../controllers/available_schedule_controller.dart';
 class AvailableScheduleView extends GetView<AvailableScheduleController> {
   AvailableScheduleView({Key? key}) : super(key: key);
   List<DateTime>? dateTime;
-  // final bool schedule = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
+        backgroundColor: whiteColor,
         title: Text(
           'Available Schedule',
           style: h3Bold,
@@ -44,12 +44,14 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     GestureDetector(
                       onTap: () async {
                         dateTime = await showOmniDateTimeRangePicker(
                             context: context,
                             isForceEndDateAfterStartDate: true,
+                            is24HourMode: true,
                             theme: ThemeData());
                         debugPrint('dateTime: $dateTime');
                         controller.updateDates(dateTime);
@@ -69,7 +71,9 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Select Date', style: h3Regular),
+                              Obx(() => Text(
+                                  "${controller.startDate.value != null ? controller.formatDate(controller.startDate.value!) : 'Select Date'}",
+                                  style: h3Regular)),
                               Icon(
                                 Icons.keyboard_arrow_down,
                               )
@@ -83,12 +87,19 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                     ),
                     Obx(() {
                       return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Start Date : ${controller.startDate.value != null ? controller.formatDate(controller.startDate.value!) : ''}",
+                            'Choosen Date',
+                            style: h4Bold,
                           ),
                           Text(
-                            "End Date : ${controller.endDate.value != null ? controller.formatDate(controller.endDate.value!) : ''}",
+                            "From : ${controller.startDate.value != null ? controller.formatDate(controller.startDate.value!) : ''}",
+                            style: h5Medium,
+                          ),
+                          Text(
+                            "To : ${controller.endDate.value != null ? controller.formatDate(controller.endDate.value!) : ''}",
+                            style: h5Medium,
                           ),
                         ],
                       );
@@ -96,17 +107,21 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                     SizedBox(
                       height: 24,
                     ),
-                    TextButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(primaryColor),
-                          foregroundColor:
-                              MaterialStateProperty.all(whiteColor),
-                          fixedSize: WidgetStatePropertyAll(Size(165, 33))),
-                      onPressed: () {},
-                      child: Text(
-                        "Confirm",
-                        style: h5Bold.copyWith(color: whiteColor),
+                    Center(
+                      child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(primaryColor),
+                            foregroundColor:
+                                MaterialStateProperty.all(whiteColor),
+                            fixedSize: WidgetStatePropertyAll(Size(165, 33))),
+                        onPressed: () {
+                          controller.createSchedule();
+                        },
+                        child: Text(
+                          "Confirm",
+                          style: h5Bold.copyWith(color: whiteColor),
+                        ),
                       ),
                     )
                   ],
@@ -124,9 +139,6 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
               height: 24,
             ),
             Obx(() {
-              if (controller.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
-              }
               if (controller.scheduleList.isEmpty) {
                 return Center(
                   child: Column(

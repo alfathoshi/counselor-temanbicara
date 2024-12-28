@@ -27,7 +27,7 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
       ),
       body: RefreshIndicator(
         onRefresh: () {
-          controller.fetchData();
+          return controller.fetchData();
         },
         child: Padding(
           padding: EdgeInsets.all(16.0),

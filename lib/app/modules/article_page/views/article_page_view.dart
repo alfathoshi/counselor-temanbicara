@@ -32,7 +32,6 @@ class ArticlePageView extends GetView<ArticlePageController> {
         centerTitle: true,
       ),
       body: Expanded(
-
         child: Obx(() {
           if (controller.articleList.isEmpty) {
             return Center(
@@ -54,13 +53,42 @@ class ArticlePageView extends GetView<ArticlePageController> {
                   color: whiteColor,
                   child: ListTile(
                     leading: const CircleAvatar(),
-                    title: Text(
-                      _controller.articleList[index]["title"] ?? '',
-                      style: h4Medium,
-                    ),
-                    subtitle: Text(
-                      _controller.box.read('name')?? '',
-                      style: h5Regular,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceBetween, // Menyusun elemen di kiri dan kanan
+                      children: [
+                        // Kiri: title dan subtitle
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _controller.articleList[index]["title"] ?? '',
+                              style: h4Medium,
+                            ),
+                            Text(
+                              _controller.box.read('name') ?? '',
+                              style: h5Regular,
+                            ),
+                          ],
+                        ),
+
+                        // Kanan: Text yang berada di sebelah kanan
+                        Container(
+                          height: 30,
+                          width: 80,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: _controller.articleList[index]["status"] == "Published" ? Colors.green 
+                                    : _controller.articleList[index]["status"] == "Pending" ? Colors.orange 
+                                    : Colors.red,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Text(
+                            _controller.articleList[index]["status"] ??
+                                '', // Teks yang ingin ditampilkan di kanan
+                            style: TextStyle(fontSize: 16,color: whiteColor,),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

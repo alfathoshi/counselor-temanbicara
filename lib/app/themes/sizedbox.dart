@@ -18,3 +18,6 @@ SizedBox szbY16 = SizedBox(
 SizedBox szbY8 = SizedBox(
   height: 8,
 );
+SizedBox szbY48 = SizedBox(
+  height: 48,
+);

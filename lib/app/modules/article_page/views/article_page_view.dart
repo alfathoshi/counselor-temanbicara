@@ -9,7 +9,8 @@ import 'package:iconsax/iconsax.dart';
 import '../controllers/article_page_controller.dart';
 
 class ArticlePageView extends GetView<ArticlePageController> {
-  const ArticlePageView({super.key});
+  ArticlePageView({super.key});
+  final ArticlePageController _controller = Get.put(ArticlePageController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +31,20 @@ class ArticlePageView extends GetView<ArticlePageController> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-            itemCount: 3,
-            itemBuilder: (build, context) {
+      body: Expanded(
+
+        child: Obx(() {
+          if (controller.articleList.isEmpty) {
+            return Center(
+              child: Text(
+                'No journals available',
+                style: h6SemiBold,
+              ),
+            );
+          }
+          return ListView.builder(
+            itemCount: _controller.articleList.length,
+            itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
                   Get.toNamed(Routes.ARTICLE_DETAIL);
@@ -45,17 +55,19 @@ class ArticlePageView extends GetView<ArticlePageController> {
                   child: ListTile(
                     leading: const CircleAvatar(),
                     title: Text(
-                      'Nama Author',
+                      _controller.articleList[index]["title"] ?? '',
                       style: h4Medium,
                     ),
                     subtitle: Text(
-                      'Writer',
+                      _controller.box.read('name')?? '',
                       style: h5Regular,
                     ),
                   ),
                 ),
               );
-            }),
+            },
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

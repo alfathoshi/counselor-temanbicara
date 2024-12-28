@@ -32,6 +32,7 @@ class CreateArticleView extends GetView<CreateArticleController> {
             padding: const EdgeInsets.only(right: 16),
             child: ElevatedButton(
                 onPressed: () {
+                  controller.submitArticle();
                   Get.offAllNamed(Routes.NAVIGATION_BAR,
                       arguments: {"indexPage": 1});
                 },
@@ -56,7 +57,9 @@ class CreateArticleView extends GetView<CreateArticleController> {
               height: 16,
             ),
             TextField(
+              controller: controller.title,
               decoration: InputDecoration(
+                
                 prefixIcon: const Icon(Iconsax.document),
                 hintText: 'Add Your Title...',
                 hintStyle: h7Regular,

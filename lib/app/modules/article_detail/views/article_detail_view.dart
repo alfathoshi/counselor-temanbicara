@@ -8,6 +8,7 @@ import '../controllers/article_detail_controller.dart';
 
 class ArticleDetailView extends GetView<ArticleDetailController> {
   const ArticleDetailView({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

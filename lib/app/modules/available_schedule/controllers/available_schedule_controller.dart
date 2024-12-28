@@ -25,10 +25,6 @@ class AvailableScheduleController extends GetxController {
     }
   }
 
-  // String formatDate(DateTime date) {
-  //   return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
-  // }
-
   String getDayName(String date) {
     DateTime dateTime = DateTime.parse(date);
     return DateFormat('EEEE').format(dateTime);
@@ -50,7 +46,6 @@ class AvailableScheduleController extends GetxController {
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-
         if (data['status']) {
           scheduleList.value = data['data']['schedules'];
         } else {
@@ -133,7 +128,7 @@ class AvailableScheduleController extends GetxController {
 
   @override
   void onInit() {
-    fetchSchedules();
     super.onInit();
+    fetchSchedules();
   }
 }

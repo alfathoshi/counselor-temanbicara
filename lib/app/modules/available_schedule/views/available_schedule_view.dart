@@ -162,49 +162,51 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                   ),
                 );
               }
-              return Container(
-                height: 400,
-                child: ListView.builder(
-                  itemCount: controller.scheduleList.length,
-                  itemBuilder: (context, index) {
-                    final schedule = controller.scheduleList[index];
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 16),
-                      decoration: BoxDecoration(
-                        color: whiteColor,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x4B4B4B26),
-                            blurRadius: 16,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "${controller.getDayName(schedule['date'])} ${schedule['date']}",
-                                style: h4Bold),
-                            Container(
-                              height: 100,
-                              child: ListView.builder(
-                                  itemCount: schedule['schedulesByDate'].length,
-                                  itemBuilder: (context, index) {
-                                    List scheduleDay =
-                                        schedule['schedulesByDate'];
-                                    return Text(
-                                        "${scheduleDay[index]['start_time']} - ${scheduleDay[index]['end_time']}");
-                                  }),
-                            )
+              return SingleChildScrollView(
+                child: SizedBox(
+                  height: 450,
+                  child: ListView.builder(
+                    itemCount: controller.scheduleList.length,
+                    itemBuilder: (context, index) {
+                      final schedule = controller.scheduleList[index];
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          color: whiteColor,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0x4B4B4B26),
+                              blurRadius: 16,
+                              offset: Offset(0, 2),
+                            ),
                           ],
                         ),
-                      ),
-                    );
-                  },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "${controller.getDayName(schedule['date'])} ${schedule['date']}",
+                                  style: h4Bold),
+                              Container(
+                                height: 100,
+                                child: ListView.builder(
+                                    itemCount: schedule['schedulesByDate'].length,
+                                    itemBuilder: (context, index) {
+                                      List scheduleDay =
+                                          schedule['schedulesByDate'];
+                                      return Text(
+                                          "${scheduleDay[index]['start_time']} - ${scheduleDay[index]['end_time']}");
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               );
             }),

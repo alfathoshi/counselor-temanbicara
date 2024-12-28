@@ -97,7 +97,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CONSULTATION_DETAIL,
-      page: () => const ConsultationDetailView(),
+      page: () => ConsultationDetailView(),
       binding: ConsultationDetailBinding(),
     ),
   ];

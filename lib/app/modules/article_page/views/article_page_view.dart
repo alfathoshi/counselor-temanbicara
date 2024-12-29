@@ -9,7 +9,8 @@ import 'package:iconsax/iconsax.dart';
 import '../controllers/article_page_controller.dart';
 
 class ArticlePageView extends GetView<ArticlePageController> {
-  const ArticlePageView({super.key});
+  ArticlePageView({super.key});
+  final ArticlePageController _controller = Get.put(ArticlePageController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +31,19 @@ class ArticlePageView extends GetView<ArticlePageController> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-            itemCount: 3,
-            itemBuilder: (build, context) {
+      body: Expanded(
+        child: Obx(() {
+          if (controller.articleList.isEmpty) {
+            return Center(
+              child: Text(
+                'No journals available',
+                style: h6SemiBold,
+              ),
+            );
+          }
+          return ListView.builder(
+            itemCount: _controller.articleList.length,
+            itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
                   Get.toNamed(Routes.ARTICLE_DETAIL);
@@ -44,18 +53,49 @@ class ArticlePageView extends GetView<ArticlePageController> {
                   color: whiteColor,
                   child: ListTile(
                     leading: const CircleAvatar(),
-                    title: Text(
-                      'Nama Author',
-                      style: h4Medium,
-                    ),
-                    subtitle: Text(
-                      'Writer',
-                      style: h5Regular,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceBetween, // Menyusun elemen di kiri dan kanan
+                      children: [
+                        // Kiri: title dan subtitle
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _controller.articleList[index]["title"] ?? '',
+                              style: h4Medium,
+                            ),
+                            Text(
+                              _controller.box.read('name') ?? '',
+                              style: h5Regular,
+                            ),
+                          ],
+                        ),
+
+                        // Kanan: Text yang berada di sebelah kanan
+                        Container(
+                          height: 30,
+                          width: 80,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: _controller.articleList[index]["status"] == "Published" ? Colors.green 
+                                    : _controller.articleList[index]["status"] == "Pending" ? Colors.orange 
+                                    : Colors.red,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Text(
+                            _controller.articleList[index]["status"] ??
+                                '', // Teks yang ingin ditampilkan di kanan
+                            style: TextStyle(fontSize: 16,color: whiteColor,),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               );
-            }),
+            },
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

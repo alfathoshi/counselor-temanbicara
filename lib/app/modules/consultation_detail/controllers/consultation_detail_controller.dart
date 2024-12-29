@@ -61,8 +61,8 @@ class ConsultationDetailController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    descController.text = arg['consultations']['description'];
-    probController.text = arg['consultations']['problem'];
-    sumController.text = arg['consultations']['summary'];
+    descController.text = arg['description'];
+    probController.text = arg['problem'];
+    sumController.text = arg['summary'];
   }
 }

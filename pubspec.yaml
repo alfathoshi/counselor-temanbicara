@@ -6,10 +6,13 @@ environment:
   sdk: ^3.5.3
 
 dependencies:
+  cloud_firestore: ^5.6.0
   cupertino_icons: ^1.0.8
   device_preview: ^1.2.0
+  firebase_core: ^3.9.0
   flutter:
     sdk: flutter
+  flutter_chat_types: ^3.6.2
   flutter_quill: ^10.8.5
   get: 4.6.6
   get_storage: ^2.1.1

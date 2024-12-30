@@ -14,6 +14,7 @@ import '../controllers/profile_page_controller.dart';
 class ProfilePageView extends GetView<ProfilePageController> {
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
     return Scaffold(
       backgroundColor: whiteColor,
       body: Padding(
@@ -161,18 +162,21 @@ class ProfilePageView extends GetView<ProfilePageController> {
                 SizedBox(
                   height: 16,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'About us',
-                      style: h4SemiBold,
-                    ),
-                    Icon(
-                      Icons.chevron_right_outlined,
-                      size: 32,
-                    )
-                  ],
+                GestureDetector(
+                  onTap: () => print(box.read('token')),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'About us',
+                        style: h4SemiBold,
+                      ),
+                      Icon(
+                        Icons.chevron_right_outlined,
+                        size: 32,
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 16,

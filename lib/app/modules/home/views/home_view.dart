@@ -59,7 +59,9 @@ class HomeView extends GetView<HomeController> {
               Padding(
                 padding: const EdgeInsets.only(right: 16),
                 child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(Routes.CHAT);
+                    },
                     icon: Icon(
                       Iconsax.send_1,
                       color: primaryColor,

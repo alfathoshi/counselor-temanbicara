@@ -1,3 +1,4 @@
+import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:flutter/material.dart';
@@ -5,20 +6,27 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class Chatcontainer extends StatelessWidget {
+  final int id;
   final String? image;
   final String? nama;
   final String? deskripsi;
 
-  const Chatcontainer(
-      {super.key,
-    this.nama,
-    this.deskripsi,this.image});
+  const Chatcontainer({
+    super.key,
+    required this.nama,
+    required this.deskripsi,
+    required this.image,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-       
+        Get.toNamed(Routes.CHAT_ROOM, arguments: {
+          'name': nama,
+          'patient_id': id
+        });
       },
       child: Container(
         width: 393,
@@ -26,8 +34,8 @@ class Chatcontainer extends StatelessWidget {
         decoration: BoxDecoration(
           color: whiteColor,
           border: Border(
-            bottom: BorderSide(width: 1.5, color: Colors.grey.withOpacity(0.4))
-          ),
+              bottom:
+                  BorderSide(width: 1.5, color: Colors.grey.withOpacity(0.4))),
         ),
         child: Row(
           children: [
@@ -52,20 +60,22 @@ class Chatcontainer extends StatelessWidget {
                     style: h6Bold,
                   ),
                   Container(
-                   width: 210,
+                    width: 210,
                     child: Text(
                       deskripsi!,
-                      style: h7Regular.copyWith(color: Colors.grey.withOpacity(0.9)),
-                      
+                      style: h7Regular.copyWith(
+                          color: Colors.grey.withOpacity(0.9)),
                       softWrap: true,
                       overflow: TextOverflow.fade,
-                      
                     ),
                   ),
                 ],
               ),
             ),
-            Text("08.30",style: h7Regular.copyWith(color: Colors.grey.withOpacity(0.9)),)
+            Text(
+              "08.30",
+              style: h7Regular.copyWith(color: Colors.grey.withOpacity(0.9)),
+            )
           ],
         ),
       ),

@@ -19,6 +19,8 @@ abstract class Routes {
   static const AVAILABLE_SCHEDULE = _Paths.AVAILABLE_SCHEDULE;
   static const EDIT_SCHEDULE = _Paths.EDIT_SCHEDULE;
   static const CONSULTATION_DETAIL = _Paths.CONSULTATION_DETAIL;
+  static const CHAT = _Paths.CHAT;
+  static const CHAT_ROOM = _Paths.CHAT_ROOM;
 }
 
 abstract class _Paths {
@@ -37,4 +39,6 @@ abstract class _Paths {
   static const AVAILABLE_SCHEDULE = '/available-schedule';
   static const EDIT_SCHEDULE = '/edit-schedule';
   static const CONSULTATION_DETAIL = '/consultation-detail';
+  static const CHAT = '/chat';
+  static const CHAT_ROOM = '/chat-room';
 }

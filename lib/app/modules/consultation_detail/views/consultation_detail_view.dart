@@ -87,7 +87,7 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Text(
-                      patient['consultations']['status'],
+                      patient['status'],
                       style: h5Bold.copyWith(
                         color: whiteColor,
                       ),

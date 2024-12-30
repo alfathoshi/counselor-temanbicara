@@ -1,16 +1,23 @@
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-
+import 'package:intl/intl.dart';
 import '../controllers/article_detail_controller.dart';
 
 class ArticleDetailView extends GetView<ArticleDetailController> {
-  const ArticleDetailView({super.key});
+   final String? date;
+  final String? title;
+  final String? content;
+  final String? author;
+   const ArticleDetailView( {super.key,this.title, this.author, this.date, this.content,});
+  
   
   @override
   Widget build(BuildContext context) {
+    final DateTime dateTime = DateTime.parse(date!);
+    final String formattedDate = DateFormat('dd MMMM yyyy').format(dateTime);
     return Scaffold(
       backgroundColor: whiteColor,
       body: CustomScrollView(slivers: [
@@ -39,7 +46,7 @@ class ArticleDetailView extends GetView<ArticleDetailController> {
                 'assets/images/article_card.png',
                 height: 221,
               ),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Column(
                   children: [
@@ -47,7 +54,7 @@ class ArticleDetailView extends GetView<ArticleDetailController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Judul',
+                         title!,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w800),
                         ),
@@ -56,10 +63,12 @@ class ArticleDetailView extends GetView<ArticleDetailController> {
                     ),
                     Row(
                       children: [
-                        Text("Author",
+                        Text(author!,
                             style: TextStyle(
                                 fontSize: 10, color: Color(0xFF9C9C9C))),
-                        Text("27 Januari 2022",
+                                Text(',',style: TextStyle(
+                                fontSize: 10, color: Color(0xFF9C9C9C))),
+                        Text(formattedDate,
                             style: TextStyle(
                                 fontSize: 10, color: Color(0xFF9C9C9C)))
                       ],
@@ -69,7 +78,7 @@ class ArticleDetailView extends GetView<ArticleDetailController> {
                         SizedBox(
                           width: 350,
                           child: Text(
-                            'Ini deskripsi',
+                            content!,
                             overflow: TextOverflow.fade,
                             softWrap: true,
                             textAlign: TextAlign.justify,

@@ -1,7 +1,9 @@
+import 'package:counselor_temanbicara/app/modules/article_detail/views/article_detail_view.dart';
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:flutter/material.dart';
+
 
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -46,7 +48,13 @@ class ArticlePageView extends GetView<ArticlePageController> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Get.toNamed(Routes.ARTICLE_DETAIL);
+                  Get.to(() => ArticleDetailView(
+                        title: _controller.articleList[index]["title"],
+                        author:  _controller.box.read('name'),
+                        date:  _controller.articleList[index]["created_at"],
+                        content:
+                            _controller.articleList[index]["content"],
+                      ));
                 },
                 child: Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
@@ -54,10 +62,8 @@ class ArticlePageView extends GetView<ArticlePageController> {
                   child: ListTile(
                     leading: const CircleAvatar(),
                     title: Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceBetween, // Menyusun elemen di kiri dan kanan
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Kiri: title dan subtitle
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -71,21 +77,25 @@ class ArticlePageView extends GetView<ArticlePageController> {
                             ),
                           ],
                         ),
-
-                        // Kanan: Text yang berada di sebelah kanan
                         Container(
                           height: 30,
                           width: 80,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: _controller.articleList[index]["status"] == "Published" ? Colors.green 
-                                    : _controller.articleList[index]["status"] == "Pending" ? Colors.orange 
-                                    : Colors.red,
+                              color: _controller.articleList[index]["status"] ==
+                                      "Published"
+                                  ? Colors.green
+                                  : _controller.articleList[index]["status"] ==
+                                          "Pending"
+                                      ? Colors.orange
+                                      : Colors.red,
                               borderRadius: BorderRadius.circular(20)),
                           child: Text(
-                            _controller.articleList[index]["status"] ??
-                                '', // Teks yang ingin ditampilkan di kanan
-                            style: TextStyle(fontSize: 16,color: whiteColor,),
+                            _controller.articleList[index]["status"] ?? '',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: whiteColor,
+                            ),
                           ),
                         ),
                       ],

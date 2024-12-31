@@ -1,7 +1,8 @@
+import 'package:counselor_temanbicara/app/modules/counsultation_page/controllers/counsultation_page_controller.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  final consultController = Get.put(CounsultationPageController());
 
   final count = 0.obs;
   @override

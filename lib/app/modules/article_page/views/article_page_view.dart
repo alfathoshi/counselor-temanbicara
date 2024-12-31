@@ -38,7 +38,7 @@ class ArticlePageView extends GetView<ArticlePageController> {
           if (controller.articleList.isEmpty) {
             return Center(
               child: Text(
-                'No journals available',
+                'No articles available',
                 style: h6SemiBold,
               ),
             );
@@ -60,7 +60,15 @@ class ArticlePageView extends GetView<ArticlePageController> {
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   color: whiteColor,
                   child: ListTile(
-                    leading: const CircleAvatar(),
+                    leading:  CircleAvatar(
+                      radius: 17,
+                      backgroundColor: grey2Color,
+                      child: CircleAvatar(
+                          radius: 16,
+                          backgroundColor: whiteColor,
+                          child: Image.asset('assets/images/profile_picture.png', scale:8,),
+                        ),
+                    ),
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -77,6 +85,7 @@ class ArticlePageView extends GetView<ArticlePageController> {
                             ),
                           ],
                         ),
+                      
                         Container(
                           height: 30,
                           width: 80,
@@ -92,10 +101,7 @@ class ArticlePageView extends GetView<ArticlePageController> {
                               borderRadius: BorderRadius.circular(20)),
                           child: Text(
                             _controller.articleList[index]["status"] ?? '',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: whiteColor,
-                            ),
+                            style: h6Bold.copyWith(color: whiteColor)
                           ),
                         ),
                       ],

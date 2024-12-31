@@ -1,3 +1,5 @@
+import 'package:counselor_temanbicara/app/modules/article_page/controllers/article_page_controller.dart';
+import 'package:counselor_temanbicara/app/modules/counsultation_page/controllers/counsultation_page_controller.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/client_card.dart';
 import 'package:counselor_temanbicara/app/widgets/consultation_card.dart';
@@ -10,8 +12,10 @@ import '../../../themes/fonts.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
-
+  HomeView({super.key});
+  CounsultationPageController consultController =
+      Get.put(CounsultationPageController());
+  ArticlePageController articleController = Get.put(ArticlePageController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +23,8 @@ class HomeView extends GetView<HomeController> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            snap: true,
+            floating: true,
             automaticallyImplyLeading: false,
             toolbarHeight: 85,
             backgroundColor: Colors.white,
@@ -109,9 +115,24 @@ class HomeView extends GetView<HomeController> {
                                   'Hello, User',
                                   style: h3SemiBold,
                                 ),
-                                Text(
-                                  'You have 3 appointments',
-                                  style: h4Regular,
+                                FutureBuilder(
+                                  future: consultController.fetchData(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    } else if (snapshot.hasError) {
+                                      return Center(
+                                        child: Text(snapshot.error.toString()),
+                                      );
+                                    } else if (snapshot.hasData) {}
+
+                                    return Text(
+                                      'You have ${consultController.consultList.length} appointments',
+                                      style: h4Regular,
+                                    );
+                                  },
                                 )
                               ],
                             )
@@ -130,27 +151,89 @@ class HomeView extends GetView<HomeController> {
                               'Appointments',
                               style: h4SemiBold,
                             ),
-                            Text(
-                              'See All',
-                              style: h4SemiBold.copyWith(
-                                color: primaryColor,
+                            TextButton(
+                              onPressed: () => Get.offAllNamed(
+                                  Routes.NAVIGATION_BAR,
+                                  arguments: {"indexPage": 2}),
+                              child: Text(
+                                'See All',
+                                style: h4SemiBold.copyWith(
+                                  color: primaryColor,
+                                ),
                               ),
                             )
                           ],
                         ),
                         szbY16,
-                        SizedBox(
-                          height: 200,
-                          child: PageView.builder(
-                            controller: PageController(viewportFraction: 0.90),
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              return const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                child: ConsultationCard(),
+                        FutureBuilder(
+                          future: consultController.fetchData(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text(snapshot.error.toString()),
                               );
-                            },
-                          ),
+                            } else if (snapshot.hasData) {
+                              final List listData = snapshot.data!['data'];
+                              print(listData);
+                              if (listData.isEmpty) {
+                                return Container(
+                                  constraints: const BoxConstraints(
+                                    maxHeight: 100,
+                                  ),
+                                  child: const Center(
+                                    child: Text("Tidak Ada Data"),
+                                  ),
+                                );
+                              }
+                              return SizedBox(
+                                height: 200,
+                                child: PageView.builder(
+                                  controller:
+                                      PageController(viewportFraction: 0.90),
+                                  itemCount:
+                                      consultController.consultList.length,
+                                  itemBuilder: (context, index) {
+                                    final listConsult =
+                                        consultController.consultList[index];
+                                    return GestureDetector(
+                                       onTap: () {
+                                        Get.toNamed(Routes.CONSULTATION_DETAIL,
+                                            arguments: listConsult);
+                                        consultController.box.write(
+                                            'consultation_id',
+                                            listConsult['consultation_id']);
+                                      },
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        child: ConsultationCard(
+                                          name: listConsult['general_user_name'],
+                                          symptoms: listConsult['description'],
+                                          date: listConsult['date'],
+                                          time:
+                                              '${listConsult['start_time']} - ${listConsult['end_time']}',
+                                          type: listConsult['problem'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            } else {
+                              return Container(
+                                constraints: const BoxConstraints(
+                                  maxHeight: 180,
+                                ),
+                                child: const Center(
+                                  child: Text("Tidak Ada Data"),
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ],
                     ),
@@ -173,18 +256,76 @@ class HomeView extends GetView<HomeController> {
                           style: h4SemiBold,
                         ),
                         szbY16,
-                        SizedBox(
-                          height: 250,
-                          child: PageView.builder(
-                            controller: PageController(viewportFraction: 0.90),
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              return const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                child: ClientCard(),
+                        FutureBuilder(
+                          future: consultController.fetchData(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text(snapshot.error.toString()),
                               );
-                            },
-                          ),
+                            } else if (snapshot.hasData) {
+                              final List listData = snapshot.data!['data'];
+                              print(listData);
+                              if (listData.isEmpty) {
+                                return Container(
+                                  constraints: const BoxConstraints(
+                                    maxHeight: 100,
+                                  ),
+                                  child: const Center(
+                                    child: Text("Tidak Ada Data"),
+                                  ),
+                                );
+                              }
+                              return SizedBox(
+                                height: 250,
+                                child: PageView.builder(
+                                  controller:
+                                      PageController(viewportFraction: 0.90),
+                                  itemCount:
+                                      consultController.consultList.length,
+                                  itemBuilder: (context, index) {
+                                    final listConsult =
+                                        consultController.consultList[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(Routes.CONSULTATION_DETAIL,
+                                            arguments: listConsult);
+                                        consultController.box.write(
+                                            'consultation_id',
+                                            listConsult['consultation_id']);
+                                      },
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        child: ClientCard(
+                                          fullname:
+                                              listConsult['general_user_name'],
+                                          nickname: listConsult['nickname'],
+                                          age: listConsult['birthdate'],
+                                          gender: listConsult['gender'],
+                                          note: listConsult['description'],
+                                          status: listConsult['status'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            } else {
+                              return Container(
+                                constraints: const BoxConstraints(
+                                  maxHeight: 180,
+                                ),
+                                child: const Center(
+                                  child: Text("Tidak Ada Data"),
+                                ),
+                              );
+                            }
+                          },
                         ),
                         szbY16,
                       ],
@@ -210,57 +351,96 @@ class HomeView extends GetView<HomeController> {
                           style: h4SemiBold,
                         ),
                         szbY16,
-                        GestureDetector(
-                          onTap: () => Get.offAllNamed(Routes.NAVIGATION_BAR,
-                              arguments: {"indexPage": 1}),
-                          child: Stack(
-                            alignment: Alignment.centerLeft,
-                            children: [
-                              Image.asset('assets/images/article_card.png'),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                        FutureBuilder(
+                          future: articleController.fetchArticles(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text(snapshot.error.toString()),
+                              );
+                            } else if (snapshot.hasData) {
+                              final List listData = snapshot.data!['data'];
+                              print(listData);
+                              if (listData.isEmpty) {
+                                return Container(
+                                  constraints: const BoxConstraints(
+                                    maxHeight: 100,
+                                  ),
+                                  child: const Center(
+                                    child: Text("Tidak Ada Data"),
+                                  ),
+                                );
+                              }
+                              return GestureDetector(
+                                onTap: () => Get.offAllNamed(
+                                    Routes.NAVIGATION_BAR,
+                                    arguments: {"indexPage": 1}),
+                                child: Stack(
+                                  alignment: Alignment.centerLeft,
                                   children: [
-                                    Text(
-                                      '300 Views',
-                                      style: h3Bold.copyWith(
-                                        color: whiteColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      '100 Likes',
-                                      style: h3Bold.copyWith(
-                                        color: whiteColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      'on your articles',
-                                      style: h6Regular.copyWith(
-                                        color: whiteColor,
-                                      ),
-                                    ),
-                                    szbY16,
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Create More',
-                                          style: h3Bold.copyWith(
-                                            color: whiteColor,
+                                    Image.asset(
+                                        'assets/images/article_card.png'),
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${articleController.articleList.length} articles',
+                                            style: h3Bold.copyWith(
+                                              color: whiteColor,
+                                            ),
                                           ),
-                                        ),
-                                        szbX16,
-                                        Icon(
-                                          Icons.arrow_circle_right,
-                                          color: whiteColor,
-                                        ),
-                                      ],
-                                    )
+                                          Text(
+                                            'has been',
+                                            style: h6Regular.copyWith(
+                                              color: whiteColor,
+                                            ),
+                                          ),
+                                          Text(
+                                            'created',
+                                            style: h6Regular.copyWith(
+                                              color: whiteColor,
+                                            ),
+                                          ),
+                                          szbY16,
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Create More',
+                                                style: h3Bold.copyWith(
+                                                  color: whiteColor,
+                                                ),
+                                              ),
+                                              szbX16,
+                                              Icon(
+                                                Icons.arrow_circle_right,
+                                                color: whiteColor,
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
+                              );
+                            } else {
+                              return Container(
+                                constraints: const BoxConstraints(
+                                  maxHeight: 180,
+                                ),
+                                child: const Center(
+                                  child: Text("Tidak Ada Data"),
+                                ),
+                              );
+                            }
+                          },
                         ),
                         szbY16,
                       ],

@@ -12,7 +12,7 @@ import '../controllers/navigation_bar_controller.dart';
 
 class NavigationBarView extends GetView<NavigationBarController> {
   final List<Widget> _pages = [
-    const HomeView(),
+     HomeView(),
     ArticlePageView(),
     CounsultationPageView(),
     ProfilePageView(),

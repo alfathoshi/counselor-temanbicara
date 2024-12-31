@@ -8,8 +8,10 @@ class CounsultationPageController extends GetxController {
   var consultList = [].obs;
 
   Future<Map<String, dynamic>> fetchData() async {
-    final response =
-        await http.get(Uri.parse('http://10.0.2.2:8000/api/v1/consultation'));
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:8000/api/v1/consultation-counselor'),
+      headers: {'Authorization': 'Bearer ${box.read('token')}'},
+    );
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);

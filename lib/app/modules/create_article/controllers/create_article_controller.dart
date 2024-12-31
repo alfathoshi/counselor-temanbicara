@@ -1,3 +1,4 @@
+import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
@@ -10,26 +11,29 @@ class CreateArticleController extends GetxController {
   final TextEditingController title = TextEditingController();
   final box = GetStorage();
   final count = 0.obs;
-    Future<void> submitArticle() async {
+  Future<void> submitArticle() async {
     if (title.text.isEmpty || quillController.document.toPlainText().isEmpty) {
-      Get.snackbar('Error', 'Title and Body are required',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'Title and Body are required',
+        colorText: whiteColor,
+        backgroundColor: error.withOpacity(0.6),
+      );
       return;
     }
     final Map<String, dynamic> data = {
       'title': title.text,
       'content': quillController.document.toPlainText(),
-      'image' : 'ds'
+      'image': 'ds'
     };
     print(data);
 
     try {
       final userId = box.read('id');
       final token = box.read('token');
- 
+
       final response = await http.post(
         Uri.parse('http://10.0.2.2:8000/api/v1/article'),
-        
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -42,9 +46,12 @@ class CreateArticleController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-
-        Get.snackbar('Success', 'article created successfully',
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          'Success',
+          'article created successfully',
+          colorText: whiteColor,
+          backgroundColor: primaryColor.withOpacity(0.6),
+        );
         title.clear();
         quillController.clear();
       } else {
@@ -52,15 +59,23 @@ class CreateArticleController extends GetxController {
         var errorData = jsonDecode(response.body);
         print(errorData);
         Get.snackbar(
-            'Error', errorData['message'] ?? 'Failed to create article',
-            snackPosition: SnackPosition.BOTTOM);
+          'Error',
+          errorData['message'] ?? 'Failed to create article',
+          colorText: whiteColor,
+          backgroundColor: error.withOpacity(0.6),
+        );
       }
     } catch (e) {
       print(e);
-      Get.snackbar('Error', 'An error occurred: $e',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'Error',
+        'An error occurred: $e',
+        colorText: whiteColor,
+        backgroundColor: error.withOpacity(0.6),
+      );
     }
   }
+
   @override
   void onInit() {
     super.onInit();

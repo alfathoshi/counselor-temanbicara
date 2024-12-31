@@ -9,7 +9,18 @@ import '../themes/fonts.dart';
 import '../themes/sizedbox.dart';
 
 class ConsultationCard extends StatelessWidget {
-  const ConsultationCard({super.key});
+  final String name;
+  final String symptoms;
+  final String date;
+  final String time;
+  final String type;
+  const ConsultationCard(
+      {super.key,
+      required this.name,
+      required this.symptoms,
+      required this.date,
+      required this.time,
+      required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +44,10 @@ class ConsultationCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Name',
+                      name,
                       style: h5Bold,
                     ),
-                    Text('Symptoms')
+                    Text(symptoms)
                   ],
                 )
               ],
@@ -48,14 +59,14 @@ class ConsultationCard extends StatelessWidget {
                   Icon(Iconsax.calendar),
                   szbX8,
                   Text(
-                    'Tanggal',
+                    date,
                     style: h6Regular,
                   ),
                   szbX24,
                   Icon(Iconsax.clock),
                   szbX8,
                   Text(
-                    'Jam',
+                    time,
                     style: h6Regular,
                   )
                 ],
@@ -66,7 +77,7 @@ class ConsultationCard extends StatelessWidget {
               width: 117,
               get: () {},
               color: primaryColor,
-              text: 'Type',
+              text: type,
             )
           ],
         ),

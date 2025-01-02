@@ -1,3 +1,4 @@
+import 'package:counselor_temanbicara/app/modules/counsultation_page/controllers/counsultation_page_controller.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/client_card.dart';
 import 'package:counselor_temanbicara/app/widgets/consultation_card.dart';
@@ -10,7 +11,11 @@ import '../../../themes/fonts.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+  HomeView({super.key});
+
+  final CounsultationPageController fetchConsultController =
+      Get.put(CounsultationPageController());
+  // final fetchConsultController = Get.find<CounsultationPageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +115,7 @@ class HomeView extends GetView<HomeController> {
                                   style: h3SemiBold,
                                 ),
                                 Text(
-                                  'You have 3 appointments',
+                                  'You have ${fetchConsultController.consultList.length} appointments',
                                   style: h4Regular,
                                 )
                               ],
@@ -141,13 +146,32 @@ class HomeView extends GetView<HomeController> {
                         szbY16,
                         SizedBox(
                           height: 200,
-                          child: PageView.builder(
-                            controller: PageController(viewportFraction: 0.90),
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              return const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                child: ConsultationCard(),
+                          child: Obx(
+                            () {
+                              List consult =
+                                  fetchConsultController.consultList.value;
+                              if (consult.isEmpty) {
+                                return Center(
+                                    child: Text("No consultations available"));
+                              }
+                              return PageView.builder(
+                                controller:
+                                    PageController(viewportFraction: 0.90),
+                                itemCount: 4,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8),
+                                    child: ConsultationCard(
+                                      name: consult[index]['general_user_name'],
+                                      problem: consult[index]['problem'],
+                                      date: consult[index]['date'],
+                                      time: consult[index]['start_time'] +
+                                          ' - ' +
+                                          consult[index]['end_time'],
+                                    ),
+                                  );
+                                },
                               );
                             },
                           ),

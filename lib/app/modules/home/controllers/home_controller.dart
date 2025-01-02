@@ -1,20 +1,14 @@
 import 'package:get/get.dart';
 
+import '../../counsultation_page/controllers/counsultation_page_controller.dart';
+
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  var consultList = [].obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  final CounsultationPageController fetchConsultController =
+      Get.put(CounsultationPageController());
+
+  Future<void> fetchDataJornal() async {
+    fetchConsultController.fetchData();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {}
-  void increment() => count.value++;
 }

@@ -8,42 +8,23 @@ class ArticlePageController extends GetxController {
   var isLoading = false.obs;
   var articleList = [].obs;
 
-  Future<void> fetchArticles() async {
-    isLoading.value = true;
-    try {
-      final userId = box.read('id');
-      final articleId = box.write('artikel_id', 'artikel_id');
-      print("dddas ${userId}");
-      final token = box.read('token');
-      print(articleList);
-      print("token  ${token}");
-      var response = await http.get(
-        Uri.parse('http://10.0.2.2:8000/api/v1/articleById')
-            .replace(queryParameters: {
-          'userId': userId.toString(),
-        }),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
+  Future<Map<String, dynamic>> fetchArticles() async {
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:8000/api/v1/articleById'),
+      headers: {'Authorization': 'Bearer ${box.read('token')}'},
+    );
 
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        print(data);
-        if (data['status']) {
-          articleList.value = data['data'];
-        } else {
-          Get.snackbar('Error', data['message']);
-        }
-      } else {
-        Get.snackbar('Error', 'Failed to fetch articles.');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Something went wrong: $e');
-    } finally {
-      isLoading.value = false;
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      articleList.value = data['data'];
+      return data;
+      // return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load schedule');
     }
   }
+
+  
 
   final count = 0.obs;
   @override

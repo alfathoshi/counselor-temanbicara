@@ -18,9 +18,16 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
-        backgroundColor: whiteColor,
+        toolbarHeight: 85,
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24),
+            ),
+            side: BorderSide(color: Colors.black12)),
         title: Text(
-          'Counsultation',
+          'Consultation',
           style: h3Bold,
         ),
         centerTitle: true,
@@ -138,7 +145,7 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: primaryColor,
+                                color: listPatient[index]['status'] == 'Done' ? primaryColor : warning,
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Padding(

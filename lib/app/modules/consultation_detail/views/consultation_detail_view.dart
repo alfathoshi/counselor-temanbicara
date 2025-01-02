@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -17,26 +18,34 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
+        toolbarHeight: 85,
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24),
+            ),
+            side: BorderSide(color: Colors.black12)),
         title: Text(
-          "Patient's Profile",
+          'Patient',
           style: h3Bold,
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: IconButton(
-              icon: Icon(
-                Icons.save,
-                size: 32,
-                color: primaryColor,
-              ),
-              onPressed: () {
-                controller.updateReport();
-              },
-            ),
+            child: ElevatedButton(
+                onPressed: () {
+                  controller.updateReport();
+                  Get.offAllNamed(Routes.NAVIGATION_BAR,
+                      arguments: {"indexPage": 2});
+                },
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(primaryColor),
+                  foregroundColor: WidgetStatePropertyAll(whiteColor),
+                ),
+                child: const Text('Save')),
           )
         ],
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -58,6 +67,7 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
                       child: CircleAvatar(
                         radius: 61,
                         backgroundColor: whiteColor,
+                        child: Image.asset('assets/images/profile_picture.png', scale: 2,),
                       ),
                     ),
                     SizedBox(
@@ -80,7 +90,7 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: primaryColor,
+                  color: patient['status'] == 'Done' ? primaryColor : warning,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Padding(

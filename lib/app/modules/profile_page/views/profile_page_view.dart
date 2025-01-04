@@ -99,9 +99,14 @@ class ProfilePageView extends GetView<ProfilePageController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Edit Profile',
-                      style: h4SemiBold,
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.EDIT_PROFILE);
+                      },
+                      child: Text(
+                        'Edit Profile',
+                        style: h4SemiBold,
+                      ),
                     ),
                     Icon(
                       Icons.chevron_right_outlined,
@@ -112,18 +117,23 @@ class ProfilePageView extends GetView<ProfilePageController> {
                 SizedBox(
                   height: 16,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Change Password',
-                      style: h4SemiBold,
-                    ),
-                    Icon(
-                      Icons.chevron_right_outlined,
-                      size: 32,
-                    )
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.CHANGE_PASSWORD);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Change Password',
+                        style: h4SemiBold,
+                      ),
+                      Icon(
+                        Icons.chevron_right_outlined,
+                        size: 32,
+                      )
+                    ],
+                  ),
                 ),
                 // SizedBox(
                 //   height: 16,
@@ -165,34 +175,8 @@ class ProfilePageView extends GetView<ProfilePageController> {
                 SizedBox(
                   height: 32,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'More',
-                      style: h4Regular,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                GestureDetector(
-                  onTap: () => print(box.read('token')),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'About us',
-                        style: h4SemiBold,
-                      ),
-                      Icon(
-                        Icons.chevron_right_outlined,
-                        size: 32,
-                      )
-                    ],
-                  ),
-                ),
+                Divider(),
+
                 // SizedBox(
                 //   height: 16,
                 // ),

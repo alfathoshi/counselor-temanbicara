@@ -4,7 +4,6 @@ import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -33,85 +32,92 @@ class ArticlePageView extends GetView<ArticlePageController> {
         ),
         centerTitle: true,
       ),
-      body: Expanded(
-        child: Obx(() {
-          if (controller.articleList.isEmpty) {
-            return Center(
-              child: Text(
-                'No articles available',
-                style: h6SemiBold,
-              ),
-            );
-          }
-          return ListView.builder(
-            itemCount: _controller.articleList.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Get.to(() => ArticleDetailView(
-                        title: _controller.articleList[index]["title"],
-                        author:  _controller.box.read('name'),
-                        date:  _controller.articleList[index]["created_at"],
-                        content:
-                            _controller.articleList[index]["content"],
-                      ));
-                },
-                child: Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  color: whiteColor,
-                  child: ListTile(
-                    leading:  CircleAvatar(
-                      radius: 17,
-                      backgroundColor: grey2Color,
-                      child: CircleAvatar(
-                          radius: 16,
-                          backgroundColor: whiteColor,
-                          child: Image.asset('assets/images/profile_picture.png', scale:8,),
-                        ),
-                    ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _controller.articleList[index]["title"] ?? '',
-                              style: h4Medium,
-                            ),
-                            Text(
-                              _controller.box.read('name') ?? '',
-                              style: h5Regular,
-                            ),
-                          ],
-                        ),
-                      
-                        Container(
-                          height: 30,
-                          width: 80,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: _controller.articleList[index]["status"] ==
-                                      "Published"
-                                  ? Colors.green
-                                  : _controller.articleList[index]["status"] ==
-                                          "Pending"
-                                      ? Colors.orange
-                                      : Colors.red,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Text(
-                            _controller.articleList[index]["status"] ?? '',
-                            style: h6Bold.copyWith(color: whiteColor)
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+      body: RefreshIndicator(
+        onRefresh: () {
+          return _controller.fetchArticles();
+        },
+        child: Expanded(
+          child: Obx(() {
+            if (controller.articleList.isEmpty) {
+              return Center(
+                child: Text(
+                  'No articles available',
+                  style: h6SemiBold,
                 ),
               );
-            },
-          );
-        }),
+            }
+            return ListView.builder(
+              itemCount: _controller.articleList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(() => ArticleDetailView(
+                          title: _controller.articleList[index]["title"],
+                          author: _controller.box.read('name'),
+                          date: _controller.articleList[index]["created_at"],
+                          content: _controller.articleList[index]["content"],
+                        ));
+                  },
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    color: whiteColor,
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 17,
+                        backgroundColor: grey2Color,
+                        child: CircleAvatar(
+                          radius: 16,
+                          backgroundColor: whiteColor,
+                          child: Image.asset(
+                            'assets/images/profile_picture.png',
+                            scale: 8,
+                          ),
+                        ),
+                      ),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _controller.articleList[index]["title"] ?? '',
+                                style: h4Medium,
+                              ),
+                              Text(
+                                _controller.box.read('name') ?? '',
+                                style: h5Regular,
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 30,
+                            width: 80,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: _controller.articleList[index]
+                                            ["status"] ==
+                                        "Published"
+                                    ? Colors.green
+                                    : _controller.articleList[index]
+                                                ["status"] ==
+                                            "Pending"
+                                        ? Colors.orange
+                                        : Colors.red,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Text(
+                                _controller.articleList[index]["status"] ?? '',
+                                style: h6Bold.copyWith(color: whiteColor)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          }),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

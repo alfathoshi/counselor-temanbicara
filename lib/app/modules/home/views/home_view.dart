@@ -20,187 +20,177 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteScheme,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            snap: true,
-            floating: true,
-            automaticallyImplyLeading: false,
-            toolbarHeight: 85,
-            backgroundColor: Colors.white,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(24),
-                  bottomRight: Radius.circular(24),
-                ),
-                side: BorderSide(color: Colors.black12)),
-            title: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/images/app_logo.png',
-                    scale: 5,
+      body: RefreshIndicator(
+         onRefresh: () async {
+          await Future.wait([
+            consultController.fetchData(), 
+            articleController.fetchArticles(), 
+          ]);
+        },
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              snap: true,
+              floating: true,
+              automaticallyImplyLeading: false,
+              toolbarHeight: 85,
+              backgroundColor: Colors.white,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(24),
+                    bottomRight: Radius.circular(24),
                   ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Teman',
-                        style: h4Bold.copyWith(color: primaryColor),
-                      ),
-                      Text(
-                        'Bicara',
-                        style: h4Bold.copyWith(color: primaryColor),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 16),
-                child: IconButton(
-                    onPressed: () {
-                      Get.toNamed(Routes.CHAT);
-                    },
-                    icon: Icon(
-                      Iconsax.send_1,
-                      color: primaryColor,
-                    )),
-              ),
-            ],
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: whiteColor,
-                      border: BorderDirectional(
-                          bottom: BorderSide(
-                        color: border,
-                      ))),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 21, 32, 32),
-                    child: Column(
+                  side: BorderSide(color: Colors.black12)),
+              title: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/app_logo.png',
+                      scale: 5,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor: border,
-                              child: CircleAvatar(
-                                radius: 28,
-                                backgroundColor: whiteColor,
-                                child: Image.asset(
-                                  'assets/images/profile_picture.png',
-                                  scale: 4,
+                        Text(
+                          'Teman',
+                          style: h4Bold.copyWith(color: primaryColor),
+                        ),
+                        Text(
+                          'Bicara',
+                          style: h4Bold.copyWith(color: primaryColor),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: IconButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.CHAT);
+                      },
+                      icon: Icon(
+                        Iconsax.send_1,
+                        color: primaryColor,
+                      )),
+                ),
+              ],
+            ),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: whiteColor,
+                        border: BorderDirectional(
+                            bottom: BorderSide(
+                          color: border,
+                        ))),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(32, 21, 32, 32),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: border,
+                                child: CircleAvatar(
+                                  radius: 28,
+                                  backgroundColor: whiteColor,
+                                  child: Image.asset(
+                                    'assets/images/profile_picture.png',
+                                    scale: 4,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 21,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Hello, User',
-                                  style: h3SemiBold,
-                                ),
-                                FutureBuilder(
-                                  future: consultController.fetchData(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Center(
-                                          child: CircularProgressIndicator());
-                                    } else if (snapshot.hasError) {
-                                      return Center(
-                                        child: Text(snapshot.error.toString()),
+                              const SizedBox(
+                                width: 21,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Hello, User',
+                                    style: h3SemiBold,
+                                  ),
+                                  FutureBuilder(
+                                    future: consultController.fetchData(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      } else if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text(snapshot.error.toString()),
+                                        );
+                                      } else if (snapshot.hasData) {}
+        
+                                      return Text(
+                                        'You have ${consultController.consultList.length} appointments',
+                                        style: h4Regular,
                                       );
-                                    } else if (snapshot.hasData) {}
-
-                                    return Text(
-                                      'You have ${consultController.consultList.length} appointments',
-                                      style: h4Regular,
-                                    );
-                                  },
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Appointments',
-                              style: h4SemiBold,
-                            ),
-                            TextButton(
-                              onPressed: () => Get.offAllNamed(
-                                  Routes.NAVIGATION_BAR,
-                                  arguments: {"indexPage": 2}),
-                              child: Text(
-                                'See All',
-                                style: h4SemiBold.copyWith(
-                                  color: primaryColor,
-                                ),
+                                    },
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Appointments',
+                                style: h4SemiBold,
                               ),
-                            )
-                          ],
-                        ),
-                        szbY16,
-                        FutureBuilder(
-                          future: consultController.fetchData(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
+                              TextButton(
+                                onPressed: () => Get.offAllNamed(
+                                    Routes.NAVIGATION_BAR,
+                                    arguments: {"indexPage": 2}),
+                                child: Text(
+                                  'See All',
+                                  style: h4SemiBold.copyWith(
+                                    color: primaryColor,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          szbY16,
+                          Obx(() {
+                            if (consultController.isLoading.value) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (consultController.consultList.isEmpty) {
                               return Center(
-                                child: Text(snapshot.error.toString()),
+                                child: Text("No Data Available"),
                               );
-                            } else if (snapshot.hasData) {
-                              final List listData = snapshot.data!['data'];
-                              print(listData);
-                              if (listData.isEmpty) {
-                                return Container(
-                                  constraints: const BoxConstraints(
-                                    maxHeight: 100,
-                                  ),
-                                  child: const Center(
-                                    child: Text("Tidak Ada Data"),
-                                  ),
-                                );
-                              }
+                            } else {
                               return SizedBox(
                                 height: 200,
                                 child: PageView.builder(
                                   controller:
                                       PageController(viewportFraction: 0.90),
-                                  itemCount:
-                                      consultController.consultList.length,
+                                  itemCount: consultController.consultList.length,
                                   itemBuilder: (context, index) {
                                     final listConsult =
                                         consultController.consultList[index];
                                     return GestureDetector(
-                                       onTap: () {
+                                      onTap: () {
                                         Get.toNamed(Routes.CONSULTATION_DETAIL,
                                             arguments: listConsult);
                                         consultController.box.write(
@@ -223,70 +213,43 @@ class HomeView extends GetView<HomeController> {
                                   },
                                 ),
                               );
-                            } else {
-                              return Container(
-                                constraints: const BoxConstraints(
-                                  maxHeight: 180,
-                                ),
-                                child: const Center(
-                                  child: Text("Tidak Ada Data"),
-                                ),
-                              );
                             }
-                          },
-                        ),
-                      ],
+                          }),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                szbY8,
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: whiteColor,
-                    border: Border.all(color: border),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 21, 32, 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'My Client',
-                          style: h4SemiBold,
-                        ),
-                        szbY16,
-                        FutureBuilder(
-                          future: consultController.fetchData(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
+                  szbY8,
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: whiteColor,
+                      border: Border.all(color: border),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(32, 21, 32, 32),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'My Client',
+                            style: h4SemiBold,
+                          ),
+                          szbY16,
+                          Obx(() {
+                            if (consultController.isLoading.value) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (consultController.consultList.isEmpty) {
                               return Center(
-                                child: Text(snapshot.error.toString()),
+                                child: Text("No Data Available"),
                               );
-                            } else if (snapshot.hasData) {
-                              final List listData = snapshot.data!['data'];
-                              print(listData);
-                              if (listData.isEmpty) {
-                                return Container(
-                                  constraints: const BoxConstraints(
-                                    maxHeight: 100,
-                                  ),
-                                  child: const Center(
-                                    child: Text("Tidak Ada Data"),
-                                  ),
-                                );
-                              }
+                            } else {
                               return SizedBox(
                                 height: 250,
                                 child: PageView.builder(
                                   controller:
                                       PageController(viewportFraction: 0.90),
-                                  itemCount:
-                                      consultController.consultList.length,
+                                  itemCount: consultController.consultList.length,
                                   itemBuilder: (context, index) {
                                     final listConsult =
                                         consultController.consultList[index];
@@ -315,66 +278,40 @@ class HomeView extends GetView<HomeController> {
                                   },
                                 ),
                               );
-                            } else {
-                              return Container(
-                                constraints: const BoxConstraints(
-                                  maxHeight: 180,
-                                ),
-                                child: const Center(
-                                  child: Text("Tidak Ada Data"),
-                                ),
-                              );
                             }
-                          },
-                        ),
-                        szbY16,
-                      ],
+                          }),
+                          szbY16,
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: whiteColor,
-                    border: Border.all(color: border),
+                  const SizedBox(
+                    height: 8,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 21, 32, 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'My Article',
-                          style: h4SemiBold,
-                        ),
-                        szbY16,
-                        FutureBuilder(
-                          future: articleController.fetchArticles(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: whiteColor,
+                      border: Border.all(color: border),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(32, 21, 32, 32),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'My Article',
+                            style: h4SemiBold,
+                          ),
+                          szbY16,
+                          Obx(() {
+                            if (consultController.isLoading.value) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (consultController.consultList.isEmpty) {
                               return Center(
-                                child: Text(snapshot.error.toString()),
+                                child: Text("No Data Available"),
                               );
-                            } else if (snapshot.hasData) {
-                              final List listData = snapshot.data!['data'];
-                              print(listData);
-                              if (listData.isEmpty) {
-                                return Container(
-                                  constraints: const BoxConstraints(
-                                    maxHeight: 100,
-                                  ),
-                                  child: const Center(
-                                    child: Text("Tidak Ada Data"),
-                                  ),
-                                );
-                              }
+                            } else {
                               return GestureDetector(
                                 onTap: () => Get.offAllNamed(
                                     Routes.NAVIGATION_BAR,
@@ -382,8 +319,7 @@ class HomeView extends GetView<HomeController> {
                                 child: Stack(
                                   alignment: Alignment.centerLeft,
                                   children: [
-                                    Image.asset(
-                                        'assets/images/article_card.png'),
+                                    Image.asset('assets/images/article_card.png'),
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Column(
@@ -430,27 +366,18 @@ class HomeView extends GetView<HomeController> {
                                   ],
                                 ),
                               );
-                            } else {
-                              return Container(
-                                constraints: const BoxConstraints(
-                                  maxHeight: 180,
-                                ),
-                                child: const Center(
-                                  child: Text("Tidak Ada Data"),
-                                ),
-                              );
                             }
-                          },
-                        ),
-                        szbY16,
-                      ],
+                          }),
+                          szbY16,
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

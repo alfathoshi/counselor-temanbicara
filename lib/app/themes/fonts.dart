@@ -247,3 +247,8 @@ TextStyle textPlace = GoogleFonts.poppins(
   fontSize: 18,
 );
 
+TextStyle textFieldStyle = GoogleFonts.poppins(
+  fontWeight: FontWeight.w600,
+  color: font2,
+  fontSize: 13,
+);

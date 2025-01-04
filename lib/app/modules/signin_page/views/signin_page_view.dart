@@ -60,15 +60,19 @@ class SigninPageView extends GetView<SigninPageController> {
                         controller.isEmpty();
                       },
                       controller: controller.emailC,
+                      cursorColor: black,
                       decoration: InputDecoration(
-                        hintText: 'Email / Username',
-                        hintStyle: const TextStyle(color: Color(0xFFc4c4c4)),
+                        hintText: 'Email',
+                        hintStyle: h5Regular.copyWith(color: grey2Color),
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: Color(0xFFc4c4c4))),
-                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: greyColor,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: primaryColor),
                         ),
                       ),
                     ),
@@ -81,22 +85,19 @@ class SigninPageView extends GetView<SigninPageController> {
                       },
                       obscureText: controller.isSecure.value,
                       controller: controller.passC,
+                      cursorColor: black,
                       decoration: InputDecoration(
                         hintText: 'Password',
-                        hintStyle: const TextStyle(color: Color(0xFFc4c4c4)),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.remove_red_eye),
-                          onPressed: () {
-                            controller.showPassword();
-                          },
-                        ),
-                        suffixIconColor: const Color(0xFFc4c4c4),
+                        hintStyle: h5Regular.copyWith(color: grey2Color),
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: Color(0xFFc4c4c4))),
-                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: greyColor,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: primaryColor),
                         ),
                       ),
                     ),
@@ -119,10 +120,19 @@ class SigninPageView extends GetView<SigninPageController> {
                           ),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
-                      child: Text(
-                        'Masuk',
-                        style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-                      ),
+                      child: controller.isLoading.value == false
+                          ? Text(
+                              'Masuk',
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.bold),
+                            )
+                          : SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: whiteColor,
+                              ),
+                            ),
                     ),
                     const SizedBox(
                       height: 24,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:counselor_temanbicara/app/services/chat_services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -7,6 +8,8 @@ import 'package:get/get.dart';
 class ChatController extends GetxController {
   final listChat = [].obs;
   GetStorage box = GetStorage();
+
+  ChatService chatService = ChatService();
 
   Future<Map<String, dynamic>> fetchData() async {
     final response = await http.get(

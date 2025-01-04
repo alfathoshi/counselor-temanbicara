@@ -6,6 +6,8 @@ import '../modules/article_page/bindings/article_page_binding.dart';
 import '../modules/article_page/views/article_page_view.dart';
 import '../modules/available_schedule/bindings/available_schedule_binding.dart';
 import '../modules/available_schedule/views/available_schedule_view.dart';
+import '../modules/change_password/bindings/change_password_binding.dart';
+import '../modules/change_password/views/change_password_view.dart';
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
 import '../modules/chat_room/bindings/chat_room_binding.dart';
@@ -16,6 +18,8 @@ import '../modules/counsultation_page/bindings/counsultation_page_binding.dart';
 import '../modules/counsultation_page/views/counsultation_page_view.dart';
 import '../modules/create_article/bindings/create_article_binding.dart';
 import '../modules/create_article/views/create_article_view.dart';
+import '../modules/edit_profile/bindings/edit_profile_binding.dart';
+import '../modules/edit_profile/views/edit_profile_view.dart';
 import '../modules/edit_schedule/bindings/edit_schedule_binding.dart';
 import '../modules/edit_schedule/views/edit_schedule_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -113,6 +117,16 @@ class AppPages {
       name: _Paths.CHAT_ROOM,
       page: () => const ChatRoomView(),
       binding: ChatRoomBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_PROFILE,
+      page: () => EditProfileView(),
+      binding: EditProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHANGE_PASSWORD,
+      page: () =>  ChangePasswordView(),
+      binding: ChangePasswordBinding(),
     ),
   ];
 }

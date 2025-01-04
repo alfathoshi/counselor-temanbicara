@@ -39,12 +39,11 @@ class ChatView extends GetView<ChatController> {
                   child: Text(snapshot.error.toString()),
                 );
               } else if (snapshot.hasData) {
-                final List<Map<String, dynamic>> rawData =
-                    List<Map<String, dynamic>>.from(snapshot.data!['data']);
+                 final List rawData = snapshot.data!['data'];
                 final List<Map<String, dynamic>> listData =
                     rawData.fold([], (List<Map<String, dynamic>> acc, item) {
-                  if (acc.indexWhere(
-                          (element) => element['id'] == item['id']) ==
+                  if (acc.indexWhere((element) =>
+                          element['counselor_id'] == item['counselor_id']) ==
                       -1) {
                     acc.add(item);
                   }

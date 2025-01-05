@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -30,7 +31,6 @@ class ChangePasswordController extends GetxController {
           'old_password': oldPassController.text,
           'new_password': newPassController.text,
           'confirm_password': confirmPassController.text,
-          'user_id': userId.toString(),
         }),
       );
 
@@ -39,37 +39,41 @@ class ChangePasswordController extends GetxController {
         box.write('new_password', responseData['new_password']);
 
         if (responseData['status']) {
-          Get.back();
+
+          Get.snackbar(
+            'Success',
+            'Password has changed successfully',
+            backgroundColor: primaryColor.withOpacity(0.6),
+            colorText: whiteColor,
+
+         
+          );
         } else {
-          Get.snackbar('Error',
-              responseData['message'] ?? 'Failed to update password 1');
+          Get.snackbar(
+            'Error',
+            responseData['message'] ?? 'Failed to update password 1',
+            backgroundColor: error.withOpacity(0.6),
+            colorText: whiteColor,
+          );
         }
       } else {
-        Get.snackbar('Error', 'Failed to update password.');
+        Get.snackbar(
+          'Error',
+          'Failed to update password.',
+          backgroundColor: error.withOpacity(0.6),
+          colorText: whiteColor,
+        );
       }
     } catch (e) {
       print(e);
-      Get.snackbar('Error', 'An error occurred: $e');
+      Get.snackbar(
+        'Error',
+        'An error occurred: $e',
+        backgroundColor: error.withOpacity(0.6),
+        colorText: whiteColor,
+      );
     } finally {
       isLoading.value = false;
     }
   }
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

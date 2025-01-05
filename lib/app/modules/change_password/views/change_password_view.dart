@@ -162,10 +162,10 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
                 get: () {
                   _controller.changePassword();
                   Get.offAllNamed(Routes.NAVIGATION_BAR,
-                      arguments: {"indexPage": 4});
+                      arguments: {"indexPage": 3});
                 },
                 color: primaryColor,
-                text: 'Change Password')
+                text: 'Simpan')
           ],
         ),
       ),

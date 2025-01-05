@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:counselor_temanbicara/app/modules/edit_profile/controllers/datepicker_controller.dart';
+import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -25,8 +26,7 @@ class EditProfileController extends GetxController {
   }
 
   Future<void> editProfile() async {
-    print(nameController.text);
-    print('asdas ${box.read('name')}');
+
     isLoading.value = true;
     String formattedDate =
         DateFormat('yyyy-MM-dd').format(dateController.selectedDate.value);
@@ -34,6 +34,7 @@ class EditProfileController extends GetxController {
     try {
       final userId = box.read('id');
       final token = box.read('token');
+      print(token);
 
       final response = await http.put(
         Uri.parse('http://10.0.2.2:8000/api/v1/edit-profile'),
@@ -45,35 +46,58 @@ class EditProfileController extends GetxController {
           'name': nameController.text,
           'email': emailController.text,
           'birthdate': formattedDate,
-          'user_id': userId.toString(),
         }),
       );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         print(responseData);
-        box.write('name', responseData['name']);
-        box.write('email', responseData['email']);
-        box.write('birthdate', responseData['birthdate']);
+
+        box.write('name', responseData['data']['name']);
+        box.write('email', responseData['data']['email']);
+        box.write('birthdate', responseData['data']['birthdate']);
 
         if (responseData['status']) {
-          Get.back();
+
+          Get.snackbar(
+            'Success',
+            'Profile updated',
+            backgroundColor: primaryColor.withOpacity(0.6),
+            colorText: whiteColor,
+
+          );
         } else {
           Get.snackbar(
-              'Error', responseData['message'] ?? 'Failed to update profile');
+            'Error',
+            responseData['message'] ?? 'Failed to update profile',
+            backgroundColor: error.withOpacity(0.6),
+            colorText: whiteColor,
+          );
         }
       } else {
-        Get.snackbar('Error', 'Failed to update profile.');
+        Get.snackbar(
+          'Error',
+          'Failed to update profile.',
+          backgroundColor: error.withOpacity(0.6),
+          colorText: whiteColor,
+        );
       }
     } catch (e) {
       print(e);
-      Get.snackbar('Error', 'An error occurred: $e');
+      Get.snackbar(
+        'Error',
+        'An error occurred: $e',
+        backgroundColor: error.withOpacity(0.6),
+        colorText: whiteColor,
+      );
     } finally {
       isLoading.value = false;
     }
   }
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -83,16 +107,4 @@ class EditProfileController extends GetxController {
     print('asdas ${box.read('name')}');
     // print(dateController.selectedDate.value);
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

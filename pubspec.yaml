@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_types: ^3.6.2
+  flutter_launcher_icons: ^0.14.2
   flutter_quill: ^10.8.5
   get: 4.6.6
   get_storage: ^2.1.1
@@ -32,3 +33,11 @@ flutter:
   uses-material-design: true
   assets:
     - "assets/images/"
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  min_sdk_android: 21
+  image_path: "assets/images/app_icon.png"
+  adaptive_icon_foreground: "assets/images/app_icon_foreground.png"
+  adaptive_icon_background: "#ffffff"

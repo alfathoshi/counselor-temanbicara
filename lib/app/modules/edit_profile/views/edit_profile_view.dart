@@ -41,7 +41,7 @@ class EditProfileView extends GetView<EditProfileController> {
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            szbY8,
+            szbY24,
             Center(
               child: Stack(
                 alignment: Alignment.bottomRight,
@@ -77,7 +77,7 @@ class EditProfileView extends GetView<EditProfileController> {
                 ],
               ),
             ),
-            szbY24,
+            szbY48,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +221,7 @@ class EditProfileView extends GetView<EditProfileController> {
                 onPressed: () {
                   _controller.editProfile();
                   Get.offAllNamed(Routes.NAVIGATION_BAR,
-                      arguments: {"indexPage": 4});
+                      arguments: {"indexPage": 3});
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(primaryColor),

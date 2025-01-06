@@ -16,15 +16,16 @@ class HomeView extends GetView<HomeController> {
   CounsultationPageController consultController =
       Get.put(CounsultationPageController());
   ArticlePageController articleController = Get.put(ArticlePageController());
+  HomeController homeController = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteScheme,
       body: RefreshIndicator(
-         onRefresh: () async {
+        onRefresh: () async {
           await Future.wait([
-            consultController.fetchData(), 
-            articleController.fetchArticles(), 
+            consultController.fetchData(),
+            articleController.fetchArticles(),
           ]);
         },
         child: CustomScrollView(
@@ -119,7 +120,7 @@ class HomeView extends GetView<HomeController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Hello, User',
+                                    'Hello, ${controller.box.read('nickname')}',
                                     style: h3SemiBold,
                                   ),
                                   FutureBuilder(
@@ -131,10 +132,11 @@ class HomeView extends GetView<HomeController> {
                                             child: CircularProgressIndicator());
                                       } else if (snapshot.hasError) {
                                         return Center(
-                                          child: Text(snapshot.error.toString()),
+                                          child:
+                                              Text(snapshot.error.toString()),
                                         );
                                       } else if (snapshot.hasData) {}
-        
+
                                       return Text(
                                         'You have ${consultController.consultList.length} appointments',
                                         style: h4Regular,
@@ -185,7 +187,8 @@ class HomeView extends GetView<HomeController> {
                                 child: PageView.builder(
                                   controller:
                                       PageController(viewportFraction: 0.90),
-                                  itemCount: consultController.consultList.length,
+                                  itemCount:
+                                      consultController.consultList.length,
                                   itemBuilder: (context, index) {
                                     final listConsult =
                                         consultController.consultList[index];
@@ -201,7 +204,8 @@ class HomeView extends GetView<HomeController> {
                                         padding:
                                             EdgeInsets.symmetric(horizontal: 8),
                                         child: ConsultationCard(
-                                          name: listConsult['general_user_name'],
+                                          name:
+                                              listConsult['general_user_name'],
                                           symptoms: listConsult['description'],
                                           date: listConsult['date'],
                                           time:
@@ -249,7 +253,8 @@ class HomeView extends GetView<HomeController> {
                                 child: PageView.builder(
                                   controller:
                                       PageController(viewportFraction: 0.90),
-                                  itemCount: consultController.consultList.length,
+                                  itemCount:
+                                      consultController.consultList.length,
                                   itemBuilder: (context, index) {
                                     final listConsult =
                                         consultController.consultList[index];
@@ -319,7 +324,8 @@ class HomeView extends GetView<HomeController> {
                                 child: Stack(
                                   alignment: Alignment.centerLeft,
                                   children: [
-                                    Image.asset('assets/images/article_card.png'),
+                                    Image.asset(
+                                        'assets/images/article_card.png'),
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Column(

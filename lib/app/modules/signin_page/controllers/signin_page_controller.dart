@@ -68,7 +68,7 @@ class SigninPageController extends GetxController {
             arguments: {"indexPage": 0},
           );
         } else {
-           Get.snackbar(
+          Get.snackbar(
             'Gagal',
             'Akun tidak terdaftar',
             backgroundColor: error.withOpacity(0.6),

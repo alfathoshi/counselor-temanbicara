@@ -89,6 +89,11 @@ class SigninPageView extends GetView<SigninPageController> {
                       decoration: InputDecoration(
                         hintText: 'Password',
                         hintStyle: h5Regular.copyWith(color: grey2Color),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.remove_red_eye),
+                          onPressed: controller.showPassword,
+                        ),
+                        suffixIconColor: const Color(0xFFc4c4c4),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(

@@ -43,9 +43,13 @@ class ConsultationCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      name,
-                      style: h5Bold,
+                    SizedBox(
+                      width: 150,
+                      child: Text(
+                        name,
+                        style: h5Bold,
+                        maxLines: 2,
+                      ),
                     ),
                     Text(symptoms)
                   ],

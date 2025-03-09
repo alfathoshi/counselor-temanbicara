@@ -48,19 +48,33 @@ class SigninPageController extends GetxController {
       var data = json.decode(response.body);
 
       if (response.statusCode == 200 && data['status']) {
-        box.write('token', data['token']);
-        box.write('id', data['data']['id']);
-        box.write('name',data['data']['name']);
-        Get.snackbar(
-          'Success',
-          'Login berhasil',
-          backgroundColor: primaryColor.withOpacity(0.6),
-          colorText: Colors.white,
-        );
-        Get.offAllNamed(
-          Routes.NAVIGATION_BAR,
-          arguments: {"indexPage": 0},
-        );
+        if (data['data']['role'] == 'Counselor') {
+          box.write('token', data['token']);
+          box.write('id', data['data']['id']);
+          box.write('name', data['data']['name']);
+          box.write('email', data['data']['email']);
+          box.write('password', data['data']['password']);
+          box.write('phone', data['data']['phone_number']);
+          box.write('nickname', data['data']['nickname']);
+          box.write('birthdate', data['data']['birthdate']);
+          Get.snackbar(
+            'Success',
+            'Login berhasil',
+            backgroundColor: primaryColor.withOpacity(0.6),
+            colorText: Colors.white,
+          );
+          Get.offAllNamed(
+            Routes.NAVIGATION_BAR,
+            arguments: {"indexPage": 0},
+          );
+        } else {
+          Get.snackbar(
+            'Gagal',
+            'Akun tidak terdaftar',
+            backgroundColor: error.withOpacity(0.6),
+            colorText: Colors.white,
+          );
+        }
       } else {
         Get.snackbar('Error', data['message'],
             backgroundColor: error.withOpacity(0.6), colorText: whiteColor);

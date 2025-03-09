@@ -14,11 +14,13 @@ class ChatView extends GetView<ChatController> {
       backgroundColor: Colors.white,
       body: CustomScrollView(slivers: [
         SliverAppBar(
-          pinned: true,
-          floating: true,
           toolbarHeight: 85,
           backgroundColor: Colors.white,
           shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(24),
+                bottomRight: Radius.circular(24),
+              ),
               side: BorderSide(color: Colors.black12)),
           title: Text(
             'Message',
@@ -37,7 +39,16 @@ class ChatView extends GetView<ChatController> {
                   child: Text(snapshot.error.toString()),
                 );
               } else if (snapshot.hasData) {
-                final List listData = snapshot.data!['data'];
+                 final List rawData = snapshot.data!['data'];
+                final List<Map<String, dynamic>> listData =
+                    rawData.fold([], (List<Map<String, dynamic>> acc, item) {
+                  if (acc.indexWhere((element) =>
+                          element['counselor_id'] == item['counselor_id']) ==
+                      -1) {
+                    acc.add(item);
+                  }
+                  return acc;
+                });
                 final double containerHeight =
                     listData.length <= 2 ? listData.length * 180.0 : 530.0;
                 return Container(
@@ -49,14 +60,12 @@ class ChatView extends GetView<ChatController> {
                     itemCount: listData.length <= 2 ? listData.length : 3,
                     itemBuilder: (BuildContext context, int index) {
                       var data = listData[index];
-                      return Padding(
-                          padding: const EdgeInsets.only(left: 24, right: 24),
-                          child: Chatcontainer(
-                            id: data['patient_id'],
-                            nama: data['general_user_name'],
-                            deskripsi: data['description'],
-                            image: 'assets/images/profile.png',
-                          ));
+                      return Chatcontainer(
+                        id: data['patient_id'],
+                        nama: data['general_user_name'],
+                        deskripsi: data['description'],
+                        image: 'assets/images/profile.png',
+                      );
                     },
                   ),
                 );

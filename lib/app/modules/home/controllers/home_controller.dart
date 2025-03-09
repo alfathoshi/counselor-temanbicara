@@ -1,14 +1,23 @@
+import 'package:counselor_temanbicara/app/modules/counsultation_page/controllers/counsultation_page_controller.dart';
 import 'package:get/get.dart';
-
-import '../../counsultation_page/controllers/counsultation_page_controller.dart';
+import 'package:get_storage/get_storage.dart';
 
 class HomeController extends GetxController {
-  var consultList = [].obs;
+  final consultController = Get.put(CounsultationPageController());
+  GetStorage box = GetStorage();
 
-  final CounsultationPageController fetchConsultController =
-      Get.put(CounsultationPageController());
-
-  Future<void> fetchDataJornal() async {
-    fetchConsultController.fetchData();
+  final count = 0.obs;
+  @override
+  void onInit() {
+    super.onInit();
   }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {}
+  void increment() => count.value++;
 }

@@ -33,64 +33,67 @@ class ArticleDetailView extends GetView<ArticleDetailController> {
               ),
               side: BorderSide(color: Colors.black12)),
           title: Text(
-            'Article',
+            'Article Details',
             style: h3Bold,
           ),
           centerTitle: true,
         ),
         SliverToBoxAdapter(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset(
-                'assets/images/article_card.png',
-                height: 221,
-              ),
-               Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                         title!,
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w800),
-                        ),
-                        Icon(Icons.share)
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(author!,
-                            style: TextStyle(
-                                fontSize: 10, color: Color(0xFF9C9C9C))),
-                                Text(',',style: TextStyle(
-                                fontSize: 10, color: Color(0xFF9C9C9C))),
-                        Text(formattedDate,
-                            style: TextStyle(
-                                fontSize: 10, color: Color(0xFF9C9C9C)))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 350,
-                          child: Text(
-                            content!,
-                            overflow: TextOverflow.fade,
-                            softWrap: true,
-                            textAlign: TextAlign.justify,
-                          ),
-                        )
-                      ],
-                    ),
-                   
-                  ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(
+                  'assets/images/article_card.png',
+                  height: 221,
                 ),
-              ),
-            ],
+                 Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                           title!,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w800),
+                          ),
+                          Icon(Icons.share)
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(author!,
+                              style: TextStyle(
+                                  fontSize: 10, color: Color(0xFF9C9C9C))),
+                                  Text(',',style: TextStyle(
+                                  fontSize: 10, color: Color(0xFF9C9C9C))),
+                          Text(formattedDate,
+                              style: TextStyle(
+                                  fontSize: 10, color: Color(0xFF9C9C9C)))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 350,
+                            child: Text(
+                              content!,
+                              overflow: TextOverflow.fade,
+                              softWrap: true,
+                              textAlign: TextAlign.justify,
+                            ),
+                          )
+                        ],
+                      ),
+                     
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       

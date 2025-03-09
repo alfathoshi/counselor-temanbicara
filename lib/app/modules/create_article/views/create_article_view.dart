@@ -58,16 +58,19 @@ class CreateArticleView extends GetView<CreateArticleController> {
             ),
             TextField(
               controller: controller.title,
+             cursorColor: black,
               decoration: InputDecoration(
-                
-                prefixIcon: const Icon(Iconsax.document),
                 hintText: 'Add Your Title...',
-                hintStyle: h7Regular,
+                hintStyle: h5Regular.copyWith(color: grey2Color),
                 enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: border)),
-                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: greyColor,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: primaryColor),
                 ),
               ),
             ),

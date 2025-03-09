@@ -17,8 +17,23 @@ class ProfilePageView extends GetView<ProfilePageController> {
     final box = GetStorage();
     return Scaffold(
       backgroundColor: whiteColor,
+      appBar: AppBar(
+        toolbarHeight: 85,
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24),
+            ),
+            side: BorderSide(color: Colors.black12)),
+        title: Text(
+          'Profile',
+          style: h3Bold,
+        ),
+        centerTitle: true,
+      ),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(32, 65, 32, 32),
+        padding: EdgeInsets.fromLTRB(32, 24, 32, 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -62,14 +77,14 @@ class ProfilePageView extends GetView<ProfilePageController> {
                     height: 12,
                   ),
                   Text(
-                    'Astro',
+                    box.read('name'),
                     style: h3Bold,
                   ),
                 ],
               ),
             ),
             SizedBox(
-              height: 16,
+              height: 48,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,9 +99,14 @@ class ProfilePageView extends GetView<ProfilePageController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Edit Profile',
-                      style: h4SemiBold,
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.EDIT_PROFILE);
+                      },
+                      child: Text(
+                        'Edit Profile',
+                        style: h4SemiBold,
+                      ),
                     ),
                     Icon(
                       Icons.chevron_right_outlined,
@@ -97,35 +117,40 @@ class ProfilePageView extends GetView<ProfilePageController> {
                 SizedBox(
                   height: 16,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Change Password',
-                      style: h4SemiBold,
-                    ),
-                    Icon(
-                      Icons.chevron_right_outlined,
-                      size: 32,
-                    )
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.CHANGE_PASSWORD);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Change Password',
+                        style: h4SemiBold,
+                      ),
+                      Icon(
+                        Icons.chevron_right_outlined,
+                        size: 32,
+                      )
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Change Language',
-                      style: h4SemiBold,
-                    ),
-                    Icon(
-                      Icons.chevron_right_outlined,
-                      size: 32,
-                    )
-                  ],
-                ),
+                // SizedBox(
+                //   height: 16,
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text(
+                //       'Change Language',
+                //       style: h4SemiBold,
+                //     ),
+                //     Icon(
+                //       Icons.chevron_right_outlined,
+                //       size: 32,
+                //     )
+                //   ],
+                // ),
                 SizedBox(
                   height: 16,
                 ),
@@ -150,50 +175,24 @@ class ProfilePageView extends GetView<ProfilePageController> {
                 SizedBox(
                   height: 32,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'More',
-                      style: h4Regular,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                GestureDetector(
-                  onTap: () => print(box.read('token')),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'About us',
-                        style: h4SemiBold,
-                      ),
-                      Icon(
-                        Icons.chevron_right_outlined,
-                        size: 32,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Privacy Policy',
-                      style: h4SemiBold,
-                    ),
-                    Icon(
-                      Icons.chevron_right_outlined,
-                      size: 32,
-                    )
-                  ],
-                ),
+                Divider(),
+
+                // SizedBox(
+                //   height: 16,
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text(
+                //       'Privacy Policy',
+                //       style: h4SemiBold,
+                //     ),
+                //     Icon(
+                //       Icons.chevron_right_outlined,
+                //       size: 32,
+                //     )
+                //   ],
+                // ),
               ],
             ),
             szbY24,

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import '../../../config/config.dart';
 
 class AvailableScheduleController extends GetxController {
   final box = GetStorage();
@@ -38,7 +39,7 @@ class AvailableScheduleController extends GetxController {
       final token = box.read('token');
 
       var response = await http.get(
-        Uri.parse('http://10.0.2.2:8000/api/v1/schedule/$userId'),
+        Uri.parse('${Config.apiEndPoint}/available-schedule/$userId'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -85,7 +86,7 @@ class AvailableScheduleController extends GetxController {
       String endTime = DateFormat('HH:mm').format(endDate.value!);
 
       var response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/v1/schedule'),
+        Uri.parse('${Config.apiEndPoint}/schedule'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',

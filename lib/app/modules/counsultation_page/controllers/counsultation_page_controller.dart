@@ -21,7 +21,7 @@ class CounsultationPageController extends GetxController {
         var data = json.decode(response.body);
         consultList.value = data['data'];
       } else {
-        throw Exception('Failed to load schedule');
+        throw Exception('Failed to load consultation');
       }
     } catch (e) {
       Get.snackbar('Error', 'Something went wrong: $e');

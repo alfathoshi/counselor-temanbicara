@@ -54,7 +54,7 @@ class ConsultationDetailController extends GetxController {
       );
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to load schedule');
+      throw Exception('Failed to update consultation report');
     }
   }
 

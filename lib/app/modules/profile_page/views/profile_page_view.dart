@@ -68,7 +68,9 @@ class ProfilePageView extends GetView<ProfilePageController> {
                             size: 16,
                             color: whiteColor,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            print(box.read('token'));
+                          },
                         ),
                       ),
                     ],

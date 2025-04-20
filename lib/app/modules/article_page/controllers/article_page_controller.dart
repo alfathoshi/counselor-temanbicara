@@ -22,7 +22,7 @@ class ArticlePageController extends GetxController {
         var data = json.decode(response.body);
         articleList.value = data['data'];
       } else {
-        throw Exception('Failed to load schedule');
+        throw Exception('Failed to load article');
       }
     } catch (e) {
       Get.snackbar('Error', 'Something went wrong: $e');

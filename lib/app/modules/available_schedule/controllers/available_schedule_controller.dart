@@ -95,10 +95,10 @@ class AvailableScheduleController extends GetxController {
           "start_time": startTime,
           "end_time": endTime,
           "status": "Available",
-          "user_id": userId,
+          "counselor_id": userId,
         }),
       );
-
+      print(response.body);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 

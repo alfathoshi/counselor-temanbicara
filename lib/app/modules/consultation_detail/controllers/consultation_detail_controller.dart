@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
+import '../../../config/config.dart';
 
 class ConsultationDetailController extends GetxController {
   final box = GetStorage();
@@ -32,7 +33,7 @@ class ConsultationDetailController extends GetxController {
     final consultation_id = box.read('consultation_id');
     final token = box.read('token');
     final response = await http.put(
-      Uri.parse('http://10.0.2.2:8000/api/v1/consultation/$consultation_id'),
+      Uri.parse('${Config.apiEndPoint}/consultation/$consultation_id'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',

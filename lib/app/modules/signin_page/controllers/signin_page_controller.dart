@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../config/config.dart';
+
 class SigninPageController extends GetxController {
   final box = GetStorage();
   late TextEditingController emailC;
@@ -37,7 +39,7 @@ class SigninPageController extends GetxController {
 
     try {
       var response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/v1/login'),
+        Uri.parse('${Config.apiEndPoint}/login'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'email': email,

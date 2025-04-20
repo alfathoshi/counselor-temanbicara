@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import '../../../config/config.dart';
 
 class ArticlePageController extends GetxController {
   //TODO: Implement ArticlePageController
@@ -13,7 +14,7 @@ class ArticlePageController extends GetxController {
     try {
       isLoading.value = true;
       final response = await http.get(
-        Uri.parse('http://10.0.2.2:8000/api/v1/articleById'),
+        Uri.parse('${Config.apiEndPoint}/articleById'),
         headers: {'Authorization': 'Bearer ${box.read('token')}'},
       );
 

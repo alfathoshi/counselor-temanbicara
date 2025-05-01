@@ -13,11 +13,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  
   await FirebaseMessaging.instance.requestPermission();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await NotificationService.init();
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('⚡ Message received in foreground!');
+    print('🔥 DATA RECEIVED: ${message.data}');
     NotificationService.showNotification(message);
   });
   runApp(
@@ -31,5 +32,5 @@ void main() async {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
+  print("Handling a background message: ${message.data}");
 }

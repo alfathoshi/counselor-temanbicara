@@ -29,11 +29,9 @@ class FCMService {
       body: jsonEncode({
         'message': {
           'token': targetToken,
-          'notification': {
+          'data': {
             'title': title,
             'body': body,
-          },
-          'data': {
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
           },
         },

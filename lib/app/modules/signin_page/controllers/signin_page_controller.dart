@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../config/config.dart';
 
@@ -59,6 +61,8 @@ class SigninPageController extends GetxController {
           box.write('phone', data['data']['phone_number']);
           box.write('nickname', data['data']['nickname']);
           box.write('birthdate', data['data']['birthdate']);
+          final currentUserID = data['data']['id'].toString();
+          await saveFcmToken(currentUserID);
           Get.snackbar(
             'Success',
             'Login berhasil',
@@ -85,6 +89,16 @@ class SigninPageController extends GetxController {
       Get.snackbar('Error', 'Something went wrong: $e');
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> saveFcmToken(String userId) async {
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+    if (fcmToken != null) {
+      await FirebaseFirestore.instance
+          .collection('fcmTokens')
+          .doc(userId)
+          .set({'token': fcmToken});
     }
   }
 

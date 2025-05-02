@@ -1,8 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:label="Counselor Teman Bicara"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+         <!-- Tambahkan ini untuk menambahkan channel default -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

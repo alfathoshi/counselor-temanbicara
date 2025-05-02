@@ -4,15 +4,21 @@ import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/splash_screen_controller.dart';
 
 class SplashScreenView extends GetView<SplashScreenController> {
+  final box = GetStorage();
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3)).then((value) {
-      Get.offAllNamed(Routes.SIGNIN_PAGE);
+      if (box.read('token') == null) {
+        Get.offAllNamed(Routes.SIGNIN_PAGE);
+      } else {
+        Get.offAllNamed(Routes.NAVIGATION_BAR, arguments: {'indexPage': 0});
+      }
     });
     return Scaffold(
       backgroundColor: whiteColor,

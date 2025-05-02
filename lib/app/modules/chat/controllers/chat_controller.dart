@@ -17,7 +17,7 @@ class ChatController extends GetxController {
   Future<Map<String, dynamic>> fetchData() async {
     final response = await http.get(
       Uri.parse(
-        '${Config.apiEndPoint}/consultation/counselor',
+        '${Config.apiEndPoint}/consultation',
       ),
       headers: {'Authorization': 'Bearer ${box.read('token')}'},
     );

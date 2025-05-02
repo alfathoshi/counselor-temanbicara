@@ -46,7 +46,6 @@ class ChatService {
       print('FCM token gak ditemukan');
     }
   }
-  
 
   Stream<QuerySnapshot> getMessages(String userID, otherUserID) {
     List<String> ids = [userID, otherUserID];

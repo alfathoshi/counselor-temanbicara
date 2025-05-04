@@ -35,15 +35,18 @@ class ChatService {
         .add(newMessage.toMap());
     final tokenSnap =
         await firestore.collection('fcmTokens').doc(receiverID).get();
-    final receiverToken = tokenSnap.data()?['token'];
-    if (receiverToken != null) {
-      await FCMService.sendPushMessage(
-        targetToken: receiverToken,
-        title: currentUsername,
-        body: message,
-      );
+    final List<dynamic>? receiverTokens = tokenSnap.data()?['tokens'];
+
+    if (receiverTokens != null && receiverTokens.isNotEmpty) {
+      for (var token in receiverTokens) {
+        await FCMService.sendPushMessage(
+          targetToken: token,
+          title: currentUsername,
+          body: message,
+        );
+      }
     } else {
-      print('FCM token gak ditemukan');
+      print('FCM tokens gak ditemukan atau kosong');
     }
   }
 

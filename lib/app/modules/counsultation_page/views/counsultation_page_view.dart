@@ -83,8 +83,13 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                                     ),
                                   ),
                                   child: CircleAvatar(
-                                    radius: 18,
-                                    backgroundColor: whiteColor,
+                                    radius: 25,
+                                    backgroundColor: Colors.grey.shade300,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.network(listPatient[index]
+                                          ["user"]['profile_url']),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
@@ -94,8 +99,7 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      listPatient[index]['general_user_name'] ??
-                                          '',
+                                      listPatient[index]["user"]['name'] ?? '',
                                       style: h5Bold,
                                     ),
                                     Text(
@@ -121,21 +125,20 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                                 SizedBox(
                                   width: 8,
                                 ),
-                                Text(listPatient[index]['date'] ?? '',
+                                Text(
+                                    listPatient[index]["schedule"]
+                                            ['available_date'] ??
+                                        '',
                                     style: h6Medium),
-                                SizedBox(
-                                  width: 32,
-                                ),
+                                szbX16,
                                 Icon(
                                   Icons.schedule_rounded,
                                   size: 18,
                                   color: font,
                                 ),
-                                SizedBox(
-                                  width: 8,
-                                ),
+                                szbX8,
                                 Text(
-                                    '${listPatient[index]['start_time']} - ${listPatient[index]['end_time']}',
+                                    '${listPatient[index]["schedule"]['start_time']} - ${listPatient[index]["schedule"]['end_time']}',
                                     style: h6Medium),
                               ],
                             ),
@@ -145,7 +148,9 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: listPatient[index]['status'] == 'Done' ? primaryColor : warning,
+                                color: listPatient[index]['status'] == 'Done'
+                                    ? primaryColor
+                                    : warning,
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Padding(

@@ -204,13 +204,15 @@ class HomeView extends GetView<HomeController> {
                                         padding:
                                             EdgeInsets.symmetric(horizontal: 8),
                                         child: ConsultationCard(
-                                          name:
-                                              listConsult['general_user_name'],
+                                          name: listConsult['user']['name'],
                                           symptoms: listConsult['description'],
-                                          date: listConsult['date'],
+                                          date: listConsult['schedule']
+                                              ['available_date'],
                                           time:
-                                              '${listConsult['start_time']} - ${listConsult['end_time']}',
+                                              '${listConsult['schedule']['start_time']} - ${listConsult['schedule']['end_time']}',
                                           type: listConsult['problem'],
+                                          profile: listConsult['user']
+                                              ['profile_url'],
                                         ),
                                       ),
                                     );
@@ -270,13 +272,15 @@ class HomeView extends GetView<HomeController> {
                                         padding:
                                             EdgeInsets.symmetric(horizontal: 8),
                                         child: ClientCard(
-                                          fullname:
-                                              listConsult['general_user_name'],
-                                          nickname: listConsult['nickname'],
-                                          age: listConsult['birthdate'],
-                                          gender: listConsult['gender'],
+                                          fullname: listConsult['user']['name'],
+                                          nickname: listConsult['user']
+                                              ['nickname'],
+                                          age: listConsult['user']['birthdate'],
+                                          gender: listConsult['user']['gender'],
                                           note: listConsult['description'],
                                           status: listConsult['status'],
+                                          profile: listConsult['user']
+                                              ['profile_url'],
                                         ),
                                       ),
                                     );

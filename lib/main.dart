@@ -18,7 +18,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await NotificationService.init();
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('🔥 DATA RECEIVED: ${message.data}');
+    print('DATA RECEIVED: ${message.data}');
     NotificationService.showNotification(message);
   });
   runApp(

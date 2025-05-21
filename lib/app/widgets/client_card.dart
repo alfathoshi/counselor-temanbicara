@@ -11,14 +11,17 @@ class ClientCard extends StatelessWidget {
   final String gender;
   final String note;
   final String status;
-  const ClientCard(
-      {super.key,
-      required this.fullname,
-      required this.nickname,
-      required this.age,
-      required this.gender,
-      required this.note,
-      required this.status});
+  final String profile;
+  const ClientCard({
+    super.key,
+    required this.fullname,
+    required this.nickname,
+    required this.age,
+    required this.gender,
+    required this.note,
+    required this.status,
+    required this.profile,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +38,17 @@ class ClientCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              leading: CircleAvatar(),
+              leading: CircleAvatar(
+                radius: 25,
+                backgroundColor: Colors.grey.shade300,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.network(profile),
+                ),
+              ),
               title: Text(nickname),
-              subtitle: Text('${DateTime.now().year.toInt() - umur.year} / $gender'),
+              subtitle:
+                  Text('${DateTime.now().year.toInt() - umur.year} / $gender'),
             ),
             szbY8,
             Row(

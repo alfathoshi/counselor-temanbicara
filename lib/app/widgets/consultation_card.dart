@@ -14,18 +14,20 @@ class ConsultationCard extends StatelessWidget {
   final String date;
   final String time;
   final String type;
-  const ConsultationCard(
-      {super.key,
-      required this.name,
-      required this.symptoms,
-      required this.date,
-      required this.time,
-      required this.type});
+  final String profile;
+  const ConsultationCard({
+    super.key,
+    required this.name,
+    required this.symptoms,
+    required this.date,
+    required this.time,
+    required this.type,
+    required this.profile,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 170,
       decoration: BoxDecoration(
         color: const Color(0xFFF2F5EB),
         borderRadius: BorderRadius.circular(16),
@@ -38,7 +40,14 @@ class ConsultationCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const CircleAvatar(),
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.grey.shade300,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Image.network(profile),
+                  ),
+                ),
                 szbX8,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,27 +66,30 @@ class ConsultationCard extends StatelessWidget {
               ],
             ),
             const Divider(),
-            Expanded(
-              child: Row(
-                children: [
-                  Icon(Iconsax.calendar),
-                  szbX8,
-                  Text(
-                    date,
-                    style: h6Regular,
-                  ),
-                  szbX24,
-                  Icon(Iconsax.clock),
-                  szbX8,
-                  Text(
-                    time,
-                    style: h6Regular,
-                  )
-                ],
-              ),
+            Row(
+              children: [
+                const Icon(Iconsax.calendar),
+                szbX8,
+                Text(
+                  date,
+                  style: h6Regular,
+                ),
+              ],
             ),
+            szbY8,
+            Row(
+              children: [
+                const Icon(Iconsax.clock),
+                szbX8,
+                Text(
+                  time,
+                  style: h6Regular,
+                )
+              ],
+            ),
+            szbY16,
             RoundedButton(
-              height: 40,
+              height: 30,
               width: 117,
               get: () {},
               color: primaryColor,

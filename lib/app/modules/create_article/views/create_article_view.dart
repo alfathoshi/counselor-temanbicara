@@ -13,6 +13,7 @@ class CreateArticleView extends GetView<CreateArticleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteColor,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         toolbarHeight: 85,
         backgroundColor: Colors.white,
@@ -33,8 +34,6 @@ class CreateArticleView extends GetView<CreateArticleController> {
             child: ElevatedButton(
                 onPressed: () {
                   controller.submitArticle();
-                  Get.offAllNamed(Routes.NAVIGATION_BAR,
-                      arguments: {"indexPage": 1});
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(primaryColor),
@@ -44,84 +43,142 @@ class CreateArticleView extends GetView<CreateArticleController> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Title',
-              style: h6SemiBold,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            TextField(
-              controller: controller.title,
-             cursorColor: black,
-              decoration: InputDecoration(
-                hintText: 'Add Your Title...',
-                hintStyle: h5Regular.copyWith(color: grey2Color),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: greyColor,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: primaryColor),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text(
-              'Write Your Article',
-              style: h6SemiBold,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Expanded(
-              child: quill.QuillEditor.basic(
-                controller: controller.quillController,
-                scrollController: ScrollController(),
-                focusNode: FocusNode(),
-                configurations: const quill.QuillEditorConfigurations(
-                  placeholder: 'Write an article here...',
-                ),
-              ),
-            ),
-            Container(
-              child: quill.QuillToolbar.simple(
-                controller: controller.quillController,
-                configurations: quill.QuillSimpleToolbarConfigurations(
-                  showClipboardPaste: false,
-                  showCodeBlock: false,
-                  showSearchButton: false,
-                  showListCheck: false,
-                  showClearFormat: false,
-                  showDirection: false,
-                  showInlineCode: false,
-                  showClipboardCut: false,
-                  showClipboardCopy: false,
-                  showSubscript: false,
-                  showSuperscript: false,
-                  buttonOptions: quill.QuillSimpleToolbarButtonOptions(
-                    linkStyle: quill.QuillToolbarLinkStyleButtonOptions(
-                      dialogTheme: quill.QuillDialogTheme(
-                        dialogBackgroundColor: whiteColor,
+      body: Obx(() => Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Stack(
+              children: [
+                if (controller.isLoading.value)
+                  Center(child: CircularProgressIndicator()),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Image',
+                      style: h6SemiBold,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        await controller.pickImage();
+                      },
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: controller.pickedImage.value != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.file(
+                                  controller.pickedImage.value!,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : controller.profileUrl.value != ''
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.network(
+                                      controller.profileUrl.value,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : const Center(
+                                    child: Icon(
+                                      Icons.add_a_photo,
+                                      size: 40,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                       ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      'Title',
+                      style: h6SemiBold,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    TextField(
+                      controller: controller.title,
+                      cursorColor: black,
+                      decoration: InputDecoration(
+                        hintText: 'Add Your Title...',
+                        hintStyle: h5Regular.copyWith(color: grey2Color),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: greyColor,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: primaryColor),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      'Write Your Article',
+                      style: h6SemiBold,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Expanded(
+                      child: quill.QuillEditor.basic(
+                        controller: controller.quillController,
+                        scrollController: ScrollController(),
+                        focusNode: FocusNode(),
+                        configurations: const quill.QuillEditorConfigurations(
+                          placeholder: 'Write an article here...',
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: quill.QuillToolbar.simple(
+                        controller: controller.quillController,
+                        configurations: quill.QuillSimpleToolbarConfigurations(
+                          showUndo: false,
+                          showBackgroundColorButton: false,
+                          showColorButton: false,
+                          showRedo: false,
+                          showFontFamily: false,
+                          showClipboardPaste: false,
+                          showCodeBlock: false,
+                          showSearchButton: false,
+                          showListCheck: false,
+                          showClearFormat: false,
+                          showDirection: false,
+                          showInlineCode: false,
+                          showClipboardCut: false,
+                          showClipboardCopy: false,
+                          showSubscript: false,
+                          showSuperscript: false,
+                          buttonOptions: quill.QuillSimpleToolbarButtonOptions(
+                            linkStyle: quill.QuillToolbarLinkStyleButtonOptions(
+                              dialogTheme: quill.QuillDialogTheme(
+                                dialogBackgroundColor: whiteColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
     );
   }
 }

@@ -13,7 +13,7 @@ class CounsultationPageController extends GetxController {
     try {
       isLoading.value = true;
       final response = await http.get(
-        Uri.parse('${Config.apiEndPoint}/consultation-counselor'),
+        Uri.parse('${Config.apiEndPoint}/consultation/counselor'),
         headers: {'Authorization': 'Bearer ${box.read('token')}'},
       );
 

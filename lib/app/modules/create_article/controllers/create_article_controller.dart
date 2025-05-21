@@ -1,9 +1,13 @@
+import 'dart:io';
+import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:convert';
 import '../../../config/config.dart';
 
@@ -11,70 +15,123 @@ class CreateArticleController extends GetxController {
   final QuillController quillController = QuillController.basic();
   final TextEditingController title = TextEditingController();
   final box = GetStorage();
-  final count = 0.obs;
+
+  var pickedImage = Rx<File?>(null);
+  var profileUrl = "".obs;
+  var isLoading = false.obs;
+
   Future<void> submitArticle() async {
     if (title.text.isEmpty || quillController.document.toPlainText().isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Title and Body are required',
-        colorText: whiteColor,
-        backgroundColor: error.withOpacity(0.6),
-      );
+      Get.snackbar('Error', 'Title and Body are required',
+          backgroundColor: Colors.red.withValues(alpha: 0.6),
+          colorText: Colors.white);
       return;
     }
-    final Map<String, dynamic> data = {
-      'title': title.text,
-      'content': quillController.document.toPlainText(),
-      'image': 'ds'
-    };
-    print(data);
 
     try {
-      final userId = box.read('id');
+      showLoadingDialog();
       final token = box.read('token');
 
-      final response = await http.post(
-        Uri.parse('${Config.apiEndPoint}/article'),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-        body: {
-          'title': data['title'],
-          'content': data['content'],
-          'image': data['image'],
-          'user_id': userId.toString(),
-        },
-      );
+      var uri = Uri.parse('${Config.apiEndPoint}/article');
+      var request = http.MultipartRequest('POST', uri);
 
-      if (response.statusCode == 200) {
-        Get.snackbar(
-          'Success',
-          'article created successfully',
-          colorText: whiteColor,
-          backgroundColor: primaryColor.withOpacity(0.6),
-        );
+      request.headers['Authorization'] = 'Bearer $token';
+
+      request.fields['title'] = title.text;
+      request.fields['content'] = quillController.document.toPlainText();
+
+      if (pickedImage.value != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'image',
+          pickedImage.value!.path,
+        ));
+      }
+
+      var response = await request.send();
+      final res = await http.Response.fromStream(response);
+      final data = json.decode(res.body);
+
+      if (data['status'] == true) {
         title.clear();
         quillController.clear();
+
+        pickedImage.value = null;
+        showSuccessDialog(data['message'] ?? 'Article created successfully');
       } else {
-        print(response.body);
-        var errorData = jsonDecode(response.body);
-        print(errorData);
-        Get.snackbar(
-          'Error',
-          errorData['message'] ?? 'Failed to create article',
-          colorText: whiteColor,
-          backgroundColor: error.withOpacity(0.6),
-        );
+        Get.back();
+        Get.snackbar('Error', 'Failed to create article');
       }
     } catch (e) {
-      print(e);
+      Get.back();
+      Get.snackbar('Error', 'An error occurred: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> pickImage() async {
+    try {
+      PermissionStatus status;
+
+      if (Platform.isAndroid) {
+        status = await Permission.photos.request();
+        if (status.isDenied || status.isPermanentlyDenied) {
+          status = await Permission.storage.request();
+        }
+      } else {
+        status = await Permission.photos.request();
+      }
+
+      if (!status.isGranted) {
+        Get.snackbar(
+          'Permission Denied',
+          'Akses ke galeri ditolak.',
+          backgroundColor: Colors.red.withOpacity(0.6),
+          colorText: Colors.white,
+        );
+        return;
+      }
+
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile == null) return;
+
+      pickedImage.value = File(pickedFile.path);
+    } catch (e) {
+      print('Error pickImage: $e');
       Get.snackbar(
         'Error',
-        'An error occurred: $e',
-        colorText: whiteColor,
-        backgroundColor: error.withOpacity(0.6),
+        'Gagal ambil gambar.',
+        backgroundColor: Colors.red.withOpacity(0.6),
+        colorText: Colors.white,
       );
     }
+  }
+
+  void showLoadingDialog() {
+    Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+  }
+
+  void showSuccessDialog(String message) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Berhasil'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+              Get.offAllNamed(Routes.NAVIGATION_BAR,
+                  arguments: {"indexPage": 1});
+            },
+            child: const Text('Oke'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -91,6 +148,4 @@ class CreateArticleController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

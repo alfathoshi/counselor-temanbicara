@@ -24,6 +24,8 @@ class ChatController extends GetxController {
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       listChat.value = data['data'];
+      print(response.body);
+
       return json.decode(response.body);
     } else {
       print(response.body);

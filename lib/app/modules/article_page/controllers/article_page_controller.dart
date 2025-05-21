@@ -14,7 +14,7 @@ class ArticlePageController extends GetxController {
     try {
       isLoading.value = true;
       final response = await http.get(
-        Uri.parse('${Config.apiEndPoint}/articleById'),
+        Uri.parse('${Config.apiEndPoint}/article/counselor'),
         headers: {'Authorization': 'Bearer ${box.read('token')}'},
       );
 

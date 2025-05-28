@@ -3,6 +3,7 @@ import 'package:counselor_temanbicara/app/modules/counsultation_page/controllers
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/client_card.dart';
 import 'package:counselor_temanbicara/app/widgets/consultation_card.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -46,9 +47,16 @@ class HomeView extends GetView<HomeController> {
                 padding: const EdgeInsets.only(left: 16),
                 child: Row(
                   children: [
-                    Image.asset(
-                      'assets/images/app_logo.png',
-                      scale: 5,
+                    GestureDetector(
+                      onTap: () => CustomSnackbar.showSnackbar(
+                        context: context,
+                        title: 'Hello, ${controller.box.read('nickname')}',
+                        message: 'Welcome to Teman Bicara',
+                      ),
+                      child: Image.asset(
+                        'assets/images/app_logo.png',
+                        scale: 5,
+                      ),
                     ),
                     const SizedBox(
                       width: 8,

@@ -10,11 +10,11 @@ import 'package:iconsax/iconsax.dart';
 import '../controllers/article_page_controller.dart';
 
 class ArticlePageView extends GetView<ArticlePageController> {
-  ArticlePageView({super.key});
-  final ArticlePageController _controller = Get.put(ArticlePageController());
+  const ArticlePageView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ArticlePageController controller = Get.put(ArticlePageController());
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -34,7 +34,7 @@ class ArticlePageView extends GetView<ArticlePageController> {
       ),
       body: RefreshIndicator(
         onRefresh: () {
-          return _controller.fetchArticles();
+          return controller.fetchArticles();
         },
         child: Expanded(
           child: Obx(() {
@@ -47,33 +47,18 @@ class ArticlePageView extends GetView<ArticlePageController> {
               );
             }
             return ListView.builder(
-              itemCount: _controller.articleList.length,
+              itemCount: controller.articleList.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Get.to(() => ArticleDetailView(
-                          title: _controller.articleList[index]["title"],
-                          author: _controller.box.read('name'),
-                          date: _controller.articleList[index]["created_at"],
-                          content: _controller.articleList[index]["content"],
-                        ));
+                    print(controller.articleList[index]);
+                    Get.toNamed(Routes.ARTICLE_DETAIL,
+                        arguments: controller.articleList[index]);
                   },
                   child: Card(
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     color: whiteColor,
                     child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 17,
-                        backgroundColor: grey2Color,
-                        child: CircleAvatar(
-                          radius: 16,
-                          backgroundColor: whiteColor,
-                          child: Image.asset(
-                            'assets/images/profile_picture.png',
-                            scale: 8,
-                          ),
-                        ),
-                      ),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -81,11 +66,11 @@ class ArticlePageView extends GetView<ArticlePageController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                _controller.articleList[index]["title"] ?? '',
+                                controller.articleList[index]["title"] ?? '',
                                 style: h4Medium,
                               ),
                               Text(
-                                _controller.box.read('name') ?? '',
+                                controller.box.read('name') ?? '',
                                 style: h5Regular,
                               ),
                             ],
@@ -95,18 +80,17 @@ class ArticlePageView extends GetView<ArticlePageController> {
                             width: 80,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: _controller.articleList[index]
+                                color: controller.articleList[index]
                                             ["status"] ==
                                         "Published"
                                     ? Colors.green
-                                    : _controller.articleList[index]
-                                                ["status"] ==
+                                    : controller.articleList[index]["status"] ==
                                             "Pending"
                                         ? Colors.orange
                                         : Colors.red,
                                 borderRadius: BorderRadius.circular(20)),
                             child: Text(
-                                _controller.articleList[index]["status"] ?? '',
+                                controller.articleList[index]["status"] ?? '',
                                 style: h6Bold.copyWith(color: whiteColor)),
                           ),
                         ],

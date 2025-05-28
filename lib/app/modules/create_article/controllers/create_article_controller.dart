@@ -58,6 +58,7 @@ class CreateArticleController extends GetxController {
         pickedImage.value = null;
         showSuccessDialog(data['message'] ?? 'Article created successfully');
       } else {
+        print(data['message']);
         Get.back();
         Get.snackbar('Error', 'Failed to create article');
       }

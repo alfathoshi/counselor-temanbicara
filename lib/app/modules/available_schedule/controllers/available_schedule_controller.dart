@@ -39,7 +39,7 @@ class AvailableScheduleController extends GetxController {
       final token = box.read('token');
 
       var response = await http.get(
-        Uri.parse('${Config.apiEndPoint}/available-schedule/$userId'),
+        Uri.parse('${Config.apiEndPoint}/schedule/${box.read('id')}/get'),
         headers: {
           'Authorization': 'Bearer $token',
         },

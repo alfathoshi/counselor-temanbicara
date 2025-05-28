@@ -14,6 +14,7 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
   List<DateTime>? dateTime;
   @override
   Widget build(BuildContext context) {
+    print(controller.scheduleList);
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(

@@ -65,20 +65,23 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
                         ),
                       ),
                       child: CircleAvatar(
-                        radius: 61,
-                        backgroundColor: whiteColor,
-                        child: Image.asset('assets/images/profile_picture.png', scale: 2,),
+                        radius: 48,
+                        backgroundColor: Colors.grey.shade300,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.network(patient["user"]['profile_url']),
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 16,
                     ),
                     Text(
-                      patient['general_user_name'],
+                      patient['user']['name'],
                       style: h3Bold,
                     ),
                     Text(
-                      'Age : ${controller.calculateAge(patient['birthdate'])} y.o',
+                      'Age : ${controller.calculateAge(patient['user']['birthdate'])} y.o',
                       style: h3Regular,
                     ),
                   ],
@@ -90,14 +93,16 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: patient['status'] == 'Done' ? primaryColor : warning,
+                  color: patient['schedule']['status'] == 'Done'
+                      ? primaryColor
+                      : warning,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Text(
-                      patient['status'],
+                      patient['schedule']['status'],
                       style: h5Bold.copyWith(
                         color: whiteColor,
                       ),

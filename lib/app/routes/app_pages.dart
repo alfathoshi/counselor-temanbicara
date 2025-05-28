@@ -90,7 +90,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ARTICLE_DETAIL,
-      page: () => const ArticleDetailView(),
+      page: () => ArticleDetailView(),
       binding: ArticleDetailBinding(),
     ),
     GetPage(
@@ -125,7 +125,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CHANGE_PASSWORD,
-      page: () =>  ChangePasswordView(),
+      page: () => ChangePasswordView(),
       binding: ChangePasswordBinding(),
     ),
   ];

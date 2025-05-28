@@ -39,11 +39,11 @@ class ChatView extends GetView<ChatController> {
                   child: Text(snapshot.error.toString()),
                 );
               } else if (snapshot.hasData) {
-                 final List rawData = snapshot.data!['data'];
+                final List rawData = snapshot.data!['data'];
                 final List<Map<String, dynamic>> listData =
                     rawData.fold([], (List<Map<String, dynamic>> acc, item) {
                   if (acc.indexWhere((element) =>
-                          element['counselor_id'] == item['counselor_id']) ==
+                          element['patient_id'] == item['patient_id']) ==
                       -1) {
                     acc.add(item);
                   }
@@ -57,14 +57,15 @@ class ChatView extends GetView<ChatController> {
                   ),
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: listData.length <= 2 ? listData.length : 3,
+                    itemCount: listData.length,
                     itemBuilder: (BuildContext context, int index) {
                       var data = listData[index];
                       return Chatcontainer(
-                        id: data['patient_id'],
-                        nama: data['general_user_name'],
+                        id: data['user']['id'],
+                        nama: data['user']['name'],
                         deskripsi: data['description'],
-                        image: 'assets/images/profile.png',
+                        image: data['user']['profile_url'] ??
+                            'assets/images/profile.png',
                       );
                     },
                   ),

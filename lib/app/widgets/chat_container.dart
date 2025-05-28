@@ -51,8 +51,8 @@ class Chatcontainer extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 24,
                       backgroundColor: whiteColor,
-                      child: Image.asset(
-                        'assets/images/profile_picture.png',
+                      child: Image.network(
+                        image!,
                         scale: 5,
                       ),
                     ),

@@ -17,14 +17,13 @@ class ChatController extends GetxController {
   Future<Map<String, dynamic>> fetchData() async {
     final response = await http.get(
       Uri.parse(
-        '${Config.apiEndPoint}/consultation',
+        '${Config.apiEndPoint}/consultation/counselor',
       ),
       headers: {'Authorization': 'Bearer ${box.read('token')}'},
     );
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       listChat.value = data['data'];
-      print(response.body);
 
       return json.decode(response.body);
     } else {

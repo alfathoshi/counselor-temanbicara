@@ -27,10 +27,10 @@ class ClientCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final umur = DateTime.parse(age);
     return Container(
-      height: 600,
       decoration: BoxDecoration(
         border: Border.all(color: border),
         borderRadius: BorderRadius.circular(16),
+        color: whiteColor
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -66,7 +66,7 @@ class ClientCard extends StatelessWidget {
                 Text(note, style: h6Regular),
               ],
             ),
-            Expanded(child: szbY8),
+            szbY8,
             Text(
               'Status',
               style: h6Regular,

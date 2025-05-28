@@ -4,29 +4,40 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 
 import '../themes/fonts.dart';
 import '../themes/sizedbox.dart';
 
 class ConsultationCard extends StatelessWidget {
   final String name;
-  final String symptoms;
+  final String gender;
   final String date;
-  final String time;
-  final String type;
+  final String startTime;
+  final String endTime;
+  final String status;
   final String profile;
+  final String age;
   const ConsultationCard({
     super.key,
     required this.name,
-    required this.symptoms,
     required this.date,
-    required this.time,
-    required this.type,
+    required this.status,
     required this.profile,
+    required this.gender,
+    required this.age,
+    required this.startTime,
+    required this.endTime,
   });
 
   @override
   Widget build(BuildContext context) {
+    final umur = DateTime.parse(age);
+    DateTime sTime = DateFormat('HH:mm:ss').parse(startTime);
+    DateTime eTime = DateFormat('HH:mm:ss').parse(endTime);
+
+    String start = DateFormat('HH:mm').format(sTime);
+    String end = DateFormat('HH:mm').format(eTime);
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFF2F5EB),
@@ -43,8 +54,7 @@ class ConsultationCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.grey.shade300,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
+                  child: ClipOval(
                     child: Image.network(profile),
                   ),
                 ),
@@ -60,40 +70,53 @@ class ConsultationCard extends StatelessWidget {
                         maxLines: 2,
                       ),
                     ),
-                    Text(symptoms)
+                    Text('${DateTime.now().year.toInt() - umur.year} / $gender')
                   ],
                 )
               ],
             ),
-            const Divider(),
-            Row(
-              children: [
-                const Icon(Iconsax.calendar),
-                szbX8,
-                Text(
-                  date,
-                  style: h6Regular,
-                ),
-              ],
+            Divider(
+              color: primaryColor,
             ),
             szbY8,
             Row(
               children: [
-                const Icon(Iconsax.clock),
-                szbX8,
-                Text(
-                  time,
-                  style: h6Regular,
+                Row(
+                  children: [
+                    const Icon(
+                      Iconsax.calendar,
+                      size: 16,
+                    ),
+                    szbX4,
+                    Text(
+                      DateTime.parse(date).toLocal().toString().split(' ')[0],
+                      style: h6Regular,
+                    ),
+                  ],
+                ),
+                szbX16,
+                Row(
+                  children: [
+                    const Icon(
+                      Iconsax.clock,
+                      size: 16,
+                    ),
+                    szbX4,
+                    Text(
+                      '$start - $end',
+                      style: h6Regular,
+                    )
+                  ],
                 )
               ],
             ),
-            szbY16,
+            Spacer(),
             RoundedButton(
               height: 30,
               width: 117,
               get: () {},
-              color: primaryColor,
-              text: type,
+              color: status == 'Done' ? primaryColor : warning,
+              text: status,
             )
           ],
         ),

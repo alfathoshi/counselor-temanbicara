@@ -28,6 +28,7 @@ dependencies:
   ionicons: ^0.2.2
   omni_datetime_picker: ^2.0.5
   permission_handler: ^12.0.0+1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0

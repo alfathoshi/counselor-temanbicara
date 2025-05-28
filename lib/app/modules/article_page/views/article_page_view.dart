@@ -55,45 +55,49 @@ class ArticlePageView extends GetView<ArticlePageController> {
                     Get.toNamed(Routes.ARTICLE_DETAIL,
                         arguments: controller.articleList[index]);
                   },
-                  child: Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    color: whiteColor,
-                    child: ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                controller.articleList[index]["title"] ?? '',
-                                style: h4Medium,
-                              ),
-                              Text(
-                                controller.box.read('name') ?? '',
-                                style: h5Regular,
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 30,
-                            width: 80,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: controller.articleList[index]
-                                            ["status"] ==
-                                        "Published"
-                                    ? Colors.green
-                                    : controller.articleList[index]["status"] ==
-                                            "Pending"
-                                        ? Colors.orange
-                                        : Colors.red,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text(
-                                controller.articleList[index]["status"] ?? '',
-                                style: h6Bold.copyWith(color: whiteColor)),
-                          ),
-                        ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Card(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      color: whiteColor,
+                      child: ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  controller.articleList[index]["title"] ?? '',
+                                  style: h4Medium,
+                                ),
+                                Text(
+                                  controller.box.read('name') ?? '',
+                                  style: h5Regular,
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 30,
+                              width: 80,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: controller.articleList[index]
+                                              ["status"] ==
+                                          "Published"
+                                      ? Colors.green
+                                      : controller.articleList[index]
+                                                  ["status"] ==
+                                              "Pending"
+                                          ? Colors.orange
+                                          : Colors.red,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                  controller.articleList[index]["status"] ?? '',
+                                  style: h6Bold.copyWith(color: whiteColor)),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

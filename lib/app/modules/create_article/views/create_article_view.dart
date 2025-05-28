@@ -139,15 +139,15 @@ class CreateArticleView extends GetView<CreateArticleController> {
                         controller: controller.quillController,
                         scrollController: ScrollController(),
                         focusNode: FocusNode(),
-                        configurations: const quill.QuillEditorConfigurations(
+                        config: const quill.QuillEditorConfig(
                           placeholder: 'Write an article here...',
                         ),
                       ),
                     ),
                     Container(
-                      child: quill.QuillToolbar.simple(
+                      child: quill.QuillSimpleToolbar(
                         controller: controller.quillController,
-                        configurations: quill.QuillSimpleToolbarConfigurations(
+                        config: quill.QuillSimpleToolbarConfig(
                           showUndo: false,
                           showBackgroundColorButton: false,
                           showColorButton: false,

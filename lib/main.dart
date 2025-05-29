@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 
@@ -13,7 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+
   await FirebaseMessaging.instance.requestPermission();
   await NotificationService.init();
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -25,7 +26,10 @@ void main() async {
       title: "Teman Bicara",
       initialRoute: Routes.SPLASH_SCREEN,
       getPages: AppPages.routes,
+      localizationsDelegates: [
+        // Ini yang harus lo tambahin, bro!
+        FlutterQuillLocalizations.delegate,
+      ],
     ),
   );
 }
-

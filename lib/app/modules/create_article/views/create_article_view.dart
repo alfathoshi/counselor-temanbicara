@@ -144,31 +144,29 @@ class CreateArticleView extends GetView<CreateArticleController> {
                         ),
                       ),
                     ),
-                    Container(
-                      child: quill.QuillSimpleToolbar(
-                        controller: controller.quillController,
-                        config: quill.QuillSimpleToolbarConfig(
-                          showUndo: false,
-                          showBackgroundColorButton: false,
-                          showColorButton: false,
-                          showRedo: false,
-                          showFontFamily: false,
-                          showClipboardPaste: false,
-                          showCodeBlock: false,
-                          showSearchButton: false,
-                          showListCheck: false,
-                          showClearFormat: false,
-                          showDirection: false,
-                          showInlineCode: false,
-                          showClipboardCut: false,
-                          showClipboardCopy: false,
-                          showSubscript: false,
-                          showSuperscript: false,
-                          buttonOptions: quill.QuillSimpleToolbarButtonOptions(
-                            linkStyle: quill.QuillToolbarLinkStyleButtonOptions(
-                              dialogTheme: quill.QuillDialogTheme(
-                                dialogBackgroundColor: whiteColor,
-                              ),
+                    quill.QuillSimpleToolbar(
+                      controller: controller.quillController,
+                      config: quill.QuillSimpleToolbarConfig(
+                        showUndo: false,
+                        showBackgroundColorButton: false,
+                        showColorButton: false,
+                        showRedo: false,
+                        showFontFamily: false,
+                        showClipboardPaste: false,
+                        showCodeBlock: false,
+                        showSearchButton: false,
+                        showListCheck: false,
+                        showClearFormat: false,
+                        showDirection: false,
+                        showInlineCode: false,
+                        showClipboardCut: false,
+                        showClipboardCopy: false,
+                        showSubscript: false,
+                        showSuperscript: false,
+                        buttonOptions: quill.QuillSimpleToolbarButtonOptions(
+                          linkStyle: quill.QuillToolbarLinkStyleButtonOptions(
+                            dialogTheme: quill.QuillDialogTheme(
+                              dialogBackgroundColor: whiteColor,
                             ),
                           ),
                         ),

@@ -3,6 +3,7 @@
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -16,7 +17,7 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteColor,
+      backgroundColor: whiteScheme,
       appBar: AppBar(
         toolbarHeight: 85,
         backgroundColor: Colors.white,
@@ -60,13 +61,6 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                       decoration: BoxDecoration(
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x4B4B4B26),
-                            blurRadius: 16,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(16.0),

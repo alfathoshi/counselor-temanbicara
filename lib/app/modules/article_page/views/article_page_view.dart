@@ -2,6 +2,7 @@ import 'package:counselor_temanbicara/app/modules/article_detail/views/article_d
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
+import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -16,7 +17,7 @@ class ArticlePageView extends GetView<ArticlePageController> {
   Widget build(BuildContext context) {
     final ArticlePageController controller = Get.put(ArticlePageController());
     return Scaffold(
-      backgroundColor: whiteColor,
+      backgroundColor: whiteScheme,
       appBar: AppBar(
         toolbarHeight: 85,
         backgroundColor: Colors.white,
@@ -58,45 +59,73 @@ class ArticlePageView extends GetView<ArticlePageController> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Card(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
                       color: whiteColor,
                       child: ListTile(
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  controller.articleList[index]["title"] ?? '',
-                                  style: h4Medium,
-                                ),
-                                Text(
-                                  controller.box.read('name') ?? '',
-                                  style: h5Regular,
-                                ),
-                              ],
-                            ),
-                            Container(
-                              height: 30,
-                              width: 80,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: controller.articleList[index]
-                                              ["status"] ==
-                                          "Published"
-                                      ? Colors.green
-                                      : controller.articleList[index]
-                                                  ["status"] ==
-                                              "Pending"
-                                          ? Colors.orange
-                                          : Colors.red,
-                                  borderRadius: BorderRadius.circular(20)),
+                            Expanded(
                               child: Text(
-                                  controller.articleList[index]["status"] ?? '',
-                                  style: h6Bold.copyWith(color: whiteColor)),
+                                controller.articleList[index]["title"] ?? '',
+                                style: h4Medium,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            szbX8,
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: controller.articleList[index]
+                                            ['status'] ==
+                                        'Published'
+                                    ? primaryColor.withValues(alpha: 0.1)
+                                    : warning.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                      controller.articleList[index]['status'] ==
+                                              'Published'
+                                          ? Icons.check_circle
+                                          : Icons.pending_actions,
+                                      color: controller.articleList[index]
+                                                  ['status'] ==
+                                              'Published'
+                                          ? primaryColor
+                                          : warning,
+                                      size: 24),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    controller.articleList[index]['status'] ==
+                                            'Published'
+                                        ? 'Published'
+                                        : 'On Review',
+                                    style: TextStyle(
+                                      color: controller.articleList[index]
+                                                  ['status'] ==
+                                              'Published'
+                                          ? primaryColor
+                                          : warning,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
+                        ),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            controller.articleList[index]["content"] ?? '',
+                            style: h6Regular,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     ),

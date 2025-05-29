@@ -9,12 +9,12 @@ Color bottomNavigationBarColor = const Color(0xffAAAAAA);
 Color primaryColor = const Color(0xff7D944D);
 Color whiteColor = const Color(0xffFFFFFF);
 Color blackScheme = const Color(0xff121212);
-Color whiteScheme = const Color(0xffe9e9e9);
+Color whiteScheme = const Color(0xffe9ecef);
 
 const Color placeHolder = Color(0xffEAEAEA);
 const Color placeHolder2 = Color(0xff807474);
 const Color font2 = Color(0xff5D5F60);
-const Color black = Colors.black;
+const Color black = Color(0xff212121);
 const Color font = Color(0xff1E1E1E);
 const Color secondaryColor2 = Color(0xffF4FBF7);
 const Color fontAbu = Color(0xff686868);

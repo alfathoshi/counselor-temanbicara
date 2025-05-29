@@ -3,10 +3,10 @@ import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/buttons/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class ClientCard extends StatelessWidget {
-  final String fullname;
-  final String nickname;
+  final String name;
   final String age;
   final String gender;
   final String note;
@@ -14,8 +14,7 @@ class ClientCard extends StatelessWidget {
   final String profile;
   const ClientCard({
     super.key,
-    required this.fullname,
-    required this.nickname,
+    required this.name,
     required this.age,
     required this.gender,
     required this.note,
@@ -25,60 +24,139 @@ class ClientCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final umur = DateTime.parse(age);
+    final umur = DateTime.now().year - DateTime.parse(age).year;
+
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: border),
-        borderRadius: BorderRadius.circular(16),
-        color: whiteColor
+        color: whiteScheme,
+        borderRadius: BorderRadius.circular(32),
+        border: Border.all(
+          color: border,
+        ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(4.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CircleAvatar(
-                radius: 25,
-                backgroundColor: Colors.grey.shade300,
+            Expanded(
+              flex: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  borderRadius: BorderRadius.circular(28),
+                ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.network(profile),
+                  borderRadius: BorderRadius.circular(28),
+                  child: Image.network(
+                    'https://kpopping.com/documents/9e/1/2048/220723-XG-Chisa-Twitter-Update-documents-1.jpeg?v=c8dfd',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: greyColor.withValues(
+                            alpha: 0.3), // Gunakan withOpacity
+                        child: const Center(
+                          child: Icon(Iconsax.image,
+                              size: 48, color: Colors.black54),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-              title: Text(nickname),
-              subtitle:
-                  Text('${DateTime.now().year.toInt() - umur.year} / $gender'),
             ),
             szbY8,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Nama:', style: h6Medium),
-                Text(fullname, style: h6Regular),
-              ],
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 16, right: 16, top: 8, bottom: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name.isNotEmpty ? name : 'Loading Name...',
+                      style: h4SemiBold,
+                      maxLines: 1,
+                      overflow: TextOverflow.fade,
+                    ),
+                    Text(
+                      '$umur / ${gender.isNotEmpty ? gender : 'N/A'}',
+                      style: h7Regular,
+                    ),
+                    szbY8,
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        note.isNotEmpty ? note : 'No notes available.',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: h6Regular,
+                      ),
+                    ),
+                    Spacer(),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: status == 'Done'
+                                ? primaryColor.withValues(alpha: 0.1)
+                                : warning.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                  status == 'Done'
+                                      ? Icons.check_circle
+                                      : Icons.pending_actions,
+                                  color:
+                                      status == 'Done' ? primaryColor : warning,
+                                  size: 24),
+                              SizedBox(width: 8),
+                              Text(
+                                status == 'Done' ? 'Reviewed' : 'Pending',
+                                style: TextStyle(
+                                  color:
+                                      status == 'Done' ? primaryColor : warning,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        szbX8,
+                        Spacer(),
+                        note.isNotEmpty
+                            ? SizedBox.shrink()
+                            : Expanded(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Review',
+                                      style: TextStyle(
+                                        color: black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Icon(Icons.arrow_circle_right,
+                                        color: black, size: 24),
+                                  ],
+                                ),
+                              ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
             ),
-            szbY8,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Note:', style: h6Medium),
-                Text(note, style: h6Regular),
-              ],
-            ),
-            szbY8,
-            Text(
-              'Status',
-              style: h6Regular,
-            ),
-            szbY8,
-            RoundedButton(
-              get: () {},
-              color: status == 'Done' ? primaryColor : warning,
-              text: status,
-              height: 32,
-              width: double.infinity,
-            )
           ],
         ),
       ),

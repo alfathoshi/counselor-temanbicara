@@ -13,6 +13,7 @@ class HomeController extends GetxController {
 
   var profile = {}.obs;
 
+
   GetStorage box = GetStorage();
 
   Future<void> fetchProfile() async {
@@ -27,7 +28,7 @@ class HomeController extends GetxController {
       profile.value = data['data'];
       json.decode(response.body);
     } else {
-      throw Exception('Failed to load chat');
+      throw Exception('Failed to load profile');
     }
   }
 
@@ -36,14 +37,27 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     fetchProfile();
+    consult.fetchData();
+    article.fetchArticles();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  
+
+  final selectedDate = DateTime.now().obs;
+  final selectedSchedule = Rx<Map<String, dynamic>>({});
+
+  void updateSelectedDate(DateTime date) {
+    selectedDate.value = date;
+    resetSelectedSchedule();
   }
 
-  @override
-  void onClose() {}
-  void increment() => count.value++;
+  void resetSelectedSchedule() {
+    selectedSchedule.value = {};
+  }
+
+  void updateSelectedSchedule(Map<String, dynamic> schedule) {
+    selectedSchedule.value = schedule;
+  }
+
+  DateTime get currentDate => selectedDate.value;
 }

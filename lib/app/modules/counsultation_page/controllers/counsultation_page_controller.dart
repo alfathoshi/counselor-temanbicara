@@ -7,6 +7,7 @@ import '../../../config/config.dart';
 class CounsultationPageController extends GetxController {
   final box = GetStorage();
   var consultList = [].obs;
+  var eventDates = <DateTime>[].obs;
   var isLoading = false.obs;
 
   Future<void> fetchData() async {
@@ -20,6 +21,7 @@ class CounsultationPageController extends GetxController {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         consultList.value = data['data'];
+        loadEventsFromApi();
       } else {
         throw Exception('Failed to load consultation');
       }
@@ -28,6 +30,13 @@ class CounsultationPageController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void loadEventsFromApi() {
+    eventDates.value = consultList.map((item) {
+      final date = DateTime.parse(item['schedule']['available_date']);
+      return DateTime(date.year, date.month, date.day);
+    }).toList();
   }
 
   @override

@@ -34,6 +34,7 @@ class NavigationBarView extends GetView<NavigationBarController> {
             onTap: (index) {
               controller.changeIndex(index);
             },
+            elevation: 1,
             backgroundColor: whiteColor,
             selectedItemColor: primaryColor,
             selectedLabelStyle: h6Bold,

@@ -39,87 +39,85 @@ class ConsultationCard extends StatelessWidget {
     String start = DateFormat('HH:mm').format(sTime);
     String end = DateFormat('HH:mm').format(eTime);
     return Container(
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFFF2F5EB),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Colors.grey.shade300,
-                  child: ClipOval(
-                    child: Image.network(profile),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: 25,
+                backgroundColor: Colors.grey.shade300,
+                child: ClipOval(
+                  child: Image.network(profile),
+                ),
+              ),
+              szbX8,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: Text(
+                      name,
+                      style: h5Bold,
+                      maxLines: 2,
+                    ),
                   ),
-                ),
-                szbX8,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      child: Text(
-                        name,
-                        style: h5Bold,
-                        maxLines: 2,
-                      ),
-                    ),
-                    Text('${DateTime.now().year.toInt() - umur.year} / $gender')
-                  ],
-                )
-              ],
-            ),
-            Divider(
-              color: primaryColor,
-            ),
-            szbY8,
-            Row(
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Iconsax.calendar,
-                      size: 16,
-                    ),
-                    szbX4,
-                    Text(
-                      DateTime.parse(date).toLocal().toString().split(' ')[0],
-                      style: h6Regular,
-                    ),
-                  ],
-                ),
-                szbX16,
-                Row(
-                  children: [
-                    const Icon(
-                      Iconsax.clock,
-                      size: 16,
-                    ),
-                    szbX4,
-                    Text(
-                      '$start - $end',
-                      style: h6Regular,
-                    )
-                  ],
-                )
-              ],
-            ),
-            Spacer(),
-            RoundedButton(
-              height: 30,
-              width: 117,
-              get: () {},
-              color: status == 'Done' ? primaryColor : warning,
-              text: status,
-            )
-          ],
-        ),
+                  Text('${DateTime.now().year.toInt() - umur.year} / $gender')
+                ],
+              )
+            ],
+          ),
+          Divider(
+            color: primaryColor,
+          ),
+          szbY8,
+          Row(
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Iconsax.calendar,
+                    size: 16,
+                  ),
+                  szbX4,
+                  Text(
+                    DateFormat('d MMMM').format(DateTime.parse(date)),
+                    style: h6Regular,
+                  ),
+                ],
+              ),
+              szbX8,
+              Row(
+                children: [
+                  const Icon(
+                    Iconsax.clock,
+                    size: 16,
+                  ),
+                  szbX4,
+                  Text(
+                    '$start - $end',
+                    style: h6Regular,
+                  )
+                ],
+              )
+            ],
+          ),
+          Spacer(),
+          RoundedButton(
+            height: 30,
+            width: 120,
+            get: () {},
+            color: status == 'Done' ? primaryColor : warning,
+            text: status,
+          )
+        ],
       ),
     );
   }

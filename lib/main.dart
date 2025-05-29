@@ -20,6 +20,7 @@ void main() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     NotificationService.showNotification(message);
   });
+
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,

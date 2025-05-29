@@ -8,11 +8,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class HomeController extends GetxController {
-  CounsultationPageController consult = Get.put(CounsultationPageController());
-  ArticlePageController article = Get.put(ArticlePageController());
+  final CounsultationPageController consult = Get.find();
+  final ArticlePageController article = Get.find();
 
   var profile = {}.obs;
-
 
   GetStorage box = GetStorage();
 
@@ -31,6 +30,7 @@ class HomeController extends GetxController {
       throw Exception('Failed to load profile');
     }
   }
+  
 
   final count = 0.obs;
   @override
@@ -40,24 +40,4 @@ class HomeController extends GetxController {
     consult.fetchData();
     article.fetchArticles();
   }
-
-  
-
-  final selectedDate = DateTime.now().obs;
-  final selectedSchedule = Rx<Map<String, dynamic>>({});
-
-  void updateSelectedDate(DateTime date) {
-    selectedDate.value = date;
-    resetSelectedSchedule();
-  }
-
-  void resetSelectedSchedule() {
-    selectedSchedule.value = {};
-  }
-
-  void updateSelectedSchedule(Map<String, dynamic> schedule) {
-    selectedSchedule.value = schedule;
-  }
-
-  DateTime get currentDate => selectedDate.value;
 }

@@ -28,7 +28,7 @@ class ClientCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: whiteScheme,
+        color: whiteColor,
         borderRadius: BorderRadius.circular(32),
         border: Border.all(
           color: border,
@@ -55,7 +55,7 @@ class ClientCard extends StatelessWidget {
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         color: greyColor.withValues(
-                            alpha: 0.3), // Gunakan withOpacity
+                            alpha: 0.3), 
                         child: const Center(
                           child: Icon(Iconsax.image,
                               size: 48, color: Colors.black54),

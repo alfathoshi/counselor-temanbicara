@@ -1,5 +1,9 @@
+import 'package:counselor_temanbicara/app/modules/article_page/controllers/article_page_controller.dart';
 import 'package:counselor_temanbicara/app/modules/article_page/views/article_page_view.dart';
+import 'package:counselor_temanbicara/app/modules/counsultation_page/controllers/counsultation_page_controller.dart';
 import 'package:counselor_temanbicara/app/modules/counsultation_page/views/counsultation_page_view.dart';
+import 'package:counselor_temanbicara/app/modules/home/controllers/home_controller.dart';
+import 'package:counselor_temanbicara/app/modules/profile_page/controllers/profile_page_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';

@@ -118,15 +118,52 @@ class HomeView extends GetView<HomeController> {
                             style: h4SemiBold,
                           ),
                         ),
-                        ConsultDate(eventDates: controller.consult.eventDates),
+                        Obx(() {
+                          if (controller.consult.isLoading.value) {
+                            return shimmerLoader(
+                              ConsultDate(
+                                eventDates: controller.consult.eventDates,
+                              ),
+                            );
+                          } else if (controller.consult.eventDates.isEmpty) {
+                            return const Center(
+                              child: Text("No Upcoming Consultation"),
+                            );
+                          } else {
+                            return ConsultDate(
+                              eventDates: controller.consult.eventDates,
+                            );
+                          }
+                        }),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          padding: const EdgeInsets.fromLTRB(16.0, 8, 8, 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Appointments ${controller.consult.consultList.length}',
-                                style: h4SemiBold,
+                              Obx(
+                                () {
+                                  if (controller.consult.isLoading.value) {
+                                    return shimmerLoader(
+                                      Container(
+                                        color: whiteColor,
+                                        child: Text(
+                                          'Appointments ${controller.consult.consultList.length}',
+                                          style: h4SemiBold,
+                                        ),
+                                      ),
+                                    );
+                                  } else if (controller
+                                      .consult.consultList.isEmpty) {
+                                    return const Center(
+                                      child: Text("0"),
+                                    );
+                                  } else {
+                                    return Text(
+                                      'Appointments ${controller.consult.consultList.length}',
+                                      style: h4SemiBold,
+                                    );
+                                  }
+                                },
                               ),
                               TextButton(
                                 onPressed: () => Get.offAllNamed(
@@ -142,55 +179,7 @@ class HomeView extends GetView<HomeController> {
                             ],
                           ),
                         ),
-                        Obx(() {
-                          if (controller.consult.isLoading.value) {
-                            return Container();
-                          } else if (controller.consult.consultList.isEmpty) {
-                            return const Center(
-                              child: Text("No Data Available"),
-                            );
-                          } else {
-                            return SizedBox(
-                              height: 170,
-                              child: PageView.builder(
-                                controller:
-                                    PageController(viewportFraction: 0.9),
-                                itemCount:
-                                    controller.consult.consultList.length,
-                                itemBuilder: (context, index) {
-                                  final listConsult =
-                                      controller.consult.consultList[index];
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed(Routes.CONSULTATION_DETAIL,
-                                          arguments: listConsult);
-                                      controller.consult.box.write(
-                                          'consultation_id',
-                                          listConsult['consultation_id']);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(right: 8),
-                                      child: ConsultationCard(
-                                        name: listConsult['user']['nickname'],
-                                        gender: listConsult['user']['gender'],
-                                        date: listConsult['schedule']
-                                            ['available_date'],
-                                        status: listConsult['status'],
-                                        profile: listConsult['user']
-                                            ['profile_url'],
-                                        age: listConsult['user']['birthdate'],
-                                        startTime: listConsult['schedule']
-                                            ['start_time'],
-                                        endTime: listConsult['schedule']
-                                            ['end_time'],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          }
-                        }),
+                        buildConsultationList(controller)
                       ],
                     ),
                   ),
@@ -211,7 +200,47 @@ class HomeView extends GetView<HomeController> {
                         szbY8,
                         Obx(() {
                           if (controller.consult.isLoading.value) {
-                            return Container();
+                            return shimmerLoader(
+                              SizedBox(
+                                height: 320,
+                                child: PageView.builder(
+                                    controller:
+                                        PageController(viewportFraction: 0.85),
+                                    itemCount:
+                                        controller.consult.consultList.length,
+                                    itemBuilder: (context, index) {
+                                      final listConsult =
+                                          controller.consult.consultList[index];
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Get.toNamed(
+                                              Routes.CONSULTATION_DETAIL,
+                                              arguments: listConsult);
+                                          controller.consult.box.write(
+                                              'consultation_id',
+                                              listConsult['consultation_id']);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 8, 8, 0),
+                                          child: ClientCard(
+                                            name: listConsult['user']
+                                                ['nickname'],
+                                            age: listConsult['user']
+                                                ['birthdate'],
+                                            gender: listConsult['user']
+                                                ['gender'],
+                                            note: listConsult['description'],
+                                            status: listConsult['status'],
+                                            profile: listConsult['user']
+                                                ['profile_url'],
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            );
+                            ;
                           } else if (controller.consult.consultList.isEmpty) {
                             return const Center(
                               child: Text("No Data Available"),
@@ -262,7 +291,7 @@ class HomeView extends GetView<HomeController> {
                     height: 8,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -273,11 +302,8 @@ class HomeView extends GetView<HomeController> {
                         szbY16,
                         Obx(() {
                           if (controller.consult.isLoading.value) {
-                            return Shimmer.fromColors(
-                              baseColor: greyColor,
-                              highlightColor: grey4Color,
-                              child:
-                                  Image.asset('assets/images/article_card.png'),
+                            return shimmerLoader(
+                              Image.asset('assets/images/article_card.png'),
                             );
                           } else if (controller.consult.consultList.isEmpty) {
                             return const Center(
@@ -343,4 +369,55 @@ class HomeView extends GetView<HomeController> {
       ),
     );
   }
+}
+
+Widget buildConsultationList(HomeController controller) {
+  return Obx(() {
+    if (controller.consult.isLoading.value) {
+      return shimmerLoader(
+          buildConsultationPageView(controller.consult.consultList));
+    } else if (controller.consult.consultList.isEmpty) {
+      return const Center(child: Text("No Data Available"));
+    } else {
+      return buildConsultationPageView(controller.consult.consultList);
+    }
+  });
+}
+
+Widget shimmerLoader(Widget widget) {
+  return Shimmer.fromColors(
+    baseColor: greyColor,
+    highlightColor: grey4Color,
+    child: widget,
+  );
+}
+
+Widget buildConsultationPageView(List<dynamic> list) {
+  return SizedBox(
+    height: 170,
+    child: PageView.builder(
+      controller: PageController(viewportFraction: 0.9),
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        final consult = list[index];
+        return GestureDetector(
+          onTap: () =>
+              Get.toNamed(Routes.CONSULTATION_DETAIL, arguments: consult),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: ConsultationCard(
+              name: consult['user']['nickname'],
+              gender: consult['user']['gender'],
+              date: consult['schedule']['available_date'],
+              status: consult['status'],
+              profile: consult['user']['profile_url'],
+              age: consult['user']['birthdate'],
+              startTime: consult['schedule']['start_time'],
+              endTime: consult['schedule']['end_time'],
+            ),
+          ),
+        );
+      },
+    ),
+  );
 }

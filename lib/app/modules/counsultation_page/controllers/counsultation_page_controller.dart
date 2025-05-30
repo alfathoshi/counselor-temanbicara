@@ -37,6 +37,7 @@ class CounsultationPageController extends GetxController {
       final date = DateTime.parse(item['schedule']['available_date']);
       return DateTime(date.year, date.month, date.day);
     }).toList();
+    
   }
 
   @override

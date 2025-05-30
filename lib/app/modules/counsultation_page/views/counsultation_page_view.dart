@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../themes/colors.dart';
 import '../controllers/counsultation_page_controller.dart';
@@ -48,6 +49,14 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
               itemCount: controller.consultList.length,
               itemBuilder: (context, index) {
                 final listPatient = controller.consultList;
+                DateTime date = DateTime.parse(
+                    listPatient[index]['schedule']['available_date']);
+                DateTime sTime = DateFormat('HH:mm:ss')
+                    .parse(listPatient[index]['schedule']['start_time']);
+                DateTime eTime = DateFormat('HH:mm:ss')
+                    .parse(listPatient[index]['schedule']['end_time']);
+                String start = DateFormat('HH:mm').format(sTime);
+                String end = DateFormat('HH:mm').format(eTime);
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: GestureDetector(
@@ -120,8 +129,7 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                                   width: 8,
                                 ),
                                 Text(
-                                    listPatient[index]["schedule"]
-                                            ['available_date'] ??
+                                    '${DateFormat('d MMMM').format(date)}' ??
                                         '',
                                     style: h6Medium),
                                 szbX16,
@@ -131,9 +139,7 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                                   color: font,
                                 ),
                                 szbX8,
-                                Text(
-                                    '${listPatient[index]["schedule"]['start_time']} - ${listPatient[index]["schedule"]['end_time']}',
-                                    style: h6Medium),
+                                Text('$start - $end', style: h6Medium),
                               ],
                             ),
                             SizedBox(

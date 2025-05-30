@@ -100,23 +100,23 @@ class ProfilePageView extends GetView<ProfilePageController> {
                 SizedBox(
                   height: 16,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.EDIT_PROFILE);
-                      },
-                      child: Text(
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.EDIT_PROFILE);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
                         'Edit Profile',
                         style: h4SemiBold,
                       ),
-                    ),
-                    Icon(
-                      Icons.chevron_right_outlined,
-                      size: 32,
-                    )
-                  ],
+                      Icon(
+                        Icons.chevron_right_outlined,
+                        size: 32,
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 16,

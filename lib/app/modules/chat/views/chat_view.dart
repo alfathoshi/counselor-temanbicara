@@ -60,12 +60,11 @@ class ChatView extends GetView<ChatController> {
                     itemCount: listData.length,
                     itemBuilder: (BuildContext context, int index) {
                       var data = listData[index];
-                      return Chatcontainer(
+                      return ChatContainer(
                         id: data['user']['id'],
-                        nama: data['user']['name'],
-                        deskripsi: data['description'],
-                        image: data['user']['profile_url'] ??
-                            'assets/images/profile.png',
+                        nama: data['user']['nickname'],
+                        deskripsi: data['status'],
+                        image: data['user']['profile_url'],
                       );
                     },
                   ),

@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class Chatcontainer extends StatelessWidget {
+class ChatContainer extends StatelessWidget {
   final int id;
   final String? image;
   final String? nama;
   final String? deskripsi;
 
-  const Chatcontainer({
+  const ChatContainer({
     super.key,
     required this.nama,
     required this.deskripsi,
@@ -24,7 +24,7 @@ class Chatcontainer extends StatelessWidget {
     return InkWell(
       onTap: () {
         Get.toNamed(Routes.CHAT_ROOM,
-            arguments: {'name': nama, 'patient_id': id});
+            arguments: {'name': nama, 'patient_id': id, 'profile': image});
       },
       child: Container(
         width: 393,
@@ -48,12 +48,14 @@ class Chatcontainer extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 25,
                     backgroundColor: greyColor,
-                    child: CircleAvatar(
-                      radius: 24,
-                      backgroundColor: whiteColor,
-                      child: Image.network(
-                        image!,
-                        scale: 5,
+                    child: ClipOval(
+                      child: CircleAvatar(
+                        radius: 24,
+                        backgroundColor: whiteColor,
+                        child: Image.network(
+                          image!,
+                          scale: 5,
+                        ),
                       ),
                     ),
                   ),

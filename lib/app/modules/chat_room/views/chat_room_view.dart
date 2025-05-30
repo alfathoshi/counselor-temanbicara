@@ -29,12 +29,14 @@ class ChatRoomView extends GetView<ChatRoomController> {
             CircleAvatar(
               backgroundColor: black,
               radius: 25,
-              child: CircleAvatar(
-                backgroundColor: whiteColor,
-                radius: 24,
-                child: Image.asset(
-                  'assets/images/profile_picture.png',
-                  scale: 5,
+              child: ClipOval(
+                child: CircleAvatar(
+                  backgroundColor: whiteColor,
+                  radius: 24,
+                  child: Image.network(
+                    controller.args['profile'],
+                    scale: 5,
+                  ),
                 ),
               ),
             ),

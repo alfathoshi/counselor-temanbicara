@@ -46,12 +46,14 @@ class ProfilePageView extends GetView<ProfilePageController> {
                       CircleAvatar(
                         radius: 60,
                         backgroundColor: border,
-                        child: CircleAvatar(
-                          radius: 58,
-                          backgroundColor: whiteColor,
-                          child: Image.asset(
-                            'assets/images/profile_picture.png',
-                            scale: 2,
+                        child: ClipOval(
+                          child: CircleAvatar(
+                            radius: 58,
+                            backgroundColor: whiteColor,
+                            child: Image.network(
+                              controller.profile['profile_url'],
+                              scale: 2,
+                            ),
                           ),
                         ),
                       ),

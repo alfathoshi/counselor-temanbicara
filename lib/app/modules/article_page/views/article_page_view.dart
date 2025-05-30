@@ -34,9 +34,8 @@ class ArticlePageView extends GetView<ArticlePageController> {
         centerTitle: true,
       ),
       body: RefreshIndicator(
-        onRefresh: () {
-          return controller.fetchArticles();
-        },
+        onRefresh: controller.refreshArticles,
+        color: primaryColor,
         child: Expanded(
           child: Obx(() {
             if (controller.articleList.isEmpty) {
@@ -50,87 +49,116 @@ class ArticlePageView extends GetView<ArticlePageController> {
             return ListView.builder(
               itemCount: controller.articleList.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    print(controller.articleList[index]);
-                    Get.toNamed(Routes.ARTICLE_DETAIL,
-                        arguments: controller.articleList[index]);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Card(
-                      color: whiteColor,
-                      child: ListTile(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                controller.articleList[index]["title"] ?? '',
-                                style: h4Medium,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                if (controller.articleList.isEmpty &&
+                    !controller.isLoadingInitial.value) {
+                  SliverToBoxAdapter(
+                      child: Center(
+                          child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Text('Tidak ada artikel tersedia saat ini.',
+                        style: h6Regular),
+                  )));
+                } else {
+                  return GestureDetector(
+                    onTap: () {
+                      print(controller.articleList[index]);
+                      Get.toNamed(Routes.ARTICLE_DETAIL,
+                          arguments: controller.articleList[index]);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Card(
+                        color: whiteColor,
+                        child: ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  controller.articleList[index]["title"] ?? '',
+                                  style: h4Medium,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
-                            szbX8,
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.articleList[index]
-                                            ['status'] ==
-                                        'Published'
-                                    ? primaryColor.withValues(alpha: 0.1)
-                                    : warning.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
+                              szbX8,
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: controller.articleList[index]
+                                              ['status'] ==
+                                          'Published'
+                                      ? primaryColor.withValues(alpha: 0.1)
+                                      : warning.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                        controller.articleList[index]
+                                                    ['status'] ==
+                                                'Published'
+                                            ? Icons.check_circle
+                                            : Icons.pending_actions,
+                                        color: controller.articleList[index]
+                                                    ['status'] ==
+                                                'Published'
+                                            ? primaryColor
+                                            : warning,
+                                        size: 24),
+                                    SizedBox(width: 8),
+                                    Text(
                                       controller.articleList[index]['status'] ==
                                               'Published'
-                                          ? Icons.check_circle
-                                          : Icons.pending_actions,
-                                      color: controller.articleList[index]
-                                                  ['status'] ==
-                                              'Published'
-                                          ? primaryColor
-                                          : warning,
-                                      size: 24),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    controller.articleList[index]['status'] ==
-                                            'Published'
-                                        ? 'Published'
-                                        : 'On Review',
-                                    style: TextStyle(
-                                      color: controller.articleList[index]
-                                                  ['status'] ==
-                                              'Published'
-                                          ? primaryColor
-                                          : warning,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
+                                          ? 'Published'
+                                          : 'On Review',
+                                      style: TextStyle(
+                                        color: controller.articleList[index]
+                                                    ['status'] ==
+                                                'Published'
+                                            ? primaryColor
+                                            : warning,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
+                            ],
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Text(
+                              controller.articleList[index]["content"] ?? '',
+                              style: h6Regular,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ],
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            controller.articleList[index]["content"] ?? '',
-                            style: h6Regular,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                }
+                if (controller.isLoadingMore.value) {
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                        child: CircularProgressIndicator(color: primaryColor)),
+                  );
+                }
+                if (!controller.hasMoreData.value &&
+                    controller.articleList.isNotEmpty &&
+                    !controller.isLoadingInitial.value) {
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Center(
+                        child: Text("Semua artikel sudah ditampilkan.",
+                            style: h7Regular.copyWith(color: greyColor))),
+                  );
+                }
               },
             );
           }),

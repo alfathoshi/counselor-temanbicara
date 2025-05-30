@@ -49,13 +49,12 @@ class ClientCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(28),
                   child: Image.network(
-                    'https://kpopping.com/documents/9e/1/2048/220723-XG-Chisa-Twitter-Update-documents-1.jpeg?v=c8dfd',
+                    profile,
                     width: double.infinity,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        color: greyColor.withValues(
-                            alpha: 0.3), 
+                        color: greyColor.withValues(alpha: 0.3),
                         child: const Center(
                           child: Icon(Iconsax.image,
                               size: 48, color: Colors.black54),

@@ -38,6 +38,6 @@ class HomeController extends GetxController {
     super.onInit();
     fetchProfile();
     consult.fetchData();
-    article.fetchArticles();
+    article.fetchArticles(page: 0);
   }
 }

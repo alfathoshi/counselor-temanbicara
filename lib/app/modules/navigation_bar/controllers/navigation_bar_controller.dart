@@ -19,7 +19,7 @@ class NavigationBarController extends GetxController {
         Get.find<HomeController>().fetchProfile();
         break;
       case 1:
-        Get.find<ArticlePageController>().fetchArticles();
+        Get.find<ArticlePageController>().fetchArticles(page: 0);
         break;
       case 2:
         Get.find<CounsultationPageController>().fetchData();
@@ -35,24 +35,6 @@ class NavigationBarController extends GetxController {
     super.onInit();
     if (args != null) {
       selectedindex.value = args["indexPage"];
-      fetchPageData(args["indexPage"]);
-    }
-  }
-
-  void fetchPageData(int index) {
-    switch (index) {
-      case 0:
-        Get.find<HomeController>().fetchProfile();
-        break;
-      case 1:
-        Get.find<ArticlePageController>().fetchArticles();
-        break;
-      case 2:
-        Get.find<CounsultationPageController>().fetchData();
-        break;
-      case 3:
-        Get.find<ProfilePageController>();
-        break;
     }
   }
 }

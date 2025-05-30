@@ -20,7 +20,7 @@ class HomeView extends GetView<HomeController> {
     HomeController controller = Get.put(HomeController());
     controller.fetchProfile();
     controller.consult.fetchData();
-    controller.article.fetchArticles();
+    controller.article.fetchArticles(page: 0);
 
     return Scaffold(
       backgroundColor: whiteColor,
@@ -30,7 +30,7 @@ class HomeView extends GetView<HomeController> {
         onRefresh: () async {
           await Future.wait([
             controller.consult.fetchData(),
-            controller.article.fetchArticles(),
+            controller.article.fetchArticles(page: 0),
             controller.fetchProfile(),
           ]);
         },

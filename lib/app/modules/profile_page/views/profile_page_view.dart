@@ -51,7 +51,7 @@ class ProfilePageView extends GetView<ProfilePageController> {
                             radius: 58,
                             backgroundColor: whiteColor,
                             child: Image.network(
-                              controller.profile['profile_url'],
+                              controller.profile['profile_url'] ?? '',
                               scale: 2,
                             ),
                           ),

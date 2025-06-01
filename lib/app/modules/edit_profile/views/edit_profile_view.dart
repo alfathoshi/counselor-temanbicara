@@ -93,7 +93,35 @@ class EditProfileView extends GetView<EditProfileController> {
                     controller: controller.nameController,
                     cursorColor: black,
                     decoration: InputDecoration(
-                      hintText: 'Masukkan Nama Lengkap',
+                      hintText: 'Enter your name',
+                      hintStyle: h5Regular.copyWith(color: grey2Color),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: greyColor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: primaryColor),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Text(
+                    'Nickname',
+                    style: textDescriptionSemiBold,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  TextField(
+                    controller: controller.nicknameController,
+                    cursorColor: black,
+                    decoration: InputDecoration(
+                      hintText: 'Enter your nickname...',
                       hintStyle: h5Regular.copyWith(color: grey2Color),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -118,12 +146,13 @@ class EditProfileView extends GetView<EditProfileController> {
                     height: 8,
                   ),
                   TextField(
+                    enabled: false,
                     controller: controller.emailController,
                     cursorColor: black,
                     decoration: InputDecoration(
-                      hintText: 'Masukkan Nama Lengkap',
+                      hintText: 'Masukkan Email',
                       hintStyle: h5Regular.copyWith(color: grey2Color),
-                      enabledBorder: OutlineInputBorder(
+                      disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
                           color: greyColor,
@@ -227,7 +256,7 @@ class EditProfileView extends GetView<EditProfileController> {
                   backgroundColor: WidgetStatePropertyAll(primaryColor),
                   foregroundColor: WidgetStatePropertyAll(whiteColor),
                 ),
-                child: const Text('Simpan'),
+                child: const Text('Save'),
               ),
             )
           ],

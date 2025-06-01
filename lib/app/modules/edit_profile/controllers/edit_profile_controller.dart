@@ -12,6 +12,7 @@ class EditProfileController extends GetxController {
   final box = GetStorage();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController nicknameController = TextEditingController();
   final DatePickerController dateController = Get.put(DatePickerController());
 
   var isLoading = false.obs;
@@ -36,8 +37,8 @@ class EditProfileController extends GetxController {
       final token = box.read('token');
       print(token);
 
-      final response = await http.put(
-        Uri.parse('${Config.apiEndPoint}/edit-profile'),
+      final response = await http.post(
+        Uri.parse('${Config.apiEndPoint}/profile'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -45,6 +46,7 @@ class EditProfileController extends GetxController {
         body: jsonEncode({
           'name': nameController.text,
           'email': emailController.text,
+          'nickname': nicknameController.text,
           'birthdate': formattedDate,
         }),
       );
@@ -58,6 +60,7 @@ class EditProfileController extends GetxController {
 
         box.write('name', responseData['data']['name']);
         box.write('email', responseData['data']['email']);
+        box.write('nickname', responseData['data']['nickname']);
         box.write('birthdate', responseData['data']['birthdate']);
 
         if (responseData['status']) {
@@ -101,6 +104,7 @@ class EditProfileController extends GetxController {
     super.onInit();
     nameController.text = box.read('name');
     emailController.text = box.read('email');
+    nicknameController.text = box.read('nickname') ?? '';
     DateTime tanggal = DateTime.parse(box.read('birthdate'));
     print('asdas ${box.read('name')}');
     // print(dateController.selectedDate.value);

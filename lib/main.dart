@@ -26,7 +26,6 @@ void main() async {
       initialRoute: Routes.SPLASH_SCREEN,
       getPages: AppPages.routes,
       localizationsDelegates: [
-        // Ini yang harus lo tambahin, bro!
         FlutterQuillLocalizations.delegate,
       ],
     ),

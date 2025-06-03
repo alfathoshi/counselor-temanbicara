@@ -17,7 +17,7 @@ class ArticlePageView extends GetView<ArticlePageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteScheme,
+      backgroundColor: whiteColor,
       appBar: AppBar(
         toolbarHeight: 85,
         backgroundColor: Colors.white,

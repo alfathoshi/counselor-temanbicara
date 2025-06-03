@@ -40,7 +40,7 @@ class ConsultDate extends StatelessWidget {
                 Text(
                   DateFormat.MMM().format(date),
                   style: h5SemiBold.copyWith(
-                    color: black,
+                    color: grey3Color,
                   ),
                 ),
                 Text(

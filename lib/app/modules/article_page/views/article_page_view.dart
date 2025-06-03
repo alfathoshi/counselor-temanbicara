@@ -15,7 +15,6 @@ class ArticlePageView extends GetView<ArticlePageController> {
 
   @override
   Widget build(BuildContext context) {
-    final ArticlePageController controller = Get.put(ArticlePageController());
     return Scaffold(
       backgroundColor: whiteScheme,
       appBar: AppBar(
@@ -36,133 +35,133 @@ class ArticlePageView extends GetView<ArticlePageController> {
       body: RefreshIndicator(
         onRefresh: controller.refreshArticles,
         color: primaryColor,
-        child: Expanded(
-          child: Obx(() {
-            if (controller.articleList.isEmpty) {
-              return Center(
+        child: Obx(() {
+          if (controller.isLoadingInitial.value &&
+              controller.articleList.isEmpty) {
+            return Center(
+                child: CircularProgressIndicator(color: primaryColor));
+          }
+
+          if (controller.articleList.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
                 child: Text(
-                  'No articles available',
-                  style: h6SemiBold,
+                  'Tidak ada artikel tersedia saat ini.',
+                  style: h6Regular,
+                  textAlign: TextAlign.center,
                 ),
-              );
-            }
-            return ListView.builder(
-              itemCount: controller.articleList.length,
-              itemBuilder: (context, index) {
-                if (controller.articleList.isEmpty &&
-                    !controller.isLoadingInitial.value) {
-                  SliverToBoxAdapter(
-                      child: Center(
-                          child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: Text('Tidak ada artikel tersedia saat ini.',
-                        style: h6Regular),
-                  )));
-                } else {
-                  return GestureDetector(
-                    onTap: () {
-                      print(controller.articleList[index]);
-                      Get.toNamed(Routes.ARTICLE_DETAIL,
-                          arguments: controller.articleList[index]);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Card(
-                        color: whiteColor,
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  controller.articleList[index]["title"] ?? '',
-                                  style: h4Medium,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              szbX8,
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: controller.articleList[index]
-                                              ['status'] ==
-                                          'Published'
-                                      ? primaryColor.withValues(alpha: 0.1)
-                                      : warning.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                        controller.articleList[index]
-                                                    ['status'] ==
-                                                'Published'
-                                            ? Icons.check_circle
-                                            : Icons.pending_actions,
-                                        color: controller.articleList[index]
-                                                    ['status'] ==
-                                                'Published'
-                                            ? primaryColor
-                                            : warning,
-                                        size: 24),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      controller.articleList[index]['status'] ==
-                                              'Published'
-                                          ? 'Published'
-                                          : 'On Review',
-                                      style: TextStyle(
-                                        color: controller.articleList[index]
-                                                    ['status'] ==
-                                                'Published'
-                                            ? primaryColor
-                                            : warning,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 8),
+              ),
+            );
+          }
+          return ListView.builder(
+            controller: controller.scrollController,
+            itemCount: controller.articleList.length +
+                (controller.isLoadingMore.value ? 1 : 0) +
+                (!controller.hasMoreData.value &&
+                        controller.articleList.isNotEmpty &&
+                        !controller.isLoadingMore.value
+                    ? 1
+                    : 0),
+            itemBuilder: (context, index) {
+              if (index == controller.articleList.length &&
+                  controller.isLoadingMore.value) {
+                return Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Center(
+                      child: CircularProgressIndicator(color: primaryColor)),
+                );
+              }
+              if (index == controller.articleList.length &&
+                  !controller.hasMoreData.value &&
+                  !controller.isLoadingMore.value) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Center(
+                    child: Text("Semua artikel sudah ditampilkan.",
+                        style: h7Regular.copyWith(color: greyColor)),
+                  ),
+                );
+              }
+              if (index >= controller.articleList.length) {
+                return const SizedBox.shrink();
+              }
+              final articleItem = controller.articleList[index];
+
+              return GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.ARTICLE_DETAIL, arguments: articleItem);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Card(
+                    color: whiteColor,
+                    child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
                             child: Text(
-                              controller.articleList[index]["content"] ?? '',
-                              style: h6Regular,
-                              maxLines: 3,
+                              articleItem["title"] ?? '',
+                              style: h4Medium,
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
+                          szbX8,
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: articleItem['status'] == 'Published'
+                                  ? primaryColor.withValues(alpha: 0.1)
+                                  : warning.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                    articleItem['status'] == 'Published'
+                                        ? Icons.check_circle
+                                        : Icons.pending_actions,
+                                    color: articleItem['status'] == 'Published'
+                                        ? primaryColor
+                                        : warning,
+                                    size: 24),
+                                SizedBox(width: 8),
+                                Text(
+                                  articleItem['status'] == 'Published'
+                                      ? 'Published'
+                                      : 'On Review',
+                                  style: TextStyle(
+                                    color: articleItem['status'] == 'Published'
+                                        ? primaryColor
+                                        : warning,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          articleItem["content"] ?? '',
+                          style: h6Regular,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                  );
-                }
-                if (controller.isLoadingMore.value) {
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
-                        child: CircularProgressIndicator(color: primaryColor)),
-                  );
-                }
-                if (!controller.hasMoreData.value &&
-                    controller.articleList.isNotEmpty &&
-                    !controller.isLoadingInitial.value) {
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Center(
-                        child: Text("Semua artikel sudah ditampilkan.",
-                            style: h7Regular.copyWith(color: greyColor))),
-                  );
-                }
-              },
-            );
-          }),
-        ),
+                  ),
+                ),
+              );
+            },
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

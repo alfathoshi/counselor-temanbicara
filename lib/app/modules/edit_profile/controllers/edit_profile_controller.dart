@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:counselor_temanbicara/app/modules/edit_profile/controllers/datepicker_controller.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -18,9 +19,7 @@ class EditProfileController extends GetxController {
   var isLoading = false.obs;
 
   var selectedDate = DateTime.now().obs;
-  // void updateDate(DateTime date) {
-  //   selectedDate.value = date;
-  // }
+  var profile = {}.obs;
 
   var selectedCountry = ''.obs;
   void setCountry(String country) {
@@ -33,9 +32,7 @@ class EditProfileController extends GetxController {
         DateFormat('yyyy-MM-dd').format(dateController.selectedDate.value);
 
     try {
-      final userId = box.read('id');
       final token = box.read('token');
-      print(token);
 
       final response = await http.post(
         Uri.parse('${Config.apiEndPoint}/profile'),
@@ -51,13 +48,8 @@ class EditProfileController extends GetxController {
         }),
       );
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        print(responseData);
-
         box.write('name', responseData['data']['name']);
         box.write('email', responseData['data']['email']);
         box.write('nickname', responseData['data']['nickname']);
@@ -87,7 +79,6 @@ class EditProfileController extends GetxController {
         );
       }
     } catch (e) {
-      print(e);
       Get.snackbar(
         'Error',
         'An error occurred: $e',
@@ -99,14 +90,38 @@ class EditProfileController extends GetxController {
     }
   }
 
+  Future<void> fetchProfile() async {
+    isLoading.value = true;
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '${Config.apiEndPoint}/profile',
+        ),
+        headers: {'Authorization': 'Bearer ${box.read('token')}'},
+      );
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        profile.value = data['data'];
+        box.write('name', profile['name']);
+        box.write('email', profile['email']);
+        box.write('nickname', profile['nickname']);
+        box.write('birthdate', profile['birthdate']);
+        json.decode(response.body);
+      }
+    } catch (e) {
+      isLoading.value = false;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
+    fetchProfile();
     nameController.text = box.read('name');
     emailController.text = box.read('email');
-    nicknameController.text = box.read('nickname') ?? '';
-    DateTime tanggal = DateTime.parse(box.read('birthdate'));
-    print('asdas ${box.read('name')}');
-    // print(dateController.selectedDate.value);
+    nicknameController.text = box.read('nickname');
+    selectedDate.value = DateTime.parse(box.read('birthdate'));
   }
 }

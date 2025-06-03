@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:counselor_temanbicara/app/modules/home/views/home_view.dart';
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import '../../../themes/fonts.dart';
 import '../controllers/profile_page_controller.dart';
 
 class ProfilePageView extends GetView<ProfilePageController> {
+  const ProfilePageView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();
@@ -46,15 +49,32 @@ class ProfilePageView extends GetView<ProfilePageController> {
                       CircleAvatar(
                         radius: 60,
                         backgroundColor: border,
-                        child: ClipOval(
-                          child: CircleAvatar(
-                            radius: 58,
-                            backgroundColor: whiteColor,
-                            child: Image.network(
-                              controller.profile['profile_url'] ?? '',
-                              scale: 2,
-                            ),
-                          ),
+                        child: CircleAvatar(
+                          radius: 58,
+                          backgroundColor: whiteColor,
+                          child: Obx(() {
+                            if (controller.isLoading.value) {
+                              return shimmerLoader(
+                                ClipOval(
+                                  child: Container(
+                                    color: whiteColor,
+                                  ),
+                                ),
+                              );
+                            } else if (controller.profile.isEmpty) {
+                              return ClipOval(
+                                child: Image.network(
+                                    'https://qzsrrlobwlisodbasdqi.supabase.co/storage/v1/object/profile/default.png'),
+                              );
+                            } else {
+                              return ClipOval(
+                                child: Image.network(
+                                  controller.profile['profile_url'],
+                                  scale: 2,
+                                ),
+                              );
+                            }
+                          }),
                         ),
                       ),
                       Container(
@@ -139,22 +159,6 @@ class ProfilePageView extends GetView<ProfilePageController> {
                     ],
                   ),
                 ),
-                // SizedBox(
-                //   height: 16,
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Text(
-                //       'Change Language',
-                //       style: h4SemiBold,
-                //     ),
-                //     Icon(
-                //       Icons.chevron_right_outlined,
-                //       size: 32,
-                //     )
-                //   ],
-                // ),
                 SizedBox(
                   height: 16,
                 ),
@@ -176,30 +180,11 @@ class ProfilePageView extends GetView<ProfilePageController> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 32,
-                ),
+                szbY16,
                 Divider(),
-
-                // SizedBox(
-                //   height: 16,
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Text(
-                //       'Privacy Policy',
-                //       style: h4SemiBold,
-                //     ),
-                //     Icon(
-                //       Icons.chevron_right_outlined,
-                //       size: 32,
-                //     )
-                //   ],
-                // ),
               ],
             ),
-            szbY24,
+            szbY16,
             GestureDetector(
               onTap: () {
                 Get.offAllNamed(

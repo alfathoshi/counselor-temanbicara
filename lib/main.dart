@@ -25,7 +25,7 @@ void main() async {
       title: "Teman Bicara",
       initialRoute: Routes.SPLASH_SCREEN,
       getPages: AppPages.routes,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         FlutterQuillLocalizations.delegate,
       ],
     ),

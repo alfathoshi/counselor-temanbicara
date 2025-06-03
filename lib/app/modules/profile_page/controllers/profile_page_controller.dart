@@ -8,20 +8,26 @@ import 'package:http/http.dart' as http;
 class ProfilePageController extends GetxController {
   GetStorage box = GetStorage();
   var profile = {}.obs;
+  var isLoading = false.obs;
 
   Future<void> fetchProfile() async {
-    final response = await http.get(
-      Uri.parse(
-        '${Config.apiEndPoint}/profile',
-      ),
-      headers: {'Authorization': 'Bearer ${box.read('token')}'},
-    );
-    if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      profile.value = data['data'];
-      json.decode(response.body);
-    } else {
-      throw Exception('Failed to load profile');
+    isLoading.value = true;
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '${Config.apiEndPoint}/profile',
+        ),
+        headers: {'Authorization': 'Bearer ${box.read('token')}'},
+      );
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        profile.value = data['data'];
+        json.decode(response.body);
+      }
+    } catch (e) {
+      isLoading.value = false;
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -33,6 +39,7 @@ class ProfilePageController extends GetxController {
 
   @override
   void onReady() {
+    fetchProfile();
     super.onReady();
   }
 

@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:counselor_temanbicara/app/modules/home/views/home_view.dart';
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
@@ -14,8 +15,6 @@ import '../controllers/edit_profile_controller.dart';
 
 class EditProfileView extends GetView<EditProfileController> {
   EditProfileView({super.key});
-
-  final EditProfileController _controller = Get.put(EditProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -37,49 +36,68 @@ class EditProfileView extends GetView<EditProfileController> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            szbY24,
-            Center(
-              child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundColor: border,
-                    child: CircleAvatar(
-                      radius: 58,
-                      backgroundColor: whiteColor,
-                      child: Image.asset(
-                        'assets/images/profile_picture.png',
-                        scale: 2,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              szbY24,
+              Center(
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    CircleAvatar(
+                      radius: 60,
+                      backgroundColor: border,
+                      child: CircleAvatar(
+                        radius: 58,
+                        backgroundColor: whiteColor,
+                        child: Obx(() {
+                          if (controller.isLoading.value) {
+                            return shimmerLoader(
+                              ClipOval(
+                                child: Container(
+                                  color: whiteColor,
+                                ),
+                              ),
+                            );
+                          } else if (controller.profile.isEmpty) {
+                            return ClipOval(
+                              child: Image.network(
+                                  'https://qzsrrlobwlisodbasdqi.supabase.co/storage/v1/object/profile/default.png'),
+                            );
+                          } else {
+                            return ClipOval(
+                              child: Image.network(
+                                controller.profile['profile_url'],
+                                scale: 2,
+                              ),
+                            );
+                          }
+                        }),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: primaryColor,
-                    ),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.camera_alt,
-                        size: 16,
-                        color: whiteColor,
+                    Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: primaryColor,
                       ),
-                      onPressed: () {},
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.camera_alt,
+                          size: 16,
+                          color: whiteColor,
+                        ),
+                        onPressed: () {},
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            szbY48,
-            Expanded(
-              child: Column(
+              szbY48,
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -167,7 +185,6 @@ class EditProfileView extends GetView<EditProfileController> {
                   const SizedBox(
                     height: 16,
                   ),
-
                   Text(
                     'Tanggal Lahir',
                     style: textDescriptionSemiBold,
@@ -175,91 +192,33 @@ class EditProfileView extends GetView<EditProfileController> {
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomDatePicker(),
+                  CustomDatePicker(initialDate: controller.selectedDate.value),
                   const SizedBox(
                     height: 16,
                   ),
-                  // Text(
-                  //   'Negara',
-                  //   style: textDescriptionSemiBold,
-                  // ),
                   const SizedBox(
                     height: 8,
                   ),
-                  // DropdownSearch<String>(
-                  //   items: (filter, infiniteScrollProps) => [
-                  //     'Indonesia',
-                  //     'Singapore',
-                  //     'Malaysia',
-                  //     'Jepang',
-                  //     'Korea'
-                  //   ],
-                  //   suffixProps: const DropdownSuffixProps(
-                  //     dropdownButtonProps: DropdownButtonProps(
-                  //       iconClosed: Icon(Icons.keyboard_arrow_down),
-                  //       iconOpened: Icon(Icons.keyboard_arrow_up),
-                  //     ),
-                  //   ),
-                  //   decoratorProps: DropDownDecoratorProps(
-                  //     decoration: InputDecoration(
-                  //         contentPadding: const EdgeInsets.all(15),
-                  //         filled: true,
-                  //         fillColor: Colors.white,
-                  //         border: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.circular(16),
-                  //           borderSide: const BorderSide(
-                  //             color: Colors.black26,
-                  //             width: 2,
-                  //           ),
-                  //         ),
-                  //         hintText: 'pilih negara',
-                  //         hintStyle: textFieldStyle),
-                  //   ),
-                  //   popupProps: PopupProps.menu(
-                  //     itemBuilder:
-                  //         (context, item, isDisabled, isSelected) {
-                  //       return Padding(
-                  //         padding: const EdgeInsets.all(15),
-                  //         child: Text(
-                  //           item,
-                  //           style: textFieldStyle,
-                  //           textAlign: TextAlign.center,
-                  //         ),
-                  //       );
-                  //     },
-                  //     constraints: const BoxConstraints(maxHeight: 160),
-                  //     menuProps: const MenuProps(
-                  //       margin: EdgeInsets.only(top: 12),
-                  //       shape: RoundedRectangleBorder(
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(12))),
-                  //     ),
-                  //   ),
-                  //   onChanged: (country) {
-                  //     controller.setCountry(country ?? '');
-                  //   },
-                  //   selectedItem: controller.selectedCountry.value,
-                  // ),
                 ],
               ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 54,
-              child: ElevatedButton(
-                onPressed: () {
-                  _controller.editProfile();
-                  Get.offAllNamed(Routes.NAVIGATION_BAR,
-                      arguments: {"indexPage": 3});
-                },
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(primaryColor),
-                  foregroundColor: WidgetStatePropertyAll(whiteColor),
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.editProfile();
+                    Get.offAllNamed(Routes.NAVIGATION_BAR,
+                        arguments: {"indexPage": 3});
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(primaryColor),
+                    foregroundColor: WidgetStatePropertyAll(whiteColor),
+                  ),
+                  child: const Text('Save'),
                 ),
-                child: const Text('Save'),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

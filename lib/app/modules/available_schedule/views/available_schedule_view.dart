@@ -82,7 +82,7 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                               children: [
                                 Obx(() => Text(
                                     "${controller.startDate.value != null ? controller.formatDate(controller.startDate.value!) : 'Select Date'}",
-                                    style: h3Regular)),
+                                    style: h4Regular)),
                                 Icon(
                                   Icons.keyboard_arrow_down,
                                 )

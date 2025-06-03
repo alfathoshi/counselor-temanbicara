@@ -38,6 +38,12 @@ class ConsultDate extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
+                  DateFormat.MMM().format(date),
+                  style: h5SemiBold.copyWith(
+                    color: black,
+                  ),
+                ),
+                Text(
                   date.day.toString(),
                   style: h3Bold.copyWith(
                     color: black,

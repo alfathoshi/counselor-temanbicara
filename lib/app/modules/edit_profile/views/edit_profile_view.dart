@@ -67,11 +67,11 @@ class EditProfileView extends GetView<EditProfileController> {
                                   'https://qzsrrlobwlisodbasdqi.supabase.co/storage/v1/object/profile/default.png'),
                             );
                           } else {
-                            return ClipOval(
-                              child: Image.network(
-                                controller.profile['profile_url'],
-                                scale: 2,
-                              ),
+                            return CircleAvatar(
+                              radius: 58,
+                              backgroundImage: NetworkImage(
+                                  controller.profile['profile_url']),
+                              backgroundColor: Colors.grey[200],
                             );
                           }
                         }),
@@ -90,7 +90,12 @@ class EditProfileView extends GetView<EditProfileController> {
                           size: 16,
                           color: whiteColor,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          await controller.pickImage();
+                          if (controller.pickedImage.value != null) {
+                            await controller.changeImage();
+                          }
+                        },
                       ),
                     ),
                   ],

@@ -49,33 +49,29 @@ class ProfilePageView extends GetView<ProfilePageController> {
                       CircleAvatar(
                         radius: 60,
                         backgroundColor: border,
-                        child: CircleAvatar(
-                          radius: 58,
-                          backgroundColor: whiteColor,
-                          child: Obx(() {
-                            if (controller.isLoading.value) {
-                              return shimmerLoader(
-                                ClipOval(
-                                  child: Container(
-                                    color: whiteColor,
-                                  ),
+                        child: Obx(() {
+                          if (controller.isLoading.value) {
+                            return shimmerLoader(
+                              ClipOval(
+                                child: Container(
+                                  color: whiteColor,
                                 ),
-                              );
-                            } else if (controller.profile.isEmpty) {
-                              return ClipOval(
-                                child: Image.network(
-                                    'https://qzsrrlobwlisodbasdqi.supabase.co/storage/v1/object/profile/default.png'),
-                              );
-                            } else {
-                              return ClipOval(
-                                child: Image.network(
-                                  controller.profile['profile_url'],
-                                  scale: 2,
-                                ),
-                              );
-                            }
-                          }),
-                        ),
+                              ),
+                            );
+                          } else if (controller.profile.isEmpty) {
+                            return ClipOval(
+                              child: Image.network(
+                                  'https://qzsrrlobwlisodbasdqi.supabase.co/storage/v1/object/profile/default.png'),
+                            );
+                          } else {
+                            return CircleAvatar(
+                              radius: 58,
+                              backgroundImage: NetworkImage(
+                                  controller.profile['profile_url']),
+                              backgroundColor: Colors.grey[200],
+                            );
+                          }
+                        }),
                       ),
                       Container(
                         width: 30,
@@ -90,8 +86,11 @@ class ProfilePageView extends GetView<ProfilePageController> {
                             size: 16,
                             color: whiteColor,
                           ),
-                          onPressed: () {
-                            print(box.read('token'));
+                          onPressed: () async {
+                            await controller.pickImage();
+                            if (controller.pickedImage.value != null) {
+                              await controller.changeImage();
+                            }
                           },
                         ),
                       ),

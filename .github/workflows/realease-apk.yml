@@ -13,7 +13,10 @@ jobs:
     # Nama job yang akan tampil
     name: Build and Release APK
     # Menggunakan mesin virtual Ubuntu (Linux) terbaru dari GitHub
+    
     runs-on: ubuntu-latest
+    permissions: 
+      contents: write
     steps:
       # Langkah 1: Mengunduh kode dari repositori Anda ke mesin virtual
       - name: Checkout repository

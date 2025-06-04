@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatContainer extends StatelessWidget {
-  final int id;
+  final String id;
+  final String time;
   final String? image;
   final String? nama;
   final String? deskripsi;
@@ -16,6 +17,7 @@ class ChatContainer extends StatelessWidget {
     required this.deskripsi,
     required this.image,
     required this.id,
+    required this.time,
   });
 
   @override
@@ -23,10 +25,9 @@ class ChatContainer extends StatelessWidget {
     return InkWell(
       onTap: () {
         Get.toNamed(Routes.CHAT_ROOM,
-            arguments: {'name': nama, 'patient_id': id, 'profile': image});
+            arguments: {'name': nama, 'patient_id': id, 'image': image});
       },
       child: Container(
-        width: 393,
         height: 90,
         decoration: BoxDecoration(
           color: whiteColor,
@@ -35,57 +36,44 @@ class ChatContainer extends StatelessWidget {
                   width: 1.5, color: Colors.grey.withValues(alpha: 0.4))),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 12,
-                    right: 12,
-                  ),
-                  child: CircleAvatar(
-                    radius: 25,
-                    backgroundColor: greyColor,
-                    child: ClipOval(
-                      child: CircleAvatar(
-                        radius: 24,
-                        backgroundColor: whiteColor,
-                        child: Image.network(
-                          image!,
-                          scale: 5,
-                        ),
-                      ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 12,
+                right: 12,
+              ),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundImage: NetworkImage(image!),
+                backgroundColor: Colors.grey[200],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 13, 17, 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      nama!,
+                      style: h6Bold,
                     ),
-                  ),
+                    Text(
+                      deskripsi ?? '...',
+                      style: h7Regular.copyWith(
+                          color: Colors.grey.withValues(alpha: 0.9)),
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 13, 17, 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        nama!,
-                        style: h6Bold,
-                      ),
-                      SizedBox(
-                        width: 210,
-                        child: Text(
-                          deskripsi!,
-                          style: h7Regular.copyWith(
-                              color: Colors.grey.withValues(alpha: 0.9)),
-                          softWrap: true,
-                          overflow: TextOverflow.fade,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
             Text(
-              "08.30",
+              time,
+              overflow: TextOverflow.fade,
               style:
                   h7Regular.copyWith(color: Colors.grey.withValues(alpha: 0.9)),
             )

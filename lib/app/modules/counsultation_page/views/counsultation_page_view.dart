@@ -12,12 +12,11 @@ import '../../../themes/colors.dart';
 import '../controllers/counsultation_page_controller.dart';
 
 class CounsultationPageView extends GetView<CounsultationPageController> {
-  
   const CounsultationPageView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteScheme,
+      backgroundColor: whiteColor,
       appBar: AppBar(
         toolbarHeight: 85,
         backgroundColor: Colors.white,
@@ -69,6 +68,10 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                       decoration: BoxDecoration(
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: border,
+                          width: 1,
+                        ),
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(16.0),

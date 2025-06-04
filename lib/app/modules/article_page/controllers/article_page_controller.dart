@@ -10,7 +10,7 @@ class ArticlePageController extends GetxController {
   var isLoading = false.obs;
   var articleList = [].obs;
   var article = {}.obs;
-  var isLoadingInitial = true.obs;
+  var isLoadingInitial = false.obs;
   var isLoadingMore = false.obs;
   var currentPage = 1.obs;
   var lastPage = 1.obs;
@@ -20,6 +20,7 @@ class ArticlePageController extends GetxController {
 
   Future<void> fetchArticles(
       {required int page, bool isInitialLoad = false}) async {
+        
     if (isInitialLoad) {
       if (isLoadingInitial.value) return;
       isLoadingInitial.value = true;
@@ -90,7 +91,7 @@ class ArticlePageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchArticles(page: currentPage.value, isInitialLoad: true);
+    fetchArticles(page: 1, isInitialLoad: true);
     scrollController.addListener(_scrollListener);
   }
 

@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
+import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../themes/colors.dart';
 import '../../../themes/fonts.dart';
@@ -16,6 +18,14 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
   ConsultationDetailView({super.key});
   @override
   Widget build(BuildContext context) {
+    DateTime formattedDate =
+        DateTime.parse(patient['schedule']['available_date']);
+    DateTime sTime =
+        DateFormat('HH:mm:ss').parse(patient['schedule']['start_time']);
+    DateTime eTime =
+        DateFormat('HH:mm:ss').parse(patient['schedule']['end_time']);
+    String startTime = DateFormat('HH:mm').format(sTime);
+    String endTime = DateFormat('HH:mm').format(eTime);
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -56,27 +66,25 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
             children: [
               Center(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: primaryColor,
+                          color: border,
                           width: 1,
                         ),
                       ),
                       child: CircleAvatar(
                         radius: 48,
                         backgroundColor: Colors.grey.shade300,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.network(patient["user"]['profile_url']),
+                        backgroundImage: NetworkImage(
+                          patient["user"]['profile_url'],
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 16,
-                    ),
+                    szbY16,
                     Text(
                       patient['user']['name'],
                       style: h3Bold,
@@ -85,20 +93,55 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
                       '${controller.calculateAge(patient['user']['birthdate'])} y.o',
                       style: h5Regular,
                     ),
+                    szbY8,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.date_range,
+                          size: 18,
+                          color: font,
+                        ),
+                        szbX8,
+                        Text(DateFormat('d MMMM').format(formattedDate),
+                            style: h6Medium),
+                        szbX16,
+                        const Icon(
+                          Icons.schedule_rounded,
+                          size: 18,
+                          color: font,
+                        ),
+                        szbX8,
+                        Text('$startTime - $endTime', style: h6Medium),
+                      ],
+                    ),
                   ],
                 ),
               ),
               SizedBox(
                 height: 24,
               ),
-              Text(
-                'Problem',
-                style: h3Bold,
+              Container(
+                width: 90,
+                height: 35,
+                decoration: BoxDecoration(
+                    border: Border.all(color: primaryColor, width: 1.5),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Center(
+                  child: Text(
+                    "Problem",
+                    style: h6SemiBold.copyWith(
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
               ),
+              szbY8,
               SizedBox(
-                height: 100,
+                height: 160,
                 width: double.infinity,
                 child: TextField(
+                  style: h6Regular,
                   controller: controller.probController,
                   textAlignVertical: TextAlignVertical.top,
                   keyboardType: TextInputType.text,
@@ -118,18 +161,29 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
                           borderSide: BorderSide(color: border))),
                 ),
               ),
-              SizedBox(
-                height: 16,
+              szbY16,
+              Container(
+                width: 90,
+                height: 35,
+                decoration: BoxDecoration(
+                    border: Border.all(color: primaryColor, width: 1.5),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Center(
+                  child: Text(
+                    "Description",
+                    style: h6SemiBold.copyWith(
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
               ),
-              Text(
-                'Description',
-                style: h3Bold,
-              ),
+              szbY8,
               SizedBox(
-                height: 100,
+                height: 160,
                 width: double.infinity,
                 child: TextField(
                   controller: controller.descController,
+                  style: h6Regular,
                   textAlignVertical: TextAlignVertical.top,
                   keyboardType: TextInputType.text,
                   expands: true,
@@ -148,17 +202,28 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
                           borderSide: BorderSide(color: border))),
                 ),
               ),
-              SizedBox(
-                height: 16,
+              szbY16,
+              Container(
+                width: 90,
+                height: 35,
+                decoration: BoxDecoration(
+                    border: Border.all(color: primaryColor, width: 1.5),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Center(
+                  child: Text(
+                    "Summary",
+                    style: h6SemiBold.copyWith(
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
               ),
-              Text(
-                'Summary',
-                style: h3Bold,
-              ),
+              szbY8,
               SizedBox(
-                height: 100,
+                height: 160,
                 width: double.infinity,
                 child: TextField(
+                  style: h6Regular,
                   controller: controller.sumController,
                   textAlignVertical: TextAlignVertical.top,
                   keyboardType: TextInputType.text,

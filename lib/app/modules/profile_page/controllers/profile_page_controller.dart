@@ -90,6 +90,7 @@ class ProfilePageController extends GetxController {
       fetchProfile();
     } catch (err) {
       isLoading.value = false;
+      print(err);
     } finally {
       isLoading.value = false;
     }

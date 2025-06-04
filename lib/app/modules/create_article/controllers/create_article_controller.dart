@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
+import 'package:counselor_temanbicara/app/themes/colors.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:convert';
 import '../../../config/config.dart';
@@ -21,9 +25,11 @@ class CreateArticleController extends GetxController {
 
   Future<void> submitArticle() async {
     if (title.text.isEmpty || quillController.document.toPlainText().isEmpty) {
-      Get.snackbar('Error', 'Title and Body are required',
-          backgroundColor: Colors.red.withValues(alpha: 0.6),
-          colorText: Colors.white);
+      CustomSnackbar.showSnackbar(
+        title: 'Invalid Data',
+        message: 'Please fill the content',
+        status: false,
+      );
       return;
     }
 
@@ -44,6 +50,17 @@ class CreateArticleController extends GetxController {
           'image',
           pickedImage.value!.path,
         ));
+      } else {
+        final byteData = await rootBundle.load('assets/images/app_icon.png');
+
+        final tempDir = await getTemporaryDirectory();
+        final tempFile = File('${tempDir.path}/default_image.png');
+        await tempFile.writeAsBytes(byteData.buffer.asUint8List());
+
+        request.files.add(await http.MultipartFile.fromPath(
+          'image',
+          tempFile.path,
+        ));
       }
 
       var response = await request.send();
@@ -55,14 +72,30 @@ class CreateArticleController extends GetxController {
         quillController.clear();
 
         pickedImage.value = null;
-        showSuccessDialog(data['message'] ?? 'Article created successfully');
+        CustomSnackbar.showSnackbar(
+          title: 'Yeay!',
+          message: 'Article created',
+          status: true,
+        );
+        Get.offAllNamed(
+          Routes.NAVIGATION_BAR,
+          arguments: {"indexPage": 1},
+        );
       } else {
         Get.back();
-        Get.snackbar('Error', 'Failed to create article');
+        CustomSnackbar.showSnackbar(
+          title: 'Oops!',
+          message: 'No article created',
+          status: false,
+        );
       }
     } catch (e) {
       Get.back();
-      Get.snackbar('Error', 'An error occurred: $e');
+      CustomSnackbar.showSnackbar(
+        title: 'Oops!',
+        message: 'No article created',
+        status: false,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -82,11 +115,10 @@ class CreateArticleController extends GetxController {
       }
 
       if (!status.isGranted) {
-        Get.snackbar(
-          'Permission Denied',
-          'Akses ke galeri ditolak.',
-          backgroundColor: Colors.red.withValues(alpha: 0.6),
-          colorText: Colors.white,
+        CustomSnackbar.showSnackbar(
+          title: 'Oops!',
+          message: 'Permission denied',
+          status: false,
         );
         return;
       }
@@ -97,38 +129,21 @@ class CreateArticleController extends GetxController {
 
       pickedImage.value = File(pickedFile.path);
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Gagal ambil gambar.',
-        backgroundColor: Colors.red.withValues(alpha: 0.6),
-        colorText: Colors.white,
+      CustomSnackbar.showSnackbar(
+        title: 'Oops!',
+        message: 'Can not pick image',
+        status: false,
       );
     }
   }
 
   void showLoadingDialog() {
     Get.dialog(
-      const Center(child: CircularProgressIndicator()),
+      Center(
+          child: CircularProgressIndicator(
+        color: primaryColor,
+      )),
       barrierDismissible: false,
-    );
-  }
-
-  void showSuccessDialog(String message) {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Berhasil'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Get.back();
-              Get.offAllNamed(Routes.NAVIGATION_BAR,
-                  arguments: {"indexPage": 1});
-            },
-            child: const Text('Oke'),
-          ),
-        ],
-      ),
     );
   }
 }

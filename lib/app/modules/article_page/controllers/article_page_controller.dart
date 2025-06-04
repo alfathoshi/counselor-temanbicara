@@ -17,13 +17,12 @@ class ArticlePageController extends GetxController {
   var hasMoreData = true.obs;
   final isFabVisible = true.obs;
 
-
   final ScrollController scrollController = ScrollController();
 
   Future<void> fetchArticles(
       {required int page, bool isInitialLoad = false}) async {
-        
     if (isInitialLoad) {
+      articleList.clear();
       if (isLoadingInitial.value) return;
       isLoadingInitial.value = true;
     } else {
@@ -100,6 +99,8 @@ class ArticlePageController extends GetxController {
   @override
   void onClose() {
     scrollController.removeListener(_scrollListener);
+    article.clear();
+    articleList.clear();
     scrollController.dispose();
     super.onClose();
   }

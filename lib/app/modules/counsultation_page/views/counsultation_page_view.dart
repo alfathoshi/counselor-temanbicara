@@ -34,6 +34,8 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
         centerTitle: true,
       ),
       body: RefreshIndicator(
+        color: primaryColor,
+        backgroundColor: whiteColor,
         onRefresh: () {
           return controller.fetchData();
         },

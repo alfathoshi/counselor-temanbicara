@@ -34,6 +34,7 @@ class ArticlePageView extends GetView<ArticlePageController> {
       body: RefreshIndicator(
         onRefresh: controller.refreshArticles,
         color: primaryColor,
+        backgroundColor: whiteColor,
         child: Obx(() {
           if (controller.isLoadingInitial.value &&
               controller.articleList.isEmpty) {

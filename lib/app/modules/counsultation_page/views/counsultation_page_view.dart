@@ -3,7 +3,6 @@
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,8 +12,8 @@ import '../../../themes/colors.dart';
 import '../controllers/counsultation_page_controller.dart';
 
 class CounsultationPageView extends GetView<CounsultationPageController> {
-  final CounsultationPageController controller =
-      Get.put(CounsultationPageController());
+  
+  const CounsultationPageView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,9 +125,7 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                                 SizedBox(
                                   width: 8,
                                 ),
-                                Text(
-                                    '${DateFormat('d MMMM').format(date)}' ??
-                                        '',
+                                Text(DateFormat('d MMMM').format(date),
                                     style: h6Medium),
                                 szbX16,
                                 Icon(

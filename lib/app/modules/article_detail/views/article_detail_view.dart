@@ -1,19 +1,17 @@
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import '../controllers/article_detail_controller.dart';
 
 class ArticleDetailView extends GetView<ArticleDetailController> {
-  ArticleDetailView({super.key});
+  const ArticleDetailView({super.key});
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();
     final Map<String, dynamic> article = Get.arguments;
-    print(article);
     final DateTime dateTime = DateTime.parse(article['created_at']);
     final String formattedDate = DateFormat('dd MMMM yyyy').format(dateTime);
     return Scaffold(
@@ -44,7 +42,7 @@ class ArticleDetailView extends GetView<ArticleDetailController> {
               children: [
                 Center(
                   child: article['image_url'] == null
-                      ? Text('No Image')
+                      ? const Text('No Image')
                       : Image.network(
                           article['image_url'],
                           height: 221,

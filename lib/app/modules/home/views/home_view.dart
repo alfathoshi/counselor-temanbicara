@@ -2,11 +2,9 @@ import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/client_card.dart';
 import 'package:counselor_temanbicara/app/widgets/consult_date.dart';
 import 'package:counselor_temanbicara/app/widgets/consultation_card.dart';
-import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../routes/app_pages.dart';
 import '../../../themes/colors.dart';
@@ -251,7 +249,6 @@ class HomeView extends GetView<HomeController> {
                                     }),
                               ),
                             );
-                            ;
                           } else if (controller.consult.consultList.isEmpty) {
                             return const Center(
                               child: Text("No Data Available"),

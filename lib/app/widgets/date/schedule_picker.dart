@@ -33,7 +33,7 @@ class SchedulePicker {
           onSurface: Colors.black,
         ),
       ),
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
     );
     controller.startDate.value = dateTime!;
     controller.endDate.value = dateTime;
@@ -63,7 +63,7 @@ class SchedulePicker {
             surface: Colors.white,
           ),
         ),
-        padding: EdgeInsets.all(16));
+        padding: const EdgeInsets.all(16));
     controller.selectedTime.value = TimeOfDay.fromDateTime(dateTime!);
   }
 

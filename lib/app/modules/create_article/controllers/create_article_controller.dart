@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
-import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get.dart';
@@ -58,7 +57,6 @@ class CreateArticleController extends GetxController {
         pickedImage.value = null;
         showSuccessDialog(data['message'] ?? 'Article created successfully');
       } else {
-        print(data['message']);
         Get.back();
         Get.snackbar('Error', 'Failed to create article');
       }
@@ -87,7 +85,7 @@ class CreateArticleController extends GetxController {
         Get.snackbar(
           'Permission Denied',
           'Akses ke galeri ditolak.',
-          backgroundColor: Colors.red.withOpacity(0.6),
+          backgroundColor: Colors.red.withValues(alpha: 0.6),
           colorText: Colors.white,
         );
         return;
@@ -99,11 +97,10 @@ class CreateArticleController extends GetxController {
 
       pickedImage.value = File(pickedFile.path);
     } catch (e) {
-      print('Error pickImage: $e');
       Get.snackbar(
         'Error',
         'Gagal ambil gambar.',
-        backgroundColor: Colors.red.withOpacity(0.6),
+        backgroundColor: Colors.red.withValues(alpha: 0.6),
         colorText: Colors.white,
       );
     }
@@ -133,20 +130,5 @@ class CreateArticleController extends GetxController {
         ],
       ),
     );
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }

@@ -19,7 +19,6 @@ class ChangePasswordController extends GetxController {
     isLoading.value = true;
 
     try {
-      final userId = box.read('id');
       final token = box.read('token');
 
       final response = await http.patch(
@@ -43,14 +42,14 @@ class ChangePasswordController extends GetxController {
           Get.snackbar(
             'Success',
             'Password has changed successfully',
-            backgroundColor: primaryColor.withOpacity(0.6),
+            backgroundColor: primaryColor.withValues(alpha: 0.6),
             colorText: whiteColor,
           );
         } else {
           Get.snackbar(
             'Error',
             responseData['message'] ?? 'Failed to update password 1',
-            backgroundColor: error.withOpacity(0.6),
+            backgroundColor: error.withValues(alpha: 0.6),
             colorText: whiteColor,
           );
         }
@@ -58,16 +57,15 @@ class ChangePasswordController extends GetxController {
         Get.snackbar(
           'Error',
           'Failed to update password.',
-          backgroundColor: error.withOpacity(0.6),
+          backgroundColor: error.withValues(alpha: 0.6),
           colorText: whiteColor,
         );
       }
     } catch (e) {
-      print(e);
       Get.snackbar(
         'Error',
         'An error occurred: $e',
-        backgroundColor: error.withOpacity(0.6),
+        backgroundColor: error.withValues(alpha: 0.6),
         colorText: whiteColor,
       );
     } finally {

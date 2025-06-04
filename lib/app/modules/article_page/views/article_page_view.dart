@@ -1,8 +1,6 @@
-import 'package:counselor_temanbicara/app/modules/article_detail/views/article_detail_view.dart';
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
-import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/article_card.dart';
 import 'package:flutter/material.dart';
 
@@ -88,7 +86,7 @@ class ArticlePageView extends GetView<ArticlePageController> {
               ),
               if (controller.isLoadingMore.value)
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Center(
                     child: CircularProgressIndicator(color: primaryColor),
                   ),

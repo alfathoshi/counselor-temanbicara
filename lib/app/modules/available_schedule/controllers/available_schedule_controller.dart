@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:counselor_temanbicara/app/modules/counsultation_page/controllers/counsultation_page_controller.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -55,8 +53,6 @@ class AvailableScheduleController extends GetxController {
   Future<void> fetchSchedules() async {
     isLoading.value = true;
     try {
-      final userId = box.read('id');
-      print(userId);
       final token = box.read('token');
 
       var response = await http.get(
@@ -73,17 +69,17 @@ class AvailableScheduleController extends GetxController {
           loadScheduleEventsFromApi();
         } else {
           Get.snackbar('Error', data['message'],
-              backgroundColor: Colors.red.withOpacity(0.6),
+              backgroundColor: Colors.red.withValues(alpha: 0.6),
               colorText: Colors.white);
         }
       } else {
         Get.snackbar('Error', 'Failed to fetch schedules.',
-            backgroundColor: Colors.red.withOpacity(0.6),
+            backgroundColor: Colors.red.withValues(alpha: 0.6),
             colorText: Colors.white);
       }
     } catch (e) {
       Get.snackbar('Error', 'Something went wrong: $e',
-          backgroundColor: Colors.red.withOpacity(0.6),
+          backgroundColor: Colors.red.withValues(alpha: 0.6),
           colorText: Colors.white);
     } finally {
       isLoading.value = false;
@@ -95,11 +91,12 @@ class AvailableScheduleController extends GetxController {
     final selectedTime = this.selectedTime.value;
     final duration = selectedDuration.value;
 
+    // ignore: unnecessary_null_comparison
     if (selectedDate == null || selectedTime == null || duration == null) {
       Get.snackbar(
         'Error',
         'Please select date, time, and duration.',
-        backgroundColor: Colors.red.withOpacity(0.6),
+        backgroundColor: Colors.red.withValues(alpha: 0.6),
         colorText: Colors.white,
       );
       return;
@@ -141,8 +138,6 @@ class AvailableScheduleController extends GetxController {
         }),
       );
 
-      print(response.body);
-
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 
@@ -150,17 +145,17 @@ class AvailableScheduleController extends GetxController {
           Get.snackbar(
             'Success',
             'Schedule created successfully.',
-            backgroundColor: Colors.green.withOpacity(0.6),
+            backgroundColor: Colors.green.withValues(alpha: 0.6),
             colorText: Colors.white,
           );
 
-          await fetchSchedules(); // panggil dari dalam controller sendiri
-          Get.back(); // balik ke page sebelumnya
+          await fetchSchedules();
+          Get.back();
         } else {
           Get.snackbar(
             'Error',
             data['message'],
-            backgroundColor: Colors.red.withOpacity(0.6),
+            backgroundColor: Colors.red.withValues(alpha: 0.6),
             colorText: Colors.white,
           );
         }
@@ -168,7 +163,7 @@ class AvailableScheduleController extends GetxController {
         Get.snackbar(
           'Error',
           'Failed to create schedule.',
-          backgroundColor: Colors.red.withOpacity(0.6),
+          backgroundColor: Colors.red.withValues(alpha: 0.6),
           colorText: Colors.white,
         );
       }
@@ -176,7 +171,7 @@ class AvailableScheduleController extends GetxController {
       Get.snackbar(
         'Error',
         'Something went wrong: $e',
-        backgroundColor: Colors.red.withOpacity(0.6),
+        backgroundColor: Colors.red.withValues(alpha: 0.6),
         colorText: Colors.white,
       );
     } finally {

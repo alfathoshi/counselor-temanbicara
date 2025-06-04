@@ -1,10 +1,8 @@
-import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import '../controllers/create_article_controller.dart';
 
 class CreateArticleView extends GetView<CreateArticleController> {
@@ -48,7 +46,7 @@ class CreateArticleView extends GetView<CreateArticleController> {
             child: Stack(
               children: [
                 if (controller.isLoading.value)
-                  Center(child: CircularProgressIndicator()),
+                  const Center(child: CircularProgressIndicator()),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

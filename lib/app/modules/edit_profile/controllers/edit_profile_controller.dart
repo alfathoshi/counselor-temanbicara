@@ -64,14 +64,14 @@ class EditProfileController extends GetxController {
           Get.snackbar(
             'Success',
             'Profile updated',
-            backgroundColor: primaryColor.withOpacity(0.6),
+            backgroundColor: primaryColor.withValues(alpha: 0.6),
             colorText: whiteColor,
           );
         } else {
           Get.snackbar(
             'Error',
             responseData['message'] ?? 'Failed to update profile',
-            backgroundColor: error.withOpacity(0.6),
+            backgroundColor: error.withValues(alpha: 0.6),
             colorText: whiteColor,
           );
         }
@@ -79,7 +79,7 @@ class EditProfileController extends GetxController {
         Get.snackbar(
           'Error',
           'Failed to update profile.',
-          backgroundColor: error.withOpacity(0.6),
+          backgroundColor: error.withValues(alpha: 0.6),
           colorText: whiteColor,
         );
       }
@@ -87,7 +87,7 @@ class EditProfileController extends GetxController {
       Get.snackbar(
         'Error',
         'An error occurred: $e',
-        backgroundColor: error.withOpacity(0.6),
+        backgroundColor: error.withValues(alpha: 0.6),
         colorText: whiteColor,
       );
     } finally {
@@ -194,7 +194,7 @@ class EditProfileController extends GetxController {
         Get.snackbar(
           'Permission Denied',
           'Akses ke galeri ditolak.',
-          backgroundColor: error.withOpacity(0.6),
+          backgroundColor: error.withValues(alpha: 0.6),
           colorText: whiteColor,
         );
         return;
@@ -206,11 +206,10 @@ class EditProfileController extends GetxController {
 
       pickedImage.value = File(pickedFile.path);
     } catch (e) {
-      print('Error pickImage: $e');
       Get.snackbar(
         'Error',
         'Gagal ambil gambar.',
-        backgroundColor: error.withOpacity(0.6),
+        backgroundColor: error.withValues(alpha: 0.6),
         colorText: whiteColor,
       );
     }

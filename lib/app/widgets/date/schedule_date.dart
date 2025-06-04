@@ -1,6 +1,5 @@
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
-import 'package:counselor_temanbicara/app/widgets/date/flexible_date_picker.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,10 +18,10 @@ class ScheduleDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime _currentMonth = DateTime.now();
+    DateTime currentMonth = DateTime.now();
     return EasyDateTimeLinePicker.itemBuilder(
-      firstDate: _getFirstDayOfMonth(_currentMonth),
-      lastDate: _getLastDayOfMonth(_currentMonth),
+      firstDate: _getFirstDayOfMonth(currentMonth),
+      lastDate: _getLastDayOfMonth(currentMonth),
       focusedDate: focusedDate,
       itemExtent: 64.0,
       onDateChange: onDateSelected,
@@ -31,7 +30,7 @@ class ScheduleDate extends StatelessWidget {
           color: primaryColor,
           fontWeight: FontWeight.bold,
         ),
-        cancelTextStyle: TextStyle(
+        cancelTextStyle: const TextStyle(
           color: Colors.grey,
         ),
         builder: (context, child) {
@@ -59,7 +58,8 @@ class ScheduleDate extends StatelessWidget {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: isSelected ? primaryColor.withOpacity(0.2) : whiteColor,
+              color:
+                  isSelected ? primaryColor.withValues(alpha: 0.2) : whiteColor,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(

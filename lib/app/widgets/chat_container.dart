@@ -2,7 +2,6 @@ import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ChatContainer extends StatelessWidget {
@@ -32,8 +31,8 @@ class ChatContainer extends StatelessWidget {
         decoration: BoxDecoration(
           color: whiteColor,
           border: Border(
-              bottom:
-                  BorderSide(width: 1.5, color: Colors.grey.withOpacity(0.4))),
+              bottom: BorderSide(
+                  width: 1.5, color: Colors.grey.withValues(alpha: 0.4))),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -70,12 +69,12 @@ class ChatContainer extends StatelessWidget {
                         nama!,
                         style: h6Bold,
                       ),
-                      Container(
+                      SizedBox(
                         width: 210,
                         child: Text(
                           deskripsi!,
                           style: h7Regular.copyWith(
-                              color: Colors.grey.withOpacity(0.9)),
+                              color: Colors.grey.withValues(alpha: 0.9)),
                           softWrap: true,
                           overflow: TextOverflow.fade,
                         ),
@@ -87,7 +86,8 @@ class ChatContainer extends StatelessWidget {
             ),
             Text(
               "08.30",
-              style: h7Regular.copyWith(color: Colors.grey.withOpacity(0.9)),
+              style:
+                  h7Regular.copyWith(color: Colors.grey.withValues(alpha: 0.9)),
             )
           ],
         ),

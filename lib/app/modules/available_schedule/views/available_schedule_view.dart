@@ -1,4 +1,5 @@
-import 'package:counselor_temanbicara/app/routes/app_pages.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:counselor_temanbicara/app/modules/available_schedule/controllers/available_schedule_controller.dart';
@@ -10,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class AvailableScheduleView extends GetView<AvailableScheduleController> {
   const AvailableScheduleView({super.key});
@@ -119,9 +119,10 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                           children: [
                             Text(
                               duration.toString(),
-                              style: h5SemiBold.copyWith(color: grey3Color),
+                              style: h5Bold,
                             ),
-                            Text('min', style: h6Regular),
+                            Text('min',
+                                style: h6Regular.copyWith(color: greyColor)),
                           ],
                         ),
                         title: Text(

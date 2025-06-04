@@ -5,14 +5,16 @@ import 'package:get/get.dart';
 import '../controllers/signup_page_controller.dart';
 
 class SignupPageView extends GetView<SignupPageController> {
+  const SignupPageView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SignupPageView'),
+        title: const Text('SignupPageView'),
         centerTitle: true,
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'SignupPageView is working',
           style: TextStyle(fontSize: 20),

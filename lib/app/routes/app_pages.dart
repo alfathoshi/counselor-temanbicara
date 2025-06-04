@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:get/get.dart';
 
 import '../modules/article_detail/bindings/article_detail_binding.dart';
@@ -45,7 +47,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () => HomeView(),
+      page: () => const HomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -55,7 +57,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PROFILE_PAGE,
-      page: () => ProfilePageView(),
+      page: () => const ProfilePageView(),
       binding: ProfilePageBinding(),
     ),
     GetPage(
@@ -65,22 +67,22 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ARTICLE_PAGE,
-      page: () => ArticlePageView(),
+      page: () => const ArticlePageView(),
       binding: ArticlePageBinding(),
     ),
     GetPage(
       name: _Paths.COUNSULTATION_PAGE,
-      page: () => CounsultationPageView(),
+      page: () => const CounsultationPageView(),
       binding: CounsultationPageBinding(),
     ),
     GetPage(
       name: _Paths.SIGNIN_PAGE,
-      page: () => SigninPageView(),
+      page: () => const SigninPageView(),
       binding: SigninPageBinding(),
     ),
     GetPage(
       name: _Paths.SIGNUP_PAGE,
-      page: () => SignupPageView(),
+      page: () => const SignupPageView(),
       binding: SignupPageBinding(),
     ),
     GetPage(
@@ -90,12 +92,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ARTICLE_DETAIL,
-      page: () => ArticleDetailView(),
+      page: () => const ArticleDetailView(),
       binding: ArticleDetailBinding(),
     ),
     GetPage(
       name: _Paths.AVAILABLE_SCHEDULE,
-      page: () => AvailableScheduleView(),
+      page: () => const AvailableScheduleView(),
       binding: AvailableScheduleBinding(),
     ),
     GetPage(
@@ -120,7 +122,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EDIT_PROFILE,
-      page: () => EditProfileView(),
+      page: () => const EditProfileView(),
       binding: EditProfileBinding(),
     ),
     GetPage(

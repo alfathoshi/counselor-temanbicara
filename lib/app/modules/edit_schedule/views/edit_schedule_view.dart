@@ -1,24 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:counselor_temanbicara/app/widgets/date/schedule_picker.dart';
 import 'package:counselor_temanbicara/app/widgets/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
-    as picker;
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
-
 import '../../../themes/colors.dart';
 import '../../../themes/fonts.dart';
 import '../controllers/edit_schedule_controller.dart';
 
 class EditScheduleView extends GetView<EditScheduleController> {
-  const EditScheduleView({Key? key}) : super(key: key);
+  const EditScheduleView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    void _pickDate(BuildContext context) async {
+    void pickDate(BuildContext context) async {
       DateTime? dateTime = await showOmniDateTimePicker(
         context: context,
         initialDate: DateTime.now().add(const Duration(days: 1)),
@@ -42,7 +38,7 @@ class EditScheduleView extends GetView<EditScheduleController> {
       controller.selectedDate.value = dateTime;
     }
 
-    void _pickTime(BuildContext context) async {
+    void pickTime(BuildContext context) async {
       DateTime? dateTime = await showOmniDateTimePicker(
         context: context,
         initialDate: DateTime.now().add(const Duration(days: 1)),
@@ -92,7 +88,7 @@ class EditScheduleView extends GetView<EditScheduleController> {
             const Text('Date'),
             const SizedBox(height: 8),
             InkWell(
-              onTap: () => _pickDate(context),
+              onTap: () => pickDate(context),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
@@ -114,7 +110,7 @@ class EditScheduleView extends GetView<EditScheduleController> {
             const Text('Time'),
             const SizedBox(height: 8),
             InkWell(
-              onTap: () => _pickTime(context),
+              onTap: () => pickTime(context),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 12),

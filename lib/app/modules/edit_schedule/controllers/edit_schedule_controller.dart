@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:counselor_temanbicara/app/config/config.dart';
 import 'package:counselor_temanbicara/app/modules/available_schedule/controllers/available_schedule_controller.dart';
-import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -24,7 +22,7 @@ class EditScheduleController extends GetxController {
   Future<void> createSchedule() async {
     if (startDate.value == null || endDate.value == null) {
       Get.snackbar('Error', 'Please select start and end dates.',
-          backgroundColor: Colors.red.withOpacity(0.6),
+          backgroundColor: Colors.red.withValues(alpha: 0.6),
           colorText: Colors.white);
       return;
     }
@@ -53,30 +51,28 @@ class EditScheduleController extends GetxController {
         }),
       );
 
-      print(response.body);
-
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 
         if (data['status']) {
           Get.snackbar('Success', 'Schedule created successfully.',
-              backgroundColor: Colors.green.withOpacity(0.6),
+              backgroundColor: Colors.green.withValues(alpha: 0.6),
               colorText: Colors.white);
           await AvailableScheduleController().fetchSchedules();
           Get.back();
         } else {
           Get.snackbar('Error', data['message'],
-              backgroundColor: Colors.red.withOpacity(0.6),
+              backgroundColor: Colors.red.withValues(alpha: 0.6),
               colorText: Colors.white);
         }
       } else {
         Get.snackbar('Error', 'Failed to create schedule.',
-            backgroundColor: Colors.red.withOpacity(0.6),
+            backgroundColor: Colors.red.withValues(alpha: 0.6),
             colorText: Colors.white);
       }
     } catch (e) {
       Get.snackbar('Error', 'Something went wrong: $e',
-          backgroundColor: Colors.red.withOpacity(0.6),
+          backgroundColor: Colors.red.withValues(alpha: 0.6),
           colorText: Colors.white);
     } finally {
       isLoading.value = false;

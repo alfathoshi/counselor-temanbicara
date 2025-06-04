@@ -1,7 +1,6 @@
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
-import 'package:counselor_temanbicara/app/widgets/buttons/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
@@ -110,7 +109,7 @@ class ClientCard extends StatelessWidget {
                         style: h6Regular,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       children: [
                         Container(
@@ -131,7 +130,7 @@ class ClientCard extends StatelessWidget {
                                   color:
                                       status == 'Done' ? primaryColor : warning,
                                   size: 24),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Text(
                                 status == 'Done' ? 'Reviewed' : 'Pending',
                                 style: TextStyle(
@@ -145,10 +144,10 @@ class ClientCard extends StatelessWidget {
                           ),
                         ),
                         szbX8,
-                        Spacer(),
+                        const Spacer(),
                         note.isNotEmpty && note != '-'
-                            ? SizedBox.shrink()
-                            : Expanded(
+                            ? const SizedBox.shrink()
+                            : const Expanded(
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [

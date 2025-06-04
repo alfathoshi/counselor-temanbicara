@@ -1,8 +1,6 @@
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/widgets/buttons/rounded_button.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
@@ -39,7 +37,7 @@ class ConsultationCard extends StatelessWidget {
     String start = DateFormat('HH:mm').format(sTime);
     String end = DateFormat('HH:mm').format(eTime);
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFFF2F5EB),
         borderRadius: BorderRadius.circular(16),
@@ -107,7 +105,7 @@ class ConsultationCard extends StatelessWidget {
               )
             ],
           ),
-          Spacer(),
+          const Spacer(),
           RoundedButton(
             height: 30,
             width: 120,

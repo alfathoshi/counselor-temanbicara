@@ -10,9 +10,10 @@ import '../../../themes/fonts.dart';
 import '../controllers/consultation_detail_controller.dart';
 
 class ConsultationDetailView extends GetView<ConsultationDetailController> {
-  ConsultationDetailView({Key? key}) : super(key: key);
   final bool status = false;
   final Map<String, dynamic> patient = Get.arguments;
+
+  ConsultationDetailView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

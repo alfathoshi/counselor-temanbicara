@@ -112,7 +112,7 @@ class ProfilePageController extends GetxController {
         Get.snackbar(
           'Permission Denied',
           'Akses ke galeri ditolak.',
-          backgroundColor: error.withOpacity(0.6),
+          backgroundColor: error.withValues(alpha: 0.6),
           colorText: whiteColor,
         );
         return;
@@ -124,11 +124,10 @@ class ProfilePageController extends GetxController {
 
       pickedImage.value = File(pickedFile.path);
     } catch (e) {
-      print('Error pickImage: $e');
       Get.snackbar(
         'Error',
         'Gagal ambil gambar.',
-        backgroundColor: error.withOpacity(0.6),
+        backgroundColor: error.withValues(alpha: 0.6),
         colorText: whiteColor,
       );
     }

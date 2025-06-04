@@ -66,7 +66,7 @@ class SigninPageController extends GetxController {
           Get.snackbar(
             'Success',
             'Login berhasil',
-            backgroundColor: primaryColor.withOpacity(0.6),
+            backgroundColor: primaryColor.withValues(alpha: 0.6),
             colorText: Colors.white,
           );
           Get.offAllNamed(
@@ -77,13 +77,14 @@ class SigninPageController extends GetxController {
           Get.snackbar(
             'Gagal',
             'Akun tidak terdaftar',
-            backgroundColor: error.withOpacity(0.6),
+            backgroundColor: error.withValues(alpha: 0.6),
             colorText: Colors.white,
           );
         }
       } else {
         Get.snackbar('Error', data['message'],
-            backgroundColor: error.withOpacity(0.6), colorText: whiteColor);
+            backgroundColor: error.withValues(alpha: 0.6),
+            colorText: whiteColor);
       }
     } catch (e) {
       Get.snackbar('Error', 'Something went wrong: $e');

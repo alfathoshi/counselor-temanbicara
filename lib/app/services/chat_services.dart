@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:counselor_temanbicara/app/data/message.dart';
 import 'package:counselor_temanbicara/app/services/fcm_service.dart';
-import 'package:counselor_temanbicara/app/themes/colors.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class ChatService {
@@ -45,8 +43,6 @@ class ChatService {
           body: message,
         );
       }
-    } else {
-      print('FCM tokens gak ditemukan atau kosong');
     }
   }
 

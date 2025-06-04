@@ -30,10 +30,10 @@ class ConsultationDetailController extends GetxController {
   }
 
   Future<Map<String, dynamic>> updateReport() async {
-    final consultation_id = box.read('consultation_id');
+    final consultationId = box.read('consultation_id');
     final token = box.read('token');
     final response = await http.put(
-      Uri.parse('${Config.apiEndPoint}/consultation/$consultation_id'),
+      Uri.parse('${Config.apiEndPoint}/consultation/$consultationId'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ class ConsultationDetailController extends GetxController {
       Get.snackbar(
         "Success",
         "Consultation Report has been send",
-        backgroundColor: primaryColor.withOpacity(0.6),
+        backgroundColor: primaryColor.withValues(alpha: 0.6),
         colorText: whiteColor,
       );
       return json.decode(response.body);
@@ -60,7 +60,6 @@ class ConsultationDetailController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     descController.text = arg['description'];
     probController.text = arg['problem'];

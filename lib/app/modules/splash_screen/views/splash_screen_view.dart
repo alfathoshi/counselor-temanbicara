@@ -11,6 +11,8 @@ import '../controllers/splash_screen_controller.dart';
 
 class SplashScreenView extends GetView<SplashScreenController> {
   final box = GetStorage();
+
+  SplashScreenView({super.key});
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3)).then((value) {

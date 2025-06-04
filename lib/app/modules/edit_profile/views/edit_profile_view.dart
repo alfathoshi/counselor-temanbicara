@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:counselor_temanbicara/app/modules/home/views/home_view.dart';
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
@@ -7,14 +5,11 @@ import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/custom_datepicker.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
 import '../controllers/edit_profile_controller.dart';
 
 class EditProfileView extends GetView<EditProfileController> {
-  EditProfileView({super.key});
+  const EditProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {

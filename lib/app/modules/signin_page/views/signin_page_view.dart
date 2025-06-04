@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../controllers/signin_page_controller.dart';
 
 class SigninPageView extends GetView<SigninPageController> {
+  const SigninPageView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

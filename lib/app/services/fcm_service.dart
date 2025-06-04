@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:googleapis_auth/auth_io.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 
 class FCMService {
@@ -23,7 +21,7 @@ class FCMService {
     final url = Uri.parse(
         'https://fcm.googleapis.com/v1/projects/$projectId/messages:send');
 
-    final response = await authClient.post(
+    await authClient.post(
       url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
@@ -41,9 +39,5 @@ class FCMService {
         },
       }),
     );
-
-    print('token $targetToken');
-    print('FCM response: ${response.statusCode}');
-    print('FCM body: ${response.body}');
   }
 }

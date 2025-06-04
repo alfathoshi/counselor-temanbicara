@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:counselor_temanbicara/app/services/chat_services.dart';
 import 'package:counselor_temanbicara/app/services/notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -27,14 +26,12 @@ class ChatController extends GetxController {
 
       return json.decode(response.body);
     } else {
-      print(response.body);
       throw Exception('Failed to load chat');
     }
   }
 
   void _initFirebaseListener() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("FCM diterima: ${message.notification?.title}");
       NotificationService.showNotification(message);
     });
   }
@@ -45,18 +42,5 @@ class ChatController extends GetxController {
     super.onInit();
     _initFirebaseListener();
     fetchData();
-    print(listChat);
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

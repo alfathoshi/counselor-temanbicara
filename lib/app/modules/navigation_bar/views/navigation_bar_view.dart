@@ -1,11 +1,6 @@
-import 'package:counselor_temanbicara/app/modules/article_page/controllers/article_page_controller.dart';
 import 'package:counselor_temanbicara/app/modules/article_page/views/article_page_view.dart';
-import 'package:counselor_temanbicara/app/modules/counsultation_page/controllers/counsultation_page_controller.dart';
 import 'package:counselor_temanbicara/app/modules/counsultation_page/views/counsultation_page_view.dart';
-import 'package:counselor_temanbicara/app/modules/home/controllers/home_controller.dart';
-import 'package:counselor_temanbicara/app/modules/profile_page/controllers/profile_page_controller.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../themes/colors.dart';
@@ -16,10 +11,10 @@ import '../controllers/navigation_bar_controller.dart';
 
 class NavigationBarView extends GetView<NavigationBarController> {
   final List<Widget> _pages = [
-    HomeView(),
-    ArticlePageView(),
-    CounsultationPageView(),
-    ProfilePageView(),
+    const HomeView(),
+    const ArticlePageView(),
+    const CounsultationPageView(),
+    const ProfilePageView(),
   ];
 
   NavigationBarView({super.key});

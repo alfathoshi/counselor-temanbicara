@@ -3,6 +3,7 @@ import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
+import 'package:counselor_temanbicara/app/widgets/article_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -16,7 +17,7 @@ class ArticlePageView extends GetView<ArticlePageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteScheme,
+      backgroundColor: whiteColor,
       appBar: AppBar(
         toolbarHeight: 85,
         backgroundColor: Colors.white,
@@ -47,119 +48,64 @@ class ArticlePageView extends GetView<ArticlePageController> {
               child: Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Text(
-                  'Tidak ada artikel tersedia saat ini.',
+                  'No articles yet',
                   style: h6Regular,
                   textAlign: TextAlign.center,
                 ),
               ),
             );
           }
-          return ListView.builder(
+          return ListView(
             controller: controller.scrollController,
-            itemCount: controller.articleList.length +
-                (controller.isLoadingMore.value ? 1 : 0) +
-                (!controller.hasMoreData.value &&
-                        controller.articleList.isNotEmpty &&
-                        !controller.isLoadingMore.value
-                    ? 1
-                    : 0),
-            itemBuilder: (context, index) {
-              if (index == controller.articleList.length &&
-                  controller.isLoadingMore.value) {
-                return Padding(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                child: Text(
+                  'You have created ${controller.article['total']} articles',
+                  style: h5SemiBold,
+                ),
+              ),
+              ...List.generate(
+                controller.articleList.length,
+                (index) {
+                  final articleItem = controller.articleList[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.ARTICLE_DETAIL,
+                          arguments: articleItem);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: ArticleCard(
+                        title: articleItem['title'],
+                        content: articleItem['content'],
+                        status: articleItem['status'],
+                        createAt: articleItem['created_at'],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              if (controller.isLoadingMore.value)
+                Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Center(
-                      child: CircularProgressIndicator(color: primaryColor)),
-                );
-              }
-              if (index == controller.articleList.length &&
-                  !controller.hasMoreData.value &&
-                  !controller.isLoadingMore.value) {
-                return Padding(
+                    child: CircularProgressIndicator(color: primaryColor),
+                  ),
+                ),
+              if (!controller.hasMoreData.value &&
+                  controller.articleList.isNotEmpty &&
+                  !controller.isLoadingMore.value)
+                Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                   child: Center(
-                    child: Text("Semua artikel sudah ditampilkan.",
-                        style: h7Regular.copyWith(color: greyColor)),
-                  ),
-                );
-              }
-              if (index >= controller.articleList.length) {
-                return const SizedBox.shrink();
-              }
-              final articleItem = controller.articleList[index];
-
-              return GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.ARTICLE_DETAIL, arguments: articleItem);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Card(
-                    color: whiteColor,
-                    child: ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              articleItem["title"] ?? '',
-                              style: h4Medium,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          szbX8,
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: articleItem['status'] == 'Published'
-                                  ? primaryColor.withValues(alpha: 0.1)
-                                  : warning.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                    articleItem['status'] == 'Published'
-                                        ? Icons.check_circle
-                                        : Icons.pending_actions,
-                                    color: articleItem['status'] == 'Published'
-                                        ? primaryColor
-                                        : warning,
-                                    size: 24),
-                                SizedBox(width: 8),
-                                Text(
-                                  articleItem['status'] == 'Published'
-                                      ? 'Published'
-                                      : 'On Review',
-                                  style: TextStyle(
-                                    color: articleItem['status'] == 'Published'
-                                        ? primaryColor
-                                        : warning,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Text(
-                          articleItem["content"] ?? '',
-                          style: h6Regular,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                    child: Text(
+                      "All articles are displayed",
+                      style: h7Regular.copyWith(color: greyColor),
                     ),
                   ),
                 ),
-              );
-            },
+            ],
           );
         }),
       ),

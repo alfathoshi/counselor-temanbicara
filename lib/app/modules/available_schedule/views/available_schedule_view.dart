@@ -1,228 +1,160 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
+import 'package:counselor_temanbicara/app/themes/fonts.dart';
+import 'package:counselor_temanbicara/app/modules/available_schedule/controllers/available_schedule_controller.dart';
+import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
+import 'package:counselor_temanbicara/app/widgets/date/schedule_date.dart';
+import 'package:counselor_temanbicara/app/widgets/date/schedule_picker.dart';
+import 'package:counselor_temanbicara/app/widgets/status_chip.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
-import '../../../themes/fonts.dart';
-import '../controllers/available_schedule_controller.dart';
-
 class AvailableScheduleView extends GetView<AvailableScheduleController> {
-  AvailableScheduleView({Key? key}) : super(key: key);
-  List<DateTime>? dateTime;
+  const AvailableScheduleView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    print(controller.scheduleList);
+    SchedulePicker picker = SchedulePicker();
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
         toolbarHeight: 85,
         backgroundColor: Colors.white,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(24),
-              bottomRight: Radius.circular(24),
-            ),
-            side: BorderSide(color: Colors.black12)),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(24),
+            bottomRight: Radius.circular(24),
+          ),
+          side: BorderSide(color: Colors.black12),
+        ),
         title: Text(
           'Available Schedules',
           style: h3Bold,
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      body: RefreshIndicator(
+        color: primaryColor,
+        backgroundColor: whiteColor,
+        onRefresh: () async {
+          await Future.wait([controller.fetchSchedules()]);
+        },
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(
+                child: CircularProgressIndicator(
+              color: primaryColor,
+              backgroundColor: whiteColor,
+            ));
+          } else if (controller.scheduleList.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/schedule.png', scale: 2),
+                  const SizedBox(height: 8),
+                  Text('No Schedule', style: h4Bold),
+                  Text('There are no schedules', style: h6Medium),
+                ],
+              ),
+            );
+          }
+
+          final selectedDate = controller.selectedDate.value;
+
+          final filteredSchedule = controller.scheduleList.firstWhereOrNull(
+            (schedule) =>
+                DateFormat('yyyy-MM-dd')
+                    .format(DateTime.parse(schedule['date'])) ==
+                DateFormat('yyyy-MM-dd').format(selectedDate),
+          );
+
+          return ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x4B4B4B26),
-                      blurRadius: 16,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          dateTime = await showOmniDateTimeRangePicker(
-                              context: context,
-                              isForceEndDateAfterStartDate: true,
-                              is24HourMode: true,
-                              theme: ThemeData());
-                          debugPrint('dateTime: $dateTime');
-                          controller.updateDates(dateTime);
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: primaryColor,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Obx(() => Text(
-                                    "${controller.startDate.value != null ? controller.formatDate(controller.startDate.value!) : 'Select Date'}",
-                                    style: h3Regular)),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Obx(() {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+              ScheduleDate(
+                eventDates: controller.eventDates,
+                onDateSelected: (date) {
+                  controller.selectedDate.value = date;
+                },
+                focusedDate: selectedDate,
+              ),
+              const SizedBox(height: 16),
+              if (filteredSchedule == null ||
+                  filteredSchedule['schedulesByDate'].isEmpty) ...[
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.event_busy,
+                            size: 64, color: grey3Color),
+                        szbY8,
+                        Text("No schedule for this date", style: h5SemiBold),
+                      ],
+                    ))
+              ] else ...[
+                ...List.generate(
+                  filteredSchedule['schedulesByDate'].length,
+                  (index) {
+                    final item = filteredSchedule['schedulesByDate'][index];
+                    final start = DateFormat("HH:mm").parse(item['start_time']);
+                    final end = DateFormat("HH:mm").parse(item['end_time']);
+                    final duration = end.difference(start).inMinutes;
+                    final config = controller.getStatusConfig(item['status']);
+                    return Card(
+                      color: whiteColor,
+                      margin: const EdgeInsets.only(bottom: 12),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(color: whiteScheme)),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        leading: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Choosen Date',
-                              style: h4Bold,
+                              duration.toString(),
+                              style: h5SemiBold.copyWith(color: grey3Color),
                             ),
-                            Text(
-                              "From : ${controller.startDate.value != null ? controller.formatDate(controller.startDate.value!) : ''}",
-                              style: h5Medium,
-                            ),
-                            Text(
-                              "To : ${controller.endDate.value != null ? controller.formatDate(controller.endDate.value!) : ''}",
-                              style: h5Medium,
-                            ),
+                            Text('min', style: h6Regular),
                           ],
-                        );
-                      }),
-                      SizedBox(
-                        height: 24,
+                        ),
+                        title: Text(
+                          "${DateFormat.Hm().format(start)} - ${DateFormat.Hm().format(end)}",
+                          style: h5Medium,
+                        ),
+                        trailing: StatusChip(
+                          status: item['status'],
+                          icon: config['icon'],
+                          color: config['color'],
+                        ),
                       ),
-                      Center(
-                        child: TextButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(primaryColor),
-                              foregroundColor:
-                                  MaterialStateProperty.all(whiteColor),
-                              fixedSize: WidgetStatePropertyAll(Size(165, 33))),
-                          onPressed: () {
-                            controller.createSchedule();
-                          },
-                          child: Text(
-                            "Confirm",
-                            style: h5Bold.copyWith(color: whiteColor),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              Text(
-                'Schedule that already added',
-                style: h4Bold,
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              Obx(() {
-                if (controller.scheduleList.isEmpty) {
-                  return Center(
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/schedule.png',
-                          scale: 2,
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          'No Schedule',
-                          style: h4Bold,
-                        ),
-                        Text(
-                          'There are no schedule',
-                          style: h6Medium,
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                return SingleChildScrollView(
-                  child: SizedBox(
-                    height: 450,
-                    child: ListView.builder(
-                      itemCount: controller.scheduleList.length,
-                      itemBuilder: (context, index) {
-                        final schedule = controller.scheduleList[index];
-                        return Container(
-                          margin: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0x4B4B4B26),
-                                blurRadius: 16,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    "${controller.getDayName(schedule['date'])} ${schedule['date']}",
-                                    style: h4Bold),
-                                Container(
-                                  height: 100,
-                                  child: ListView.builder(
-                                      itemCount:
-                                          schedule['schedulesByDate'].length,
-                                      itemBuilder: (context, index) {
-                                        List scheduleDay =
-                                            schedule['schedulesByDate'];
-                                        return Text(
-                                            "${scheduleDay[index]['start_time']} - ${scheduleDay[index]['end_time']}");
-                                      }),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                );
-              }),
+                    );
+                  },
+                )
+              ],
             ],
-          ),
-        ),
+          );
+        }),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await picker.pickDate(context);
+          await picker.pickTime(context);
+          await picker.pickDuration(context);
+          if (controller.selectedDuration.value != null) {
+            controller.createSchedule();
+          }
+        },
+        shape: const CircleBorder(),
+        foregroundColor: whiteColor,
+        backgroundColor: primaryColor,
+        child: const Icon(Iconsax.add),
       ),
     );
   }

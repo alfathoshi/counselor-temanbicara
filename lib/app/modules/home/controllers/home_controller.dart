@@ -12,8 +12,15 @@ class HomeController extends GetxController {
   final ArticlePageController article = Get.find();
 
   var profile = {}.obs;
+  var upcomingConsult = [].obs;
 
   GetStorage box = GetStorage();
+
+  Future<void> getUpcomingConsult() async {
+    upcomingConsult.value = consult.consultList
+        .where((item) => item['status'] == 'Incoming')
+        .toList();
+  }
 
   Future<void> fetchProfile() async {
     final response = await http.get(
@@ -30,13 +37,13 @@ class HomeController extends GetxController {
       throw Exception('Failed to load profile');
     }
   }
-  
 
   final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
     fetchProfile();
+    getUpcomingConsult();
     consult.fetchData();
     article.fetchArticles(page: 0);
   }

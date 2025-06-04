@@ -4,6 +4,7 @@ import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/buttons/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 
 class ClientCard extends StatelessWidget {
   final String name;
@@ -12,6 +13,7 @@ class ClientCard extends StatelessWidget {
   final String note;
   final String status;
   final String profile;
+  final String date;
   const ClientCard({
     super.key,
     required this.name,
@@ -20,6 +22,7 @@ class ClientCard extends StatelessWidget {
     required this.note,
     required this.status,
     required this.profile,
+    required this.date,
   });
 
   @override
@@ -74,15 +77,28 @@ class ClientCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      name.isNotEmpty ? name : 'Loading Name...',
-                      style: h4SemiBold,
-                      maxLines: 1,
-                      overflow: TextOverflow.fade,
-                    ),
-                    Text(
-                      '$umur / ${gender.isNotEmpty ? gender : 'N/A'}',
-                      style: h7Regular,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              name.isNotEmpty ? name : 'Loading Name...',
+                              style: h4SemiBold,
+                              maxLines: 1,
+                              overflow: TextOverflow.fade,
+                            ),
+                            Text(
+                              '$umur / ${gender.isNotEmpty ? gender : 'N/A'}',
+                              style: h7Regular,
+                            ),
+                          ],
+                        ),
+                        Text(DateFormat('d MMMM').format(DateTime.parse(date)),
+                            style: h6Regular),
+                      ],
                     ),
                     szbY8,
                     SizedBox(
@@ -130,7 +146,7 @@ class ClientCard extends StatelessWidget {
                         ),
                         szbX8,
                         Spacer(),
-                        note.isNotEmpty
+                        note.isNotEmpty && note != '-'
                             ? SizedBox.shrink()
                             : Expanded(
                                 child: Row(

@@ -88,11 +88,9 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
                                   child: CircleAvatar(
                                     radius: 25,
                                     backgroundColor: Colors.grey.shade300,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(listPatient[index]
-                                          ["user"]['profile_url']),
-                                    ),
+                                    backgroundImage: NetworkImage(
+                                        listPatient[index]["user"]
+                                            ['profile_url']),
                                   ),
                                 ),
                                 SizedBox(

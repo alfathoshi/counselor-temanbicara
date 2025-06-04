@@ -4,17 +4,17 @@ import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class CustomDatePicker extends StatelessWidget {
-  CustomDatePicker({super.key});
+  final DateTime initialDate;
+  CustomDatePicker({
+    super.key,
+    required this.initialDate,
+  });
 
   final DatePickerController controller = Get.put(DatePickerController());
   @override
   Widget build(BuildContext context) {
-    if (controller.box.read('birthdate') != null) {
-      controller.selectedDate.value =
-          DateTime.parse(controller.box.read('birthdate'));
-    }
+    controller.selectedDate.value = initialDate;
 
     return Obx(
       () => Container(

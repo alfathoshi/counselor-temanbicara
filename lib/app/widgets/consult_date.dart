@@ -31,12 +31,19 @@ class ConsultDate extends StatelessWidget {
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: hasEvent ? primaryColor.withValues(alpha: 0.1) : whiteColor,
+              color:
+                  hasEvent ? primaryColor.withValues(alpha: 0.1) : whiteColor,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text(
+                  DateFormat.MMM().format(date),
+                  style: h5SemiBold.copyWith(
+                    color: grey3Color,
+                  ),
+                ),
                 Text(
                   date.day.toString(),
                   style: h3Bold.copyWith(

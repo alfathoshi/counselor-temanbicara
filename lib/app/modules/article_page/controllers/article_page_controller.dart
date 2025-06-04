@@ -6,10 +6,10 @@ import 'package:http/http.dart' as http;
 import '../../../config/config.dart';
 
 class ArticlePageController extends GetxController {
-  //TODO: Implement ArticlePageController
   final box = GetStorage();
   var isLoading = false.obs;
   var articleList = [].obs;
+  var article = {}.obs;
   var isLoadingInitial = true.obs;
   var isLoadingMore = false.obs;
   var currentPage = 1.obs;
@@ -21,18 +21,16 @@ class ArticlePageController extends GetxController {
   Future<void> fetchArticles(
       {required int page, bool isInitialLoad = false}) async {
     if (isInitialLoad) {
+      if (isLoadingInitial.value) return;
       isLoadingInitial.value = true;
     } else {
-      if (hasMoreData.value) {
-        isLoadingMore.value = true;
-      } else {
-        return;
-      }
+      if (isLoadingMore.value || !hasMoreData.value) return;
+      isLoadingMore.value = true;
     }
     try {
       isLoading.value = true;
       final response = await http.get(
-        Uri.parse('${Config.apiEndPoint}/article?page=$page'),
+        Uri.parse('${Config.apiEndPoint}/article/counselor?page=$page'),
         headers: {'Authorization': 'Bearer ${box.read('token')}'},
       );
 
@@ -40,7 +38,7 @@ class ArticlePageController extends GetxController {
         var data = json.decode(response.body);
         if (data['status'] == true && data['data'] != null) {
           final paginationData = data['data'];
-
+          article.value = data['data'];
           if (paginationData['data'] is List) {
             List<dynamic> fetchedArticlesRaw = paginationData['data'] ?? [];
             List<Map<String, dynamic>> fetchedArticles =
@@ -83,7 +81,8 @@ class ArticlePageController extends GetxController {
     if (scrollController.position.pixels >=
             scrollController.position.maxScrollExtent - 200 &&
         hasMoreData.value &&
-        !isLoadingMore.value) {
+        !isLoadingMore.value &&
+        !isLoadingInitial.value) {
       fetchArticles(page: currentPage.value + 1);
     }
   }

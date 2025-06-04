@@ -1,3 +1,4 @@
+import 'package:counselor_temanbicara/app/modules/article_page/controllers/article_page_controller.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/client_card.dart';
 import 'package:counselor_temanbicara/app/widgets/consult_date.dart';
@@ -16,6 +17,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     HomeController controller = Get.put(HomeController());
+    ArticlePageController articlePageController = Get.find();
 
     return Scaffold(
       backgroundColor: whiteColor,
@@ -335,7 +337,7 @@ class HomeView extends GetView<HomeController> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '${controller.article.articleList.length} articles',
+                                          '${articlePageController.article['total']} articles',
                                           style: h3Bold.copyWith(
                                             color: whiteColor,
                                           ),

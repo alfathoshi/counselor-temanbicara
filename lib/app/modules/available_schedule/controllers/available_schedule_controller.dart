@@ -17,6 +17,9 @@ class AvailableScheduleController extends GetxController {
   var isLoading = false.obs;
   var isSelect = false.obs;
   var scheduleList = [].obs;
+  var eventDates = <DateTime>[].obs;
+  Rxn<TimeOfDay> selectedTime = Rxn<TimeOfDay>();
+  Rxn<int> selectedDuration = Rxn<int>();
 
   List<dynamic> get scheduleBySelectedDate {
     return scheduleList.firstWhereOrNull((s) =>
@@ -25,8 +28,6 @@ class AvailableScheduleController extends GetxController {
                 .format(selectedDate.value))?['schedulesByDate'] ??
         [];
   }
-
-  var eventDates = <DateTime>[].obs;
 
   void loadScheduleEventsFromApi() {
     eventDates.value = scheduleList.map((item) {
@@ -90,21 +91,40 @@ class AvailableScheduleController extends GetxController {
   }
 
   Future<void> createSchedule() async {
-    if (startDate.value == null || endDate.value == null) {
-      Get.snackbar('Error', 'Please select start and end dates.',
-          backgroundColor: Colors.red.withOpacity(0.6),
-          colorText: Colors.white);
+    final selectedDate = this.selectedDate.value;
+    final selectedTime = this.selectedTime.value;
+    final duration = selectedDuration.value;
+
+    if (selectedDate == null || selectedTime == null || duration == null) {
+      Get.snackbar(
+        'Error',
+        'Please select date, time, and duration.',
+        backgroundColor: Colors.red.withOpacity(0.6),
+        colorText: Colors.white,
+      );
       return;
     }
 
     isLoading.value = true;
+
     try {
       final userId = box.read('id');
       final token = box.read('token');
 
-      String availableDate = DateFormat('yyyy-MM-dd').format(startDate.value!);
-      String startTime = DateFormat('HH:mm').format(startDate.value!);
-      String endTime = DateFormat('HH:mm').format(endDate.value!);
+      // Combine selectedDate + selectedTime jadi DateTime full
+      final startDateTime = DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        selectedTime.hour,
+        selectedTime.minute,
+      );
+
+      final endDateTime = startDateTime.add(Duration(minutes: duration));
+
+      String availableDate = DateFormat('yyyy-MM-dd').format(startDateTime);
+      String startTime = DateFormat('HH:mm').format(startDateTime);
+      String endTime = DateFormat('HH:mm').format(endDateTime);
 
       var response = await http.post(
         Uri.parse('${Config.apiEndPoint}/schedule'),
@@ -127,24 +147,38 @@ class AvailableScheduleController extends GetxController {
         var data = json.decode(response.body);
 
         if (data['status']) {
-          Get.snackbar('Success', 'Schedule created successfully.',
-              backgroundColor: Colors.green.withOpacity(0.6),
-              colorText: Colors.white);
-          fetchSchedules(); // update jadwal yang udah ada
+          Get.snackbar(
+            'Success',
+            'Schedule created successfully.',
+            backgroundColor: Colors.green.withOpacity(0.6),
+            colorText: Colors.white,
+          );
+
+          await fetchSchedules(); // panggil dari dalam controller sendiri
+          Get.back(); // balik ke page sebelumnya
         } else {
-          Get.snackbar('Error', data['message'],
-              backgroundColor: Colors.red.withOpacity(0.6),
-              colorText: Colors.white);
+          Get.snackbar(
+            'Error',
+            data['message'],
+            backgroundColor: Colors.red.withOpacity(0.6),
+            colorText: Colors.white,
+          );
         }
       } else {
-        Get.snackbar('Error', 'Failed to create schedule.',
-            backgroundColor: Colors.red.withOpacity(0.6),
-            colorText: Colors.white);
+        Get.snackbar(
+          'Error',
+          'Failed to create schedule.',
+          backgroundColor: Colors.red.withOpacity(0.6),
+          colorText: Colors.white,
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'Something went wrong: $e',
-          backgroundColor: Colors.red.withOpacity(0.6),
-          colorText: Colors.white);
+      Get.snackbar(
+        'Error',
+        'Something went wrong: $e',
+        backgroundColor: Colors.red.withOpacity(0.6),
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -160,44 +194,6 @@ class AvailableScheduleController extends GetxController {
         return {'icon': Icons.cancel_outlined, 'color': primaryColor};
       default:
         return {'icon': Icons.help_outline, 'color': Colors.grey};
-    }
-  }
-
-  Rxn<TimeOfDay> selectedTime = Rxn<TimeOfDay>();
-  Rxn<int> selectedDuration = Rxn<int>();
-
-  List<int> durationOptions = [15, 30, 45, 60];
-
-  void addSchedule() {
-    final date = selectedDate.value;
-    final time = selectedTime.value;
-    final dur = selectedDuration.value;
-
-    if (date != null && time != null && dur != null) {
-      final start = DateTime(
-        date.year,
-        date.month,
-        date.day,
-        time.hour,
-        time.minute,
-      );
-      final end = start.add(Duration(minutes: dur));
-
-      scheduleList.add({
-        'date': DateFormat('yyyy-MM-dd').format(start),
-        'start_time': DateFormat.Hm().format(start),
-        'end_time': DateFormat.Hm().format(end),
-        'status': 'Available', // default, bisa diganti di UI kalo lo mau
-      });
-
-      // Reset state abis nambah
-      selectedTime.value = null;
-      selectedDuration.value = null;
-
-      Get.back();
-      Get.snackbar('Sukses', 'Jadwal berhasil ditambah');
-    } else {
-      Get.snackbar('Oops', 'Lengkapi semua field-nya bro');
     }
   }
 

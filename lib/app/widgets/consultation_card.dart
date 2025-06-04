@@ -53,9 +53,7 @@ class ConsultationCard extends StatelessWidget {
               CircleAvatar(
                 radius: 25,
                 backgroundColor: Colors.grey.shade300,
-                child: ClipOval(
-                  child: Image.network(profile),
-                ),
+                backgroundImage: NetworkImage(profile),
               ),
               szbX8,
               Column(

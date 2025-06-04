@@ -19,7 +19,7 @@ class EditScheduleController extends GetxController {
   var endDate = Rxn<DateTime>();
   var isLoading = false.obs;
 
-  List<int> durationOptions = [15, 30, 45, 60];
+  List<int> durationOptions = [15, 30, 45, 60, 90, 120];
 
   Future<void> createSchedule() async {
     if (startDate.value == null || endDate.value == null) {

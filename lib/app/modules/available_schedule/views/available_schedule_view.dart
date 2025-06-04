@@ -10,12 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class AvailableScheduleView extends GetView<AvailableScheduleController> {
   const AvailableScheduleView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    SchedulePicker picker = SchedulePicker();
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -41,7 +43,13 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
           await Future.wait([controller.fetchSchedules()]);
         },
         child: Obx(() {
-          if (controller.scheduleList.isEmpty) {
+          if (controller.isLoading.value) {
+            return Center(
+                child: CircularProgressIndicator(
+              color: primaryColor,
+              backgroundColor: whiteColor,
+            ));
+          } else if (controller.scheduleList.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -135,8 +143,13 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed(Routes.EDIT_SCHEDULE);
+        onPressed: () async {
+          await picker.pickDate(context);
+          await picker.pickTime(context);
+          await picker.pickDuration(context);
+          if (controller.selectedDuration.value != null) {
+            controller.createSchedule();
+          }
         },
         shape: const CircleBorder(),
         foregroundColor: whiteColor,

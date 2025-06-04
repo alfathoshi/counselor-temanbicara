@@ -1,9 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
 import 'package:counselor_temanbicara/app/modules/available_schedule/controllers/available_schedule_controller.dart';
-import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:counselor_temanbicara/app/widgets/date/schedule_date.dart';
 import 'package:counselor_temanbicara/app/widgets/date/schedule_picker.dart';
 import 'package:counselor_temanbicara/app/widgets/status_chip.dart';
@@ -31,7 +29,7 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
           side: BorderSide(color: Colors.black12),
         ),
         title: Text(
-          'Available Schedules',
+          'My Schedules',
           style: h3Bold,
         ),
         centerTitle: true,
@@ -40,25 +38,14 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
         color: primaryColor,
         backgroundColor: whiteColor,
         onRefresh: () async {
-          await Future.wait([controller.fetchSchedules()]);
+          await controller.fetchSchedules(); // cukup 1 fetch aja
         },
         child: Obx(() {
           if (controller.isLoading.value) {
             return Center(
-                child: CircularProgressIndicator(
-              color: primaryColor,
-              backgroundColor: whiteColor,
-            ));
-          } else if (controller.scheduleList.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/schedule.png', scale: 2),
-                  const SizedBox(height: 8),
-                  Text('No Schedule', style: h4Bold),
-                  Text('There are no schedules', style: h6Medium),
-                ],
+              child: CircularProgressIndicator(
+                color: primaryColor,
+                backgroundColor: whiteColor,
               ),
             );
           }
@@ -72,6 +59,9 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                 DateFormat('yyyy-MM-dd').format(selectedDate),
           );
 
+          final isScheduleEmpty = filteredSchedule == null ||
+              filteredSchedule['schedulesByDate'].isEmpty;
+
           return ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             children: [
@@ -83,19 +73,18 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                 focusedDate: selectedDate,
               ),
               const SizedBox(height: 16),
-              if (filteredSchedule == null ||
-                  filteredSchedule['schedulesByDate'].isEmpty) ...[
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.event_busy,
-                            size: 64, color: grey3Color),
-                        szbY8,
-                        Text("No schedule for this date", style: h5SemiBold),
-                      ],
-                    ))
+              if (controller.scheduleList.isEmpty || isScheduleEmpty) ...[
+                Center(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 64),
+                      Image.asset('assets/images/schedule.png', scale: 2),
+                      const SizedBox(height: 8),
+                      Text('No Schedule', style: h4Bold),
+                      Text('There are no schedules', style: h6Medium),
+                    ],
+                  ),
+                )
               ] else ...[
                 ...List.generate(
                   filteredSchedule['schedulesByDate'].length,
@@ -109,8 +98,9 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                       color: whiteColor,
                       margin: const EdgeInsets.only(bottom: 12),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(color: whiteScheme)),
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(color: whiteScheme),
+                      ),
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 12),
@@ -138,7 +128,7 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
                     );
                   },
                 )
-              ],
+              ]
             ],
           );
         }),
@@ -146,9 +136,23 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await picker.pickDate(context);
+          if (!context.mounted) return;
+
           await picker.pickTime(context);
+          if (!context.mounted) return;
+
           await picker.pickDuration(context);
+          if (!context.mounted) return;
+
           if (controller.selectedDuration.value != null) {
+            if (controller.isScheduleConflicted()) {
+              CustomSnackbar.showSnackbar(
+                  title: 'Oops!',
+                  message: 'There is conflict schedule',
+                  status: false);
+              return;
+            }
+
             controller.createSchedule();
           }
         },

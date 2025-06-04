@@ -169,7 +169,7 @@ class ProfilePageView extends GetView<ProfilePageController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Available Schedule',
+                        'My Schedule',
                         style: h4SemiBold,
                       ),
                       Icon(

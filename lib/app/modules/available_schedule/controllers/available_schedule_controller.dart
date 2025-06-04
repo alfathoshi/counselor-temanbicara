@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -32,22 +33,6 @@ class AvailableScheduleController extends GetxController {
       final date = DateTime.parse(item['date']);
       return DateTime(date.year, date.month, date.day);
     }).toList();
-  }
-
-  String formatDate(DateTime dateTime) {
-    return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
-  }
-
-  void updateDates(List<DateTime>? dates) {
-    if (dates != null && dates.length == 2) {
-      startDate.value = dates[0];
-      endDate.value = dates[1];
-    }
-  }
-
-  String getDayName(String date) {
-    DateTime dateTime = DateTime.parse(date);
-    return DateFormat('EEEE').format(dateTime);
   }
 
   Future<void> fetchSchedules() async {
@@ -93,11 +78,10 @@ class AvailableScheduleController extends GetxController {
 
     // ignore: unnecessary_null_comparison
     if (selectedDate == null || selectedTime == null || duration == null) {
-      Get.snackbar(
-        'Error',
-        'Please select date, time, and duration.',
-        backgroundColor: Colors.red.withValues(alpha: 0.6),
-        colorText: Colors.white,
+      CustomSnackbar.showSnackbar(
+        title: 'Invalid Data',
+        message: 'Fill the data',
+        status: false,
       );
       return;
     }
@@ -108,7 +92,6 @@ class AvailableScheduleController extends GetxController {
       final userId = box.read('id');
       final token = box.read('token');
 
-      // Combine selectedDate + selectedTime jadi DateTime full
       final startDateTime = DateTime(
         selectedDate.year,
         selectedDate.month,
@@ -142,40 +125,37 @@ class AvailableScheduleController extends GetxController {
         var data = json.decode(response.body);
 
         if (data['status']) {
-          Get.snackbar(
-            'Success',
-            'Schedule created successfully.',
-            backgroundColor: Colors.green.withValues(alpha: 0.6),
-            colorText: Colors.white,
+          CustomSnackbar.showSnackbar(
+            title: 'Schedule Created',
+            message: 'New schedule added',
+            status: true,
           );
 
           await fetchSchedules();
           Get.back();
         } else {
-          Get.snackbar(
-            'Error',
-            data['message'],
-            backgroundColor: Colors.red.withValues(alpha: 0.6),
-            colorText: Colors.white,
+          CustomSnackbar.showSnackbar(
+            title: 'Oops!',
+            message: 'Failed to create schedule',
+            status: false,
           );
         }
       } else {
-        Get.snackbar(
-          'Error',
-          'Failed to create schedule.',
-          backgroundColor: Colors.red.withValues(alpha: 0.6),
-          colorText: Colors.white,
+        CustomSnackbar.showSnackbar(
+          title: 'Oops!',
+          message: 'Failed to create schedule',
+          status: false,
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Something went wrong: $e',
-        backgroundColor: Colors.red.withValues(alpha: 0.6),
-        colorText: Colors.white,
+      CustomSnackbar.showSnackbar(
+        title: 'Oops!',
+        message: 'Failed to create schedule',
+        status: false,
       );
     } finally {
       isLoading.value = false;
+      selectedDuration.value = null;
     }
   }
 
@@ -190,6 +170,52 @@ class AvailableScheduleController extends GetxController {
       default:
         return {'icon': Icons.help_outline, 'color': Colors.grey};
     }
+  }
+
+  bool isScheduleConflicted() {
+    final newStart = DateTime(
+      selectedDate.value.year,
+      selectedDate.value.month,
+      selectedDate.value.day,
+      selectedTime.value!.hour,
+      selectedTime.value!.minute,
+    );
+    final newEnd = newStart.add(Duration(minutes: selectedDuration.value!));
+    for (var schedule in scheduleList) {
+      final scheduleDate = DateTime.parse(schedule['date']);
+      if (DateUtils.isSameDay(scheduleDate, selectedDate.value)) {
+        final List<dynamic> items = schedule['schedulesByDate'];
+        for (var item in items) {
+          final start = DateFormat("HH:mm").parse(item['start_time']);
+          final end = DateFormat("HH:mm").parse(item['end_time']);
+
+          final existingStart = DateTime(
+            scheduleDate.year,
+            scheduleDate.month,
+            scheduleDate.day,
+            start.hour,
+            start.minute,
+          );
+
+          final existingEnd = DateTime(
+            scheduleDate.year,
+            scheduleDate.month,
+            scheduleDate.day,
+            end.hour,
+            end.minute,
+          );
+
+          final isOverlap =
+              newStart.isBefore(existingEnd) && newEnd.isAfter(existingStart);
+          final isClose =
+              newStart.difference(existingEnd).inMinutes.abs() < 15 ||
+                  newEnd.difference(existingStart).inMinutes.abs() < 15;
+
+          if (isOverlap || isClose) return true;
+        }
+      }
+    }
+    return false;
   }
 
   @override

@@ -36,76 +36,80 @@ class ArticlePageView extends GetView<ArticlePageController> {
         color: primaryColor,
         backgroundColor: whiteColor,
         child: Obx(() {
-          if (controller.isLoadingInitial.value &&
-              controller.articleList.isEmpty) {
-            return Center(
-                child: CircularProgressIndicator(color: primaryColor));
-          }
+          final isLoading = controller.isLoadingInitial.value;
+          final articleList = controller.articleList;
+          final isLoadingMore = controller.isLoadingMore.value;
+          final hasMore = controller.hasMoreData.value;
+          final totalArticles = controller.article['total'];
 
-          if (controller.articleList.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Text(
-                  'No articles yet',
-                  style: h6Regular,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
-          }
-          return ListView(
-            controller: controller.scrollController,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-                child: Text(
-                  'You have created ${controller.article['total']} articles',
-                  style: h5SemiBold,
-                ),
-              ),
-              ...List.generate(
-                controller.articleList.length,
-                (index) {
-                  final articleItem = controller.articleList[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Routes.ARTICLE_DETAIL,
-                          arguments: articleItem);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: ArticleCard(
-                        title: articleItem['title'],
-                        content: articleItem['content'],
-                        status: articleItem['status'],
-                        createAt: articleItem['created_at'],
+          return articleList.isEmpty
+              ? ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: [
+                    if (isLoading)
+                     Container()
+                    else
+                      const Padding(
+                        padding: EdgeInsets.only(top: 100),
+                        child: Center(
+                          child: Text(
+                            'No articles yet',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                  ],
+                )
+              : ListView(
+                  controller: controller.scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                      child: Text(
+                        'You have created $totalArticles articles',
+                        style: h5SemiBold,
                       ),
                     ),
-                  );
-                },
-              ),
-              if (controller.isLoadingMore.value)
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Center(
-                    child: CircularProgressIndicator(color: primaryColor),
-                  ),
-                ),
-              if (!controller.hasMoreData.value &&
-                  controller.articleList.isNotEmpty &&
-                  !controller.isLoadingMore.value)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Center(
-                    child: Text(
-                      "All articles are displayed",
-                      style: h7Regular.copyWith(color: greyColor),
-                    ),
-                  ),
-                ),
-            ],
-          );
+                    ...List.generate(articleList.length, (index) {
+                      final articleItem = articleList[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                            Routes.ARTICLE_DETAIL,
+                            arguments: articleItem,
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: ArticleCard(
+                            title: articleItem['title'],
+                            content: articleItem['content'],
+                            status: articleItem['status'],
+                            createAt: articleItem['created_at'],
+                          ),
+                        ),
+                      );
+                    }),
+                    if (isLoadingMore)
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    if (!hasMore && articleList.isNotEmpty && !isLoadingMore)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: Center(
+                          child: Text(
+                            "All articles are displayed",
+                            style: h7Regular.copyWith(color: greyColor),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
         }),
       ),
     );

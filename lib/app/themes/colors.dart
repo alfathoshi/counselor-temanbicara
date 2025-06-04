@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 Color error = const Color(0xffD00000);
 Color warning = const Color(0xffF99500);
 Color info = const Color(0xff00BEE8);
+Color red = const Color(0xffFC7070);
 
 Color produk = const Color.fromRGBO(61, 71, 84, 0.30);
 Color border = const Color(0xffE1E1E1);

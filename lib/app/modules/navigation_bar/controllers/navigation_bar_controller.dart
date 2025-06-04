@@ -12,21 +12,6 @@ class NavigationBarController extends GetxController {
 
   void changeIndex(int index) {
     selectedindex.value = index;
-
-    switch (index) {
-      case 0:
-        Get.find<HomeController>().fetchProfile();
-        break;
-      case 1:
-        Get.find<ArticlePageController>().fetchArticles(page: 0);
-        break;
-      case 2:
-        Get.find<CounsultationPageController>().fetchData();
-        break;
-      case 3:
-        Get.find<ProfilePageController>();
-        break;
-    }
   }
 
   @override

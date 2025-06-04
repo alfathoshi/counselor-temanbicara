@@ -3,6 +3,7 @@ import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/client_card.dart';
 import 'package:counselor_temanbicara/app/widgets/consult_date.dart';
 import 'package:counselor_temanbicara/app/widgets/consultation_card.dart';
+import 'package:counselor_temanbicara/app/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -17,7 +18,6 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     HomeController controller = Get.put(HomeController());
-    ArticlePageController articlePageController = Get.find();
 
     return Scaffold(
       backgroundColor: whiteColor,
@@ -124,8 +124,50 @@ class HomeView extends GetView<HomeController> {
                               ),
                             );
                           } else if (controller.consult.eventDates.isEmpty) {
-                            return const Center(
-                              child: Text("No Upcoming Consultation"),
+                            return GestureDetector(
+                              onTap: () {
+                                Get.toNamed(Routes.AVAILABLE_SCHEDULE);
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                                child: Stack(
+                                  alignment: Alignment.centerRight,
+                                  children: [
+                                    Image.asset(
+                                        'assets/images/consult_card.png'),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 32.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'No upcoming',
+                                            style: h3Bold.copyWith(
+                                              color: whiteColor,
+                                            ),
+                                          ),
+                                          Text(
+                                            'consultations',
+                                            style: h4Regular.copyWith(
+                                              color: whiteColor,
+                                            ),
+                                          ),
+                                          szbY16,
+                                          Text(
+                                            'Check \nSchedule',
+                                            style: h4Bold.copyWith(
+                                              color: whiteColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             );
                           } else {
                             return ConsultDate(
@@ -133,7 +175,7 @@ class HomeView extends GetView<HomeController> {
                             );
                           }
                         }),
-                        if (controller.upcomingConsult.isNotEmpty)
+                        if (controller.consult.eventDates.isNotEmpty)
                           Column(
                             children: [
                               Padding(
@@ -252,8 +294,62 @@ class HomeView extends GetView<HomeController> {
                               ),
                             );
                           } else if (controller.consult.consultList.isEmpty) {
-                            return const Center(
-                              child: Text("No Data Available"),
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                              child: SizedBox(
+                                height: 151,
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/client_card.png',
+                                      scale: 4,
+                                    ),
+                                    szbX16,
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'No clients',
+                                                  style: h4Bold.copyWith(
+                                                    color: black,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'You don’t have any clients assigned yet',
+                                                  style: h6Regular.copyWith(
+                                                    color: black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          szbY16,
+                                          MyButton(
+                                            get: () {
+                                              Get.offAllNamed(
+                                                  Routes.NAVIGATION_BAR,
+                                                  arguments: {"indexPage": 2});
+                                            },
+                                            color: red,
+                                            text: 'Check',
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             );
                           } else {
                             return SizedBox(
@@ -295,7 +391,7 @@ class HomeView extends GetView<HomeController> {
                             );
                           }
                         }),
-                        szbY16,
+                        szbY8,
                       ],
                     ),
                   ),
@@ -317,57 +413,51 @@ class HomeView extends GetView<HomeController> {
                             return shimmerLoader(
                               Image.asset('assets/images/article_card.png'),
                             );
-                          } else if (controller.consult.consultList.isEmpty) {
-                            return const Center(
-                              child: Text("No Data Available"),
-                            );
-                          } else {
-                            return GestureDetector(
-                              onTap: () => Get.offAllNamed(
-                                  Routes.NAVIGATION_BAR,
-                                  arguments: {"indexPage": 1}),
-                              child: Stack(
-                                alignment: Alignment.centerLeft,
-                                children: [
-                                  Image.asset('assets/images/article_card.png'),
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${articlePageController.article['total']} articles',
-                                          style: h3Bold.copyWith(
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                        Text(
-                                          'has been',
-                                          style: h6Regular.copyWith(
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                        Text(
-                                          'created',
-                                          style: h6Regular.copyWith(
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                        szbY16,
-                                        Text(
-                                          'Create More',
-                                          style: h3Bold.copyWith(
-                                            color: whiteColor,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
                           }
+                          return GestureDetector(
+                            onTap: () => Get.offAllNamed(Routes.NAVIGATION_BAR,
+                                arguments: {"indexPage": 1}),
+                            child: Stack(
+                              alignment: Alignment.centerLeft,
+                              children: [
+                                Image.asset('assets/images/article_card.png'),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${controller.article.article['total'] ?? 0}  articles',
+                                        style: h3Bold.copyWith(
+                                          color: whiteColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        'has been',
+                                        style: h6Regular.copyWith(
+                                          color: whiteColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        'created',
+                                        style: h6Regular.copyWith(
+                                          color: whiteColor,
+                                        ),
+                                      ),
+                                      szbY16,
+                                      Text(
+                                        'Create More',
+                                        style: h3Bold.copyWith(
+                                          color: whiteColor,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
                         }),
                         szbY16,
                       ],

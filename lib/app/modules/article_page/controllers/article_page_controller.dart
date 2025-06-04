@@ -21,6 +21,8 @@ class ArticlePageController extends GetxController {
 
   Future<void> fetchArticles(
       {required int page, bool isInitialLoad = false}) async {
+    articleList.clear();
+
     if (isInitialLoad) {
       articleList.clear();
       if (isLoadingInitial.value) return;
@@ -75,7 +77,9 @@ class ArticlePageController extends GetxController {
 
   Future<void> refreshArticles() async {
     currentPage.value = 1;
+    lastPage.value = 1;
     hasMoreData.value = true;
+    articleList.clear();
     await fetchArticles(page: 1, isInitialLoad: true);
   }
 
@@ -92,16 +96,15 @@ class ArticlePageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchArticles(page: 1, isInitialLoad: true);
     scrollController.addListener(_scrollListener);
   }
 
   @override
   void onClose() {
+    scrollController.dispose();
     scrollController.removeListener(_scrollListener);
     article.clear();
     articleList.clear();
-    scrollController.dispose();
     super.onClose();
   }
 }

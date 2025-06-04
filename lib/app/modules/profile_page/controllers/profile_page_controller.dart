@@ -72,7 +72,19 @@ class ProfilePageController extends GetxController {
       final response = await request.send();
       final res = await http.Response.fromStream(response);
 
+      if (res.headers['content-type']?.contains('application/json') ?? false) {
+        final responseBody = json.decode(res.body);
+        // lanjut...
+      } else {
+        print('⚠️ Response bukan JSON: ${res.statusCode}');
+        CustomSnackbar.showSnackbar(
+          title: "Server Error",
+          message: "Unexpected response from server.",
+          status: false,
+        );
+      }
       final responseBody = json.decode(res.body);
+
       if (responseBody['status'] == true) {
         CustomSnackbar.showSnackbar(
           title: "Profile Updated!",

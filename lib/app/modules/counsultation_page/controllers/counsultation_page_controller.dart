@@ -33,7 +33,8 @@ class CounsultationPageController extends GetxController {
   }
 
   void loadEventsFromApi() {
-    eventDates.value = consultList.map((item) {
+    eventDates.value =
+        consultList.where((item) => item['status'] == 'Incoming').map((item) {
       final date = DateTime.parse(item['schedule']['available_date']);
       return DateTime(date.year, date.month, date.day);
     }).toList();

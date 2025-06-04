@@ -81,33 +81,10 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
                       style: h3Bold,
                     ),
                     Text(
-                      'Age : ${controller.calculateAge(patient['user']['birthdate'])} y.o',
-                      style: h3Regular,
+                      '${controller.calculateAge(patient['user']['birthdate'])} y.o',
+                      style: h5Regular,
                     ),
                   ],
-                ),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: patient['schedule']['status'] == 'Done'
-                      ? primaryColor
-                      : warning,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(
-                      patient['schedule']['status'],
-                      style: h5Bold.copyWith(
-                        color: whiteColor,
-                      ),
-                    ),
-                  ),
                 ),
               ),
               SizedBox(

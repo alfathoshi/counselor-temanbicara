@@ -1,5 +1,6 @@
 import 'package:counselor_temanbicara/app/modules/article_page/views/article_page_view.dart';
 import 'package:counselor_temanbicara/app/modules/counsultation_page/views/counsultation_page_view.dart';
+import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -52,6 +53,20 @@ class NavigationBarView extends GetView<NavigationBarController> {
           ),
         ),
       ),
+      floatingActionButton: Obx(() {
+        return Visibility(
+          visible: controller.selectedindex.value == 1,
+          child: FloatingActionButton(
+            onPressed: () {
+              Get.toNamed(Routes.CREATE_ARTICLE);
+            },
+            shape: const CircleBorder(),
+            foregroundColor: whiteColor,
+            backgroundColor: primaryColor,
+            child: const Icon(Iconsax.pen_add),
+          ),
+        );
+      }),
     );
   }
 }

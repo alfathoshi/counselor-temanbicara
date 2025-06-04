@@ -142,7 +142,6 @@ class AvailableScheduleView extends GetView<AvailableScheduleController> {
           if (!context.mounted) return;
 
           await picker.pickDuration(context);
-          if (!context.mounted) return;
 
           if (controller.selectedDuration.value != null) {
             if (controller.isScheduleConflicted()) {

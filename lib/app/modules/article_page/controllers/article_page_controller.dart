@@ -15,6 +15,8 @@ class ArticlePageController extends GetxController {
   var currentPage = 1.obs;
   var lastPage = 1.obs;
   var hasMoreData = true.obs;
+  final isFabVisible = true.obs;
+
 
   final ScrollController scrollController = ScrollController();
 

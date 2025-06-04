@@ -107,17 +107,6 @@ class ArticlePageView extends GetView<ArticlePageController> {
           );
         }),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed(Routes.CREATE_ARTICLE);
-        },
-        shape: const CircleBorder(),
-        foregroundColor: whiteColor,
-        backgroundColor: primaryColor,
-        child: const Icon(
-          Iconsax.pen_add,
-        ),
-      ),
     );
   }
 }

@@ -13,7 +13,6 @@ class NavigationBarController extends GetxController {
   void changeIndex(int index) {
     selectedindex.value = index;
 
-    // trigger fetch sesuai index tab
     switch (index) {
       case 0:
         Get.find<HomeController>().fetchProfile();

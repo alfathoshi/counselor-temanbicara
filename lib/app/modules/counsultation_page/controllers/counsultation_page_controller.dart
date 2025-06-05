@@ -29,7 +29,6 @@ class CounsultationPageController extends GetxController {
           message: 'Can not load consultation',
           status: false,
         );
-        throw Exception('Failed to load consultation');
       }
     } catch (e) {
       CustomSnackbar.showSnackbar(

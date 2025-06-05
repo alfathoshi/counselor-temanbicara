@@ -30,7 +30,7 @@ class ConsultationDetailController extends GetxController {
     return age;
   }
 
-  Future<Map<String, dynamic>> updateReport() async {
+  Future<void> updateReport() async {
     final consultationId = box.read('consultation_id');
     final token = box.read('token');
     final response = await http.put(
@@ -59,7 +59,6 @@ class ConsultationDetailController extends GetxController {
         message: 'Your report has sent',
         status: true,
       );
-      throw Exception();
     }
   }
 

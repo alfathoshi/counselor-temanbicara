@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:counselor_temanbicara/app/config/config.dart';
 import 'package:counselor_temanbicara/app/modules/article_page/controllers/article_page_controller.dart';
 import 'package:counselor_temanbicara/app/modules/counsultation_page/controllers/counsultation_page_controller.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -34,7 +35,11 @@ class HomeController extends GetxController {
       profile.value = data['data'];
       json.decode(response.body);
     } else {
-      throw Exception('Failed to load profile');
+      CustomSnackbar.showSnackbar(
+        title: 'Oops!',
+        message: 'Can not load profile',
+        status: false,
+      );
     }
   }
 

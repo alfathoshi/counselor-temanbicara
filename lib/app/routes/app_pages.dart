@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 import 'package:get/get.dart';
 
 import '../modules/article_detail/bindings/article_detail_binding.dart';
@@ -24,18 +22,26 @@ import '../modules/edit_profile/bindings/edit_profile_binding.dart';
 import '../modules/edit_profile/views/edit_profile_view.dart';
 import '../modules/edit_schedule/bindings/edit_schedule_binding.dart';
 import '../modules/edit_schedule/views/edit_schedule_view.dart';
+import '../modules/forgot_password/bindings/forgot_password_binding.dart';
+import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/navigation_bar/bindings/navigation_bar_binding.dart';
 import '../modules/navigation_bar/views/navigation_bar_view.dart';
 import '../modules/profile_page/bindings/profile_page_binding.dart';
 import '../modules/profile_page/views/profile_page_view.dart';
+import '../modules/send_otp/bindings/send_otp_binding.dart';
+import '../modules/send_otp/views/send_otp_view.dart';
 import '../modules/signin_page/bindings/signin_page_binding.dart';
 import '../modules/signin_page/views/signin_page_view.dart';
 import '../modules/signup_page/bindings/signup_page_binding.dart';
 import '../modules/signup_page/views/signup_page_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
+import '../modules/verify_OTP/bindings/verify_o_t_p_binding.dart';
+import '../modules/verify_OTP/views/verify_o_t_p_view.dart';
+
+// ignore_for_file: constant_identifier_names
 
 part 'app_routes.dart';
 
@@ -129,6 +135,21 @@ class AppPages {
       name: _Paths.CHANGE_PASSWORD,
       page: () => ChangePasswordView(),
       binding: ChangePasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEND_OTP,
+      page: () => const SendOtpView(),
+      binding: SendOtpBinding(),
+    ),
+    GetPage(
+      name: _Paths.VERIFY_O_T_P,
+      page: () => const VerifyOTPView(),
+      binding: VerifyOTPBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_PASSWORD,
+      page: () => const ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
     ),
   ];
 }

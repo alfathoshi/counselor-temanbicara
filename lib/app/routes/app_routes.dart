@@ -25,6 +25,9 @@ abstract class Routes {
   static const CHAT_ROOM = _Paths.CHAT_ROOM;
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
   static const CHANGE_PASSWORD = _Paths.CHANGE_PASSWORD;
+  static const SEND_OTP = _Paths.SEND_OTP;
+  static const VERIFY_O_T_P = _Paths.VERIFY_O_T_P;
+  static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
 }
 
 abstract class _Paths {
@@ -47,4 +50,7 @@ abstract class _Paths {
   static const CHAT_ROOM = '/chat-room';
   static const EDIT_PROFILE = '/edit-profile';
   static const CHANGE_PASSWORD = '/change-password';
+  static const SEND_OTP = '/send-otp';
+  static const VERIFY_O_T_P = '/verify-o-t-p';
+  static const FORGOT_PASSWORD = '/forgot-password';
 }

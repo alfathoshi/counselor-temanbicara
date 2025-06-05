@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/signin_page_controller.dart';
 
 class SigninPageView extends GetView<SigninPageController> {
@@ -105,6 +106,24 @@ class SigninPageView extends GetView<SigninPageController> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(color: primaryColor),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.SEND_OTP);
+                      },
+                      child: SizedBox(
+                        width: MediaQuery.sizeOf(context).width,
+                        child: Text(
+                          "Forgot password?",
+                          textAlign: TextAlign.right,
+                          style: GoogleFonts.poppins().copyWith(
+                            color: const Color(0xFF60ABEE),
+                          ),
                         ),
                       ),
                     ),

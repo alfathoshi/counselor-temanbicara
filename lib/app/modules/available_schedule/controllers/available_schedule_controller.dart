@@ -53,19 +53,25 @@ class AvailableScheduleController extends GetxController {
           scheduleList.value = data['data']['schedules'];
           loadScheduleEventsFromApi();
         } else {
-          Get.snackbar('Error', data['message'],
-              backgroundColor: Colors.red.withValues(alpha: 0.6),
-              colorText: Colors.white);
+          CustomSnackbar.showSnackbar(
+            title: 'Oops!',
+            message: 'Can not load schedule',
+            status: false,
+          );
         }
       } else {
-        Get.snackbar('Error', 'Failed to fetch schedules.',
-            backgroundColor: Colors.red.withValues(alpha: 0.6),
-            colorText: Colors.white);
+        CustomSnackbar.showSnackbar(
+          title: 'Try again',
+          message: 'Can not fetch schedule',
+          status: false,
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'Something went wrong: $e',
-          backgroundColor: Colors.red.withValues(alpha: 0.6),
-          colorText: Colors.white);
+      CustomSnackbar.showSnackbar(
+        title: 'Something went wrong',
+        message: 'Can not fetch schedule',
+        status: false,
+      );
     } finally {
       isLoading.value = false;
     }

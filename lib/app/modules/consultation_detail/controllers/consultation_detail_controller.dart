@@ -1,4 +1,5 @@
 import 'package:counselor_temanbicara/app/themes/colors.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -46,15 +47,19 @@ class ConsultationDetailController extends GetxController {
       }),
     );
     if (response.statusCode == 200) {
-      Get.snackbar(
-        "Success",
-        "Consultation Report has been send",
-        backgroundColor: primaryColor.withValues(alpha: 0.6),
-        colorText: whiteColor,
+      CustomSnackbar.showSnackbar(
+        title: 'Report sent',
+        message: 'Your report has sent',
+        status: true,
       );
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to update consultation report');
+      CustomSnackbar.showSnackbar(
+        title: 'Report sent',
+        message: 'Your report has sent',
+        status: true,
+      );
+      throw Exception();
     }
   }
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
@@ -23,10 +24,19 @@ class CounsultationPageController extends GetxController {
         consultList.value = data['data'];
         loadEventsFromApi();
       } else {
+        CustomSnackbar.showSnackbar(
+          title: 'Oops!',
+          message: 'Can not load consultation',
+          status: false,
+        );
         throw Exception('Failed to load consultation');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Something went wrong: $e');
+      CustomSnackbar.showSnackbar(
+        title: 'Something went wrong',
+        message: 'Can not load consultation',
+        status: false,
+      );
     } finally {
       isLoading.value = false;
     }

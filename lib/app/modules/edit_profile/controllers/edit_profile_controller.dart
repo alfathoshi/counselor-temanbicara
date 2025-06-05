@@ -61,34 +61,30 @@ class EditProfileController extends GetxController {
         box.write('birthdate', responseData['data']['birthdate']);
 
         if (responseData['status']) {
-          Get.snackbar(
-            'Success',
-            'Profile updated',
-            backgroundColor: primaryColor.withValues(alpha: 0.6),
-            colorText: whiteColor,
+          CustomSnackbar.showSnackbar(
+            title: 'Profile updated',
+            message: 'Your profile has updated',
+            status: true,
           );
         } else {
-          Get.snackbar(
-            'Error',
-            responseData['message'] ?? 'Failed to update profile',
-            backgroundColor: error.withValues(alpha: 0.6),
-            colorText: whiteColor,
+          CustomSnackbar.showSnackbar(
+            title: 'Oops!',
+            message: 'Can not update profile',
+            status: false,
           );
         }
       } else {
-        Get.snackbar(
-          'Error',
-          'Failed to update profile.',
-          backgroundColor: error.withValues(alpha: 0.6),
-          colorText: whiteColor,
+        CustomSnackbar.showSnackbar(
+          title: 'Try again',
+          message: 'Can not update profile',
+          status: false,
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'An error occurred: $e',
-        backgroundColor: error.withValues(alpha: 0.6),
-        colorText: whiteColor,
+      CustomSnackbar.showSnackbar(
+        title: 'Something went wrong',
+        message: 'Can not update profile',
+        status: false,
       );
     } finally {
       isLoading.value = false;
@@ -191,11 +187,10 @@ class EditProfileController extends GetxController {
       }
 
       if (!status.isGranted) {
-        Get.snackbar(
-          'Permission Denied',
-          'Akses ke galeri ditolak.',
-          backgroundColor: error.withValues(alpha: 0.6),
-          colorText: whiteColor,
+        CustomSnackbar.showSnackbar(
+          title: 'Permission denied',
+          message: 'Can not access storage',
+          status: false,
         );
         return;
       }
@@ -206,11 +201,10 @@ class EditProfileController extends GetxController {
 
       pickedImage.value = File(pickedFile.path);
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Gagal ambil gambar.',
-        backgroundColor: error.withValues(alpha: 0.6),
-        colorText: whiteColor,
+      CustomSnackbar.showSnackbar(
+        title: 'Oops!',
+        message: 'Can not pick image',
+        status: false,
       );
     }
   }

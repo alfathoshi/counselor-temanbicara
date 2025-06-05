@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:counselor_temanbicara/app/themes/colors.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -39,34 +40,30 @@ class ChangePasswordController extends GetxController {
         box.write('new_password', responseData['new_password']);
 
         if (responseData['status']) {
-          Get.snackbar(
-            'Success',
-            'Password has changed successfully',
-            backgroundColor: primaryColor.withValues(alpha: 0.6),
-            colorText: whiteColor,
+          CustomSnackbar.showSnackbar(
+            title: 'Password changed',
+            message: 'Your password has updated',
+            status: true,
           );
         } else {
-          Get.snackbar(
-            'Error',
-            responseData['message'] ?? 'Failed to update password 1',
-            backgroundColor: error.withValues(alpha: 0.6),
-            colorText: whiteColor,
+          CustomSnackbar.showSnackbar(
+            title: 'Oops!',
+            message: 'Can not change password',
+            status: false,
           );
         }
       } else {
-        Get.snackbar(
-          'Error',
-          'Failed to update password.',
-          backgroundColor: error.withValues(alpha: 0.6),
-          colorText: whiteColor,
+        CustomSnackbar.showSnackbar(
+          title: 'Try again',
+          message: 'Can not change password',
+          status: false,
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'An error occurred: $e',
-        backgroundColor: error.withValues(alpha: 0.6),
-        colorText: whiteColor,
+      CustomSnackbar.showSnackbar(
+        title: 'Something went wrong',
+        message: 'Can not change password',
+        status: false,
       );
     } finally {
       isLoading.value = false;

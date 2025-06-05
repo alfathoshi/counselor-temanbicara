@@ -122,11 +122,10 @@ class ProfilePageController extends GetxController {
       }
 
       if (!status.isGranted) {
-        Get.snackbar(
-          'Permission Denied',
-          'Akses ke galeri ditolak.',
-          backgroundColor: error.withValues(alpha: 0.6),
-          colorText: whiteColor,
+        CustomSnackbar.showSnackbar(
+          title: 'Permission denied',
+          message: 'Can not access storage',
+          status: false,
         );
         return;
       }
@@ -137,11 +136,10 @@ class ProfilePageController extends GetxController {
 
       pickedImage.value = File(pickedFile.path);
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Gagal ambil gambar.',
-        backgroundColor: error.withValues(alpha: 0.6),
-        colorText: whiteColor,
+      CustomSnackbar.showSnackbar(
+        title: 'Oops!',
+        message: 'Can not pick image',
+        status: false,
       );
     }
   }

@@ -72,7 +72,19 @@ class ProfilePageController extends GetxController {
       final response = await request.send();
       final res = await http.Response.fromStream(response);
 
+      if (res.headers['content-type']?.contains('application/json') ?? false) {
+        final responseBody = json.decode(res.body);
+        // lanjut...
+      } else {
+        print('⚠️ Response bukan JSON: ${res.statusCode}');
+        CustomSnackbar.showSnackbar(
+          title: "Server Error",
+          message: "Unexpected response from server.",
+          status: false,
+        );
+      }
       final responseBody = json.decode(res.body);
+
       if (responseBody['status'] == true) {
         CustomSnackbar.showSnackbar(
           title: "Profile Updated!",
@@ -90,6 +102,7 @@ class ProfilePageController extends GetxController {
       fetchProfile();
     } catch (err) {
       isLoading.value = false;
+      print(err);
     } finally {
       isLoading.value = false;
     }
@@ -109,11 +122,10 @@ class ProfilePageController extends GetxController {
       }
 
       if (!status.isGranted) {
-        Get.snackbar(
-          'Permission Denied',
-          'Akses ke galeri ditolak.',
-          backgroundColor: error.withValues(alpha: 0.6),
-          colorText: whiteColor,
+        CustomSnackbar.showSnackbar(
+          title: 'Permission denied',
+          message: 'Can not access storage',
+          status: false,
         );
         return;
       }
@@ -124,11 +136,10 @@ class ProfilePageController extends GetxController {
 
       pickedImage.value = File(pickedFile.path);
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Gagal ambil gambar.',
-        backgroundColor: error.withValues(alpha: 0.6),
-        colorText: whiteColor,
+      CustomSnackbar.showSnackbar(
+        title: 'Oops!',
+        message: 'Can not pick image',
+        status: false,
       );
     }
   }

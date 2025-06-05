@@ -2,12 +2,9 @@
 
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
-import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
+import 'package:counselor_temanbicara/app/widgets/consult_card.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-
 import '../../../themes/colors.dart';
 import '../controllers/counsultation_page_controller.dart';
 
@@ -33,146 +30,55 @@ class CounsultationPageView extends GetView<CounsultationPageController> {
         centerTitle: true,
       ),
       body: RefreshIndicator(
-        onRefresh: () {
-          return controller.fetchData();
-        },
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Obx(() {
-            if (controller.consultList.isEmpty) {
-              return Center(child: Text("Tidak Ada Data"));
-            }
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: controller.consultList.length,
-              itemBuilder: (context, index) {
-                final listPatient = controller.consultList;
-                DateTime date = DateTime.parse(
-                    listPatient[index]['schedule']['available_date']);
-                DateTime sTime = DateFormat('HH:mm:ss')
-                    .parse(listPatient[index]['schedule']['start_time']);
-                DateTime eTime = DateFormat('HH:mm:ss')
-                    .parse(listPatient[index]['schedule']['end_time']);
-                String start = DateFormat('HH:mm').format(sTime);
-                String end = DateFormat('HH:mm').format(eTime);
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Routes.CONSULTATION_DETAIL,
-                          arguments: listPatient[index]);
-                      controller.box.write('consultation_id',
-                          listPatient[index]['consultation_id']);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: whiteColor,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: border,
-                          width: 1,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: primaryColor,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: CircleAvatar(
-                                    radius: 25,
-                                    backgroundColor: Colors.grey.shade300,
-                                    backgroundImage: NetworkImage(
-                                        listPatient[index]["user"]
-                                            ['profile_url']),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      listPatient[index]["user"]['name'] ?? '',
-                                      style: h5Bold,
-                                    ),
-                                    Text(
-                                      listPatient[index]['problem'] != null
-                                          ? listPatient[index]['problem']
-                                          : '-',
-                                      style: h6Medium,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.date_range,
-                                  size: 18,
-                                  color: font,
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Text(DateFormat('d MMMM').format(date),
-                                    style: h6Medium),
-                                szbX16,
-                                Icon(
-                                  Icons.schedule_rounded,
-                                  size: 18,
-                                  color: font,
-                                ),
-                                szbX8,
-                                Text('$start - $end', style: h6Medium),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: listPatient[index]['status'] == 'Done'
-                                    ? primaryColor
-                                    : warning,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Text(
-                                    listPatient[index]['status'] ?? '',
-                                    style: h5Bold.copyWith(
-                                      color: whiteColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+        color: primaryColor,
+        backgroundColor: whiteColor,
+        onRefresh: controller.fetchData,
+        child: Obx(() {
+          final listPatient = controller.consultList;
+
+          return listPatient.isEmpty
+              ? ListView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.only(top: 100.0),
+                      child: Center(
+                        child: Text(
+                          "No consultations yet. \nPull to refresh",
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
-                  ),
+                  ],
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: listPatient.length,
+                  itemBuilder: (context, index) {
+                    final data = listPatient[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed(Routes.CONSULTATION_DETAIL,
+                              arguments: data);
+                          controller.box.write(
+                              'consultation_id', data['consultation_id']);
+                        },
+                        child: ConsultCard(
+                          image: data['user']['profile_url'],
+                          name: data['user']['name'],
+                          problem: data['problem'],
+                          date: data['schedule']['available_date'],
+                          start: data['schedule']['start_time'],
+                          end: data['schedule']['end_time'],
+                          status: data['status'],
+                        ),
+                      ),
+                    );
+                  },
                 );
-              },
-            );
-          }),
-        ),
+        }),
       ),
     );
   }

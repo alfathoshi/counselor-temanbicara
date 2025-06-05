@@ -34,19 +34,17 @@ class SchedulePicker {
         ),
       ),
       padding: const EdgeInsets.all(16),
+      transitionDuration: const Duration(milliseconds: 200),
     );
-    controller.startDate.value = dateTime!;
-    controller.endDate.value = dateTime;
+    controller.selectedDate.value = dateTime!;
   }
 
   Future<void> pickTime(BuildContext? context) async {
     DateTime? dateTime = await showOmniDateTimePicker(
         context: context!,
-        initialDate: DateTime.now().add(const Duration(days: 1)),
-        firstDate: DateTime.now().add(const Duration(days: 1)),
-        lastDate: DateTime.now().add(
-          const Duration(days: 365),
-        ),
+        initialDate: controller.selectedDate.value,
+        firstDate: controller.selectedDate.value,
+        lastDate: controller.selectedDate.value,
         title: Text(
           'Select Time',
           style: h4Bold,

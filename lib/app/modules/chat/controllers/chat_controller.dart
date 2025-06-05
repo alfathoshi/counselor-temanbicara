@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:counselor_temanbicara/app/services/chat_services.dart';
 import 'package:counselor_temanbicara/app/services/notification_service.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -44,8 +45,11 @@ class ChatController extends GetxController {
         }
       } else {
         listChat.clear();
-        throw Exception(
-            'Failed to load chat list from API: ${response.statusCode}');
+        CustomSnackbar.showSnackbar(
+          title: 'Oops!',
+          message: 'Can not load chat',
+          status: false,
+        );
       }
     } catch (e) {
       listChat.clear();

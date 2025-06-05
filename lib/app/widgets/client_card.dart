@@ -145,7 +145,7 @@ class ClientCard extends StatelessWidget {
                         ),
                         szbX8,
                         const Spacer(),
-                        note.isNotEmpty && note != '-'
+                        note.isNotEmpty || note != '-'
                             ? const SizedBox.shrink()
                             : const Expanded(
                                 child: Row(

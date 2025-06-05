@@ -20,12 +20,9 @@ class MyButton extends StatelessWidget {
           get?.call();
         },
         style: ElevatedButton.styleFrom(
-            backgroundColor: primaryColor,
+          minimumSize: Size(double.infinity, 40),
+            backgroundColor: color,
             foregroundColor: Colors.white,
-            minimumSize: const Size(
-              double.infinity,
-              44,
-            ),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10))),
         child: Text(

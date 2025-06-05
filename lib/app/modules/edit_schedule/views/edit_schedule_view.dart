@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:counselor_temanbicara/app/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -168,7 +169,11 @@ class EditScheduleView extends GetView<EditScheduleController> {
 
                     controller.createSchedule();
                   } else {
-                    Get.snackbar('Oops', 'Lengkapi dulu bro semua field-nya');
+                    CustomSnackbar.showSnackbar(
+                      title: 'Oops!',
+                      message: 'Please fill all fields',
+                      status: false,
+                    );
                   }
                 },
                 color: primaryColor,

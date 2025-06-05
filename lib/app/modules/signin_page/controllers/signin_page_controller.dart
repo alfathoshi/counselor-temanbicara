@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -63,31 +64,35 @@ class SigninPageController extends GetxController {
           box.write('birthdate', data['data']['birthdate']);
           final currentUserID = data['data']['id'].toString();
           await saveFcmToken(currentUserID);
-          Get.snackbar(
-            'Success',
-            'Login berhasil',
-            backgroundColor: primaryColor.withValues(alpha: 0.6),
-            colorText: Colors.white,
+          CustomSnackbar.showSnackbar(
+            title: 'Welcome!',
+            message: 'Login succesfully',
+            status: true,
           );
           Get.offAllNamed(
             Routes.NAVIGATION_BAR,
             arguments: {"indexPage": 0},
           );
         } else {
-          Get.snackbar(
-            'Gagal',
-            'Akun tidak terdaftar',
-            backgroundColor: error.withValues(alpha: 0.6),
-            colorText: Colors.white,
+          CustomSnackbar.showSnackbar(
+            title: 'Oops!',
+            message: 'Account not registered',
+            status: false,
           );
         }
       } else {
-        Get.snackbar('Error', data['message'],
-            backgroundColor: error.withValues(alpha: 0.6),
-            colorText: whiteColor);
+        CustomSnackbar.showSnackbar(
+          title: 'Oops!',
+          message: 'Please try again',
+          status: false,
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'Something went wrong: $e');
+      CustomSnackbar.showSnackbar(
+        title: 'Something went wrong',
+        message: 'Can not login',
+        status: false,
+      );
     } finally {
       isLoading.value = false;
     }

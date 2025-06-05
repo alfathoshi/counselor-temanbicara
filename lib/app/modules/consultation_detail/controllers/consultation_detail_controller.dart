@@ -1,4 +1,5 @@
 import 'package:counselor_temanbicara/app/themes/colors.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -29,7 +30,7 @@ class ConsultationDetailController extends GetxController {
     return age;
   }
 
-  Future<Map<String, dynamic>> updateReport() async {
+  Future<void> updateReport() async {
     final consultationId = box.read('consultation_id');
     final token = box.read('token');
     final response = await http.put(
@@ -46,15 +47,18 @@ class ConsultationDetailController extends GetxController {
       }),
     );
     if (response.statusCode == 200) {
-      Get.snackbar(
-        "Success",
-        "Consultation Report has been send",
-        backgroundColor: primaryColor.withValues(alpha: 0.6),
-        colorText: whiteColor,
+      CustomSnackbar.showSnackbar(
+        title: 'Report sent',
+        message: 'Your report has sent',
+        status: true,
       );
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to update consultation report');
+      CustomSnackbar.showSnackbar(
+        title: 'Report sent',
+        message: 'Your report has sent',
+        status: true,
+      );
     }
   }
 

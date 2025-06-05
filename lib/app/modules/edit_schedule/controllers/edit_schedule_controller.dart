@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:counselor_temanbicara/app/config/config.dart';
 import 'package:counselor_temanbicara/app/modules/available_schedule/controllers/available_schedule_controller.dart';
+import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -21,9 +22,11 @@ class EditScheduleController extends GetxController {
 
   Future<void> createSchedule() async {
     if (startDate.value == null || endDate.value == null) {
-      Get.snackbar('Error', 'Please select start and end dates.',
-          backgroundColor: Colors.red.withValues(alpha: 0.6),
-          colorText: Colors.white);
+      CustomSnackbar.showSnackbar(
+        title: 'Oops!',
+        message: 'Please select date',
+        status: false,
+      );
       return;
     }
 
@@ -55,25 +58,33 @@ class EditScheduleController extends GetxController {
         var data = json.decode(response.body);
 
         if (data['status']) {
-          Get.snackbar('Success', 'Schedule created successfully.',
-              backgroundColor: Colors.green.withValues(alpha: 0.6),
-              colorText: Colors.white);
+          CustomSnackbar.showSnackbar(
+            title: 'Yeay!',
+            message: 'Schedule has created',
+            status: true,
+          );
           await AvailableScheduleController().fetchSchedules();
           Get.back();
         } else {
-          Get.snackbar('Error', data['message'],
-              backgroundColor: Colors.red.withValues(alpha: 0.6),
-              colorText: Colors.white);
+          CustomSnackbar.showSnackbar(
+            title: 'Oops!',
+            message: 'Can not create schedule',
+            status: false,
+          );
         }
       } else {
-        Get.snackbar('Error', 'Failed to create schedule.',
-            backgroundColor: Colors.red.withValues(alpha: 0.6),
-            colorText: Colors.white);
+        CustomSnackbar.showSnackbar(
+          title: 'Try again',
+          message: 'Can not create schedule',
+          status: false,
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'Something went wrong: $e',
-          backgroundColor: Colors.red.withValues(alpha: 0.6),
-          colorText: Colors.white);
+      CustomSnackbar.showSnackbar(
+        title: 'Something went wrong',
+        message: 'Can not create schedule',
+        status: false,
+      );
     } finally {
       isLoading.value = false;
     }

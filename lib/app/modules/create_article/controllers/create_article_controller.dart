@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:counselor_temanbicara/app/modules/article_page/controllers/article_page_controller.dart';
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';

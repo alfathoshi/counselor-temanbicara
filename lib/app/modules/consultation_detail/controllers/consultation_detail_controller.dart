@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,17 @@ class ConsultationDetailController extends GetxController {
   final TextEditingController descController = TextEditingController();
   final TextEditingController sumController = TextEditingController();
 
+  late DateTime consultationStartTime;
+  final canEdit = false.obs;
+  Timer? _timer;
+
+  String get formattedTime {
+    final schedule = arg['schedule'];
+    final startTime = DateFormat('HH:mm:ss').parse(schedule['start_time']);
+    final endTime = DateFormat('HH:mm:ss').parse(schedule['end_time']);
+    return '${DateFormat('HH:mm').format(startTime)} - ${DateFormat('HH:mm').format(endTime)}';
+  }
+
   int calculateAge(String birthDate) {
     DateTime birthDateTime = DateFormat("yyyy-MM-dd").parse(birthDate);
     DateTime today = DateTime.now();
@@ -31,6 +44,14 @@ class ConsultationDetailController extends GetxController {
   }
 
   Future<void> updateReport() async {
+    if (!canEdit.value) {
+      CustomSnackbar.showSnackbar(
+        title: 'Failed',
+        message: 'Session has not started',
+        status: false,
+      );
+      return;
+    }
     final consultationId = box.read('consultation_id');
     final token = box.read('token');
     final response = await http.put(
@@ -55,10 +76,20 @@ class ConsultationDetailController extends GetxController {
       return json.decode(response.body);
     } else {
       CustomSnackbar.showSnackbar(
-        title: 'Report sent',
-        message: 'Your report has sent',
-        status: true,
+        title: 'Report error',
+        message: 'Your report has not sent',
+        status: false,
       );
+    }
+  }
+
+  void _checkSessionStatus() {
+    final now = DateTime.now();
+
+    if (now.isAfter(consultationStartTime) ||
+        now.isAtSameMomentAs(consultationStartTime)) {
+      canEdit.value = true;
+      _timer?.cancel();
     }
   }
 
@@ -68,5 +99,27 @@ class ConsultationDetailController extends GetxController {
     descController.text = arg['description'];
     probController.text = arg['problem'];
     sumController.text = arg['summary'];
+    try {
+      final schedule = arg['schedule'];
+      final dateStr = schedule['available_date'] as String;
+      final timeStr = schedule['start_time'] as String;
+
+      final fullDateTimeStr = "$dateStr $timeStr";
+      consultationStartTime = DateTime.parse(fullDateTimeStr);
+
+      _checkSessionStatus();
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        _checkSessionStatus();
+      });
+    } catch (e) {
+      print("Error parsing consultation time: $e");
+      canEdit.value = false;
+    }
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 }

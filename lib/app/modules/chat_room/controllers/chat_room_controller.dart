@@ -14,10 +14,7 @@ class ChatRoomController extends GetxController {
   final messageC = TextEditingController();
 
   final ChatService chatService = ChatService();
-
-  Future<void> handleSendPressed(String message) async {
-    await chatService.sendMessage(args['patient_id'].toString(), message);
-  }
+  var canSendMessage = false.obs;
 
   @override
   void onInit() {
@@ -30,6 +27,13 @@ class ChatRoomController extends GetxController {
       id: args['patient_id'].toString(),
       firstName: args['name'],
     );
+  }
+
+  Future<void> handleSendPressed(String message) async {
+    if (message.trim().isNotEmpty) {
+      await chatService.sendMessage(otherUser.id, message);
+      canSendMessage.value = false;
+    }
   }
 
   @override

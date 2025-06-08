@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:counselor_temanbicara/app/config/config.dart';
-import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -71,18 +69,6 @@ class ProfilePageController extends GetxController {
 
       final response = await request.send();
       final res = await http.Response.fromStream(response);
-
-      if (res.headers['content-type']?.contains('application/json') ?? false) {
-        final responseBody = json.decode(res.body);
-        // lanjut...
-      } else {
-        print('⚠️ Response bukan JSON: ${res.statusCode}');
-        CustomSnackbar.showSnackbar(
-          title: "Server Error",
-          message: "Unexpected response from server.",
-          status: false,
-        );
-      }
       final responseBody = json.decode(res.body);
 
       if (responseBody['status'] == true) {
@@ -102,7 +88,6 @@ class ProfilePageController extends GetxController {
       fetchProfile();
     } catch (err) {
       isLoading.value = false;
-      print(err);
     } finally {
       isLoading.value = false;
     }

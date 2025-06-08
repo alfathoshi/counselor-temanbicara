@@ -43,14 +43,13 @@ class VerifyOTPController extends GetxController {
     }
 
     try {
-      var response = await http.post(
+      await http.post(
         Uri.parse("${Config.apiEndPoint}/password/otp"),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'email': Get.arguments['email'],
         }),
       );
-      // print(response.body);
       startResendTimer();
     } catch (err) {
       rethrow;
@@ -60,7 +59,7 @@ class VerifyOTPController extends GetxController {
   void startResendTimer() {
     resendSeconds.value = 60;
     resendTimer?.cancel();
-    resendTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+    resendTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (resendSeconds.value > 0) {
         resendSeconds.value--;
       } else {

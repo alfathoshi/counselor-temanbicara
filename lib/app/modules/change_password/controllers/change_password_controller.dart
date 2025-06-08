@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -89,7 +88,7 @@ class ChangePasswordController extends GetxController {
             message: "Password Changed!",
             status: true,
           );
-          await Future.delayed(Duration(milliseconds: 500));
+          await Future.delayed(const Duration(milliseconds: 500));
           Get.back();
           return true;
         } else {

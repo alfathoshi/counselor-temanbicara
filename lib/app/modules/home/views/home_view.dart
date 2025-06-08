@@ -1,4 +1,3 @@
-import 'package:counselor_temanbicara/app/modules/article_page/controllers/article_page_controller.dart';
 import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/client_card.dart';
 import 'package:counselor_temanbicara/app/widgets/consult_date.dart';
@@ -27,9 +26,8 @@ class HomeView extends GetView<HomeController> {
         onRefresh: () async {
           await Future.wait([
             controller.consult.fetchData(),
-            controller.article.fetchArticles(page: 0),
+            controller.article.fetchArticles(page: 1, isInitialLoad: true),
             controller.fetchProfile(),
-            controller.getUpcomingConsult(),
           ]);
         },
         child: CustomScrollView(
@@ -175,21 +173,20 @@ class HomeView extends GetView<HomeController> {
                             );
                           }
                         }),
-                        if (controller.consult.eventDates.isNotEmpty)
-                          Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(16.0, 8, 8, 0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Obx(
-                                      () {
-                                        if (controller
-                                            .consult.isLoading.value) {
-                                          return shimmerLoader(
+                        Obx(
+                          () {
+                            if (controller.consult.eventDates.isNotEmpty) {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        16.0, 8, 8, 0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        if (controller.consult.isLoading.value)
+                                          shimmerLoader(
                                             Container(
                                               color: whiteColor,
                                               child: Text(
@@ -197,40 +194,42 @@ class HomeView extends GetView<HomeController> {
                                                 style: h4SemiBold,
                                               ),
                                             ),
-                                          );
-                                        } else if (controller
-                                            .upcomingConsult.isEmpty) {
-                                          return Center(
+                                          )
+                                        else if (controller
+                                            .consult.eventDates.isEmpty)
+                                          Center(
                                             child: Text(
-                                              'Appointments ${controller.upcomingConsult.length}',
+                                              'Appointments 0}',
                                               style: h4SemiBold,
                                             ),
-                                          );
-                                        } else {
-                                          return Text(
-                                            'Appointments ${controller.upcomingConsult.length}',
+                                          )
+                                        else
+                                          Text(
+                                            'Appointments ${controller.consult.eventDates.length}',
                                             style: h4SemiBold,
-                                          );
-                                        }
-                                      },
+                                          ),
+                                        TextButton(
+                                          onPressed: () => Get.offAllNamed(
+                                              Routes.NAVIGATION_BAR,
+                                              arguments: {"indexPage": 2}),
+                                          child: Text(
+                                            'See All',
+                                            style: h4SemiBold.copyWith(
+                                              color: primaryColor,
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                    TextButton(
-                                      onPressed: () => Get.offAllNamed(
-                                          Routes.NAVIGATION_BAR,
-                                          arguments: {"indexPage": 2}),
-                                      child: Text(
-                                        'See All',
-                                        style: h4SemiBold.copyWith(
-                                          color: primaryColor,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              buildConsultationList(controller)
-                            ],
-                          ),
+                                  ),
+                                  buildConsultationList(controller)
+                                ],
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -481,7 +480,7 @@ Widget buildConsultationList(HomeController controller) {
     } else if (controller.consult.consultList.isEmpty) {
       return const Center(child: Text("No Data Available"));
     } else {
-      return buildConsultationPageView(controller.upcomingConsult);
+      return buildConsultationPageView(controller.consult.upcomingConsult);
     }
   });
 }

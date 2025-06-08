@@ -47,8 +47,6 @@ class ConsultationDetailView extends GetView<ConsultationDetailController> {
             child: ElevatedButton(
                 onPressed: () {
                   controller.updateReport();
-                  Get.offAllNamed(Routes.NAVIGATION_BAR,
-                      arguments: {"indexPage": 2});
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(primaryColor),

@@ -4,7 +4,6 @@ import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/status_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import '../controllers/article_detail_controller.dart';
 

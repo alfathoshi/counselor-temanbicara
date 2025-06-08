@@ -10,6 +10,7 @@ class CounsultationPageController extends GetxController {
   var consultList = [].obs;
   var eventDates = <DateTime>[].obs;
   var isLoading = false.obs;
+  var upcomingConsult = [].obs;
 
   Future<void> fetchData() async {
     try {
@@ -23,6 +24,7 @@ class CounsultationPageController extends GetxController {
         var data = json.decode(response.body);
         consultList.value = data['data'];
         loadEventsFromApi();
+        getUpcomingConsult();
       } else {
         CustomSnackbar.showSnackbar(
           title: 'Oops!',
@@ -39,6 +41,11 @@ class CounsultationPageController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> getUpcomingConsult() async {
+    upcomingConsult.value =
+        consultList.where((item) => item['status'] == 'Incoming').toList();
   }
 
   void loadEventsFromApi() {

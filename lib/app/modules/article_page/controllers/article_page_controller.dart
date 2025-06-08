@@ -10,6 +10,7 @@ class ArticlePageController extends GetxController {
   var isLoading = false.obs;
   var articleList = [].obs;
   var article = {}.obs;
+  var totalArticle = 0.obs;
   var isLoadingInitial = false.obs;
   var isLoadingMore = false.obs;
   var currentPage = 1.obs;
@@ -51,7 +52,7 @@ class ArticlePageController extends GetxController {
               articleList.clear();
             }
             articleList.addAll(fetchedArticles);
-
+            totalArticle.value = article['total'];
             currentPage.value = paginationData['current_page'] ?? page;
             lastPage.value = paginationData['last_page'] ?? page;
             hasMoreData.value = currentPage.value < lastPage.value;
@@ -83,7 +84,7 @@ class ArticlePageController extends GetxController {
     await fetchArticles(page: 1, isInitialLoad: true);
   }
 
-  void _scrollListener() {
+  void scrollListener() {
     if (scrollController.position.pixels >=
             scrollController.position.maxScrollExtent - 200 &&
         hasMoreData.value &&
@@ -96,13 +97,13 @@ class ArticlePageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    scrollController.addListener(_scrollListener);
+    scrollController.addListener(scrollListener);
   }
 
   @override
   void onClose() {
     scrollController.dispose();
-    scrollController.removeListener(_scrollListener);
+    scrollController.removeListener(scrollListener);
     article.clear();
     articleList.clear();
     super.onClose();

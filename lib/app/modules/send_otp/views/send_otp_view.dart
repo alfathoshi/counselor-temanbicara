@@ -1,3 +1,4 @@
+import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -64,9 +65,7 @@ class SendOtpView extends GetView<SendOtpController> {
                       'Enter your email',
                       style: verifyOtpTextStyle(16, black, true),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
+                    szbY8,
                     TextField(
                       onChanged: (value) {
                         controller.isButtonActive.value = value.isEmpty;
@@ -85,9 +84,7 @@ class SendOtpView extends GetView<SendOtpController> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 32,
-                    ),
+                    szbY24,
                     Obx(
                       () => ElevatedButton(
                         onPressed: () async {

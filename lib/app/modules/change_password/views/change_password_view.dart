@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import '../controllers/change_password_controller.dart';
 
 class ChangePasswordView extends GetView<ChangePasswordController> {
-  ChangePasswordView({super.key});
+  const ChangePasswordView({super.key});
 
   bool _isPasswordValid(String value) {
     return MinCharactersValidationRule(8).validate(value) &&
@@ -181,7 +181,7 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: greyColor),
+                                borderSide: const BorderSide(color: greyColor),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),

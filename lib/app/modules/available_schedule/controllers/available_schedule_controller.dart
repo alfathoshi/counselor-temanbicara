@@ -168,11 +168,11 @@ class AvailableScheduleController extends GetxController {
   Map<String, dynamic> getStatusConfig(String status) {
     switch (status) {
       case 'Available':
-        return {'icon': Icons.check_circle_outline, 'color': info};
+        return {'icon': Icons.watch_later_outlined, 'color': info};
       case 'Booked':
         return {'icon': Icons.pending_actions, 'color': warning};
       case 'Done':
-        return {'icon': Icons.cancel_outlined, 'color': primaryColor};
+        return {'icon': Icons.check_circle_outline_outlined, 'color': primaryColor};
       default:
         return {'icon': Icons.help_outline, 'color': Colors.grey};
     }

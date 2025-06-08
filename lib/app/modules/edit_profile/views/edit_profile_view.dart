@@ -38,62 +38,36 @@ class EditProfileView extends GetView<EditProfileController> {
             children: [
               szbY24,
               Center(
-                child: Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundColor: border,
-                      child: CircleAvatar(
-                        radius: 58,
-                        backgroundColor: whiteColor,
-                        child: Obx(() {
-                          if (controller.isLoading.value) {
-                            return shimmerLoader(
-                              ClipOval(
-                                child: Container(
-                                  color: whiteColor,
-                                ),
-                              ),
-                            );
-                          } else if (controller.profile.isEmpty) {
-                            return ClipOval(
-                              child: Image.network(
-                                  'https://qzsrrlobwlisodbasdqi.supabase.co/storage/v1/object/profile/default.png'),
-                            );
-                          } else {
-                            return CircleAvatar(
-                              radius: 58,
-                              backgroundImage: NetworkImage(
-                                  controller.profile['profile_url']),
-                              backgroundColor: Colors.grey[200],
-                            );
-                          }
-                        }),
-                      ),
-                    ),
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: primaryColor,
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.camera_alt,
-                          size: 16,
-                          color: whiteColor,
-                        ),
-                        onPressed: () async {
-                          await controller.pickImage();
-                          if (controller.pickedImage.value != null) {
-                            await controller.changeImage();
-                          }
-                        },
-                      ),
-                    ),
-                  ],
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: border,
+                  child: CircleAvatar(
+                    radius: 58,
+                    backgroundColor: whiteColor,
+                    child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return shimmerLoader(
+                          ClipOval(
+                            child: Container(
+                              color: whiteColor,
+                            ),
+                          ),
+                        );
+                      } else if (controller.profile.isEmpty) {
+                        return ClipOval(
+                          child: Image.network(
+                              'https://qzsrrlobwlisodbasdqi.supabase.co/storage/v1/object/profile/default.png'),
+                        );
+                      } else {
+                        return CircleAvatar(
+                          radius: 58,
+                          backgroundImage: NetworkImage(
+                              controller.profile['profile_url']),
+                          backgroundColor: Colors.grey[200],
+                        );
+                      }
+                    }),
+                  ),
                 ),
               ),
               szbY48,

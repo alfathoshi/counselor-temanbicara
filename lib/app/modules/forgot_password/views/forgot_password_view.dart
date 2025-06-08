@@ -1,3 +1,4 @@
+import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:fancy_password_field/fancy_password_field.dart';
 import 'package:flutter/material.dart';
 
@@ -71,7 +72,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
+                      color: Colors.grey.withValues(alpha: 0.2),
                       spreadRadius: 2,
                       blurRadius: 6,
                       offset: const Offset(0, 3),
@@ -84,9 +85,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('New Password', style: textDescriptionSemiBold),
-                      SizedBox(
-                        height: 8,
-                      ),
+                      szbY8,
                       Obx(() => FancyPasswordField(
                             controller: controller.newPasswordController,
                             keyboardType: TextInputType.text,
@@ -139,13 +138,9 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                               ),
                             ),
                           )),
-                      SizedBox(
-                        height: 12,
-                      ),
+                      szbY16,
                       Text('Confirm Password', style: textDescriptionSemiBold),
-                      SizedBox(
-                        height: 8,
-                      ),
+                      szbY8,
                       Obx(() => TextField(
                             controller: controller.confirmPasswordController,
                             cursorColor: black,
@@ -182,9 +177,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 36,
-            ),
+            szbY24,
             Obx(() => ElevatedButton(
                   onPressed: () {
                     controller.changePassword();

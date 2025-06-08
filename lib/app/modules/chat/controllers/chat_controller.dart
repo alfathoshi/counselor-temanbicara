@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:counselor_temanbicara/app/services/chat_services.dart';
-import 'package:counselor_temanbicara/app/services/notification_service.dart';
 import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -16,7 +14,7 @@ class ChatController extends GetxController {
   GetStorage box = GetStorage();
   String get currentCounselorId => box.read('id').toString();
 
-  ChatService _chatService = ChatService();
+  final ChatService _chatService = ChatService();
 
   Future<void> fetchData() async {
     try {

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:counselor_temanbicara/app/themes/colors.dart';
+import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +18,7 @@ class ConsultationDetailController extends GetxController {
   final TextEditingController descController = TextEditingController();
   final TextEditingController sumController = TextEditingController();
 
-  late DateTime consultationStartTime;
+  late DateTime consultationStartTime = arg['schedule']['start_time'];
   final canEdit = false.obs;
   Timer? _timer;
 
@@ -44,6 +44,7 @@ class ConsultationDetailController extends GetxController {
   }
 
   Future<void> updateReport() async {
+    _checkSessionStatus();
     if (!canEdit.value) {
       CustomSnackbar.showSnackbar(
         title: 'Failed',
@@ -52,31 +53,39 @@ class ConsultationDetailController extends GetxController {
       );
       return;
     }
-    final consultationId = box.read('consultation_id');
-    final token = box.read('token');
-    final response = await http.put(
-      Uri.parse('${Config.apiEndPoint}/consultation/$consultationId'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        "description": descController.text,
-        "problem": probController.text,
-        "summary": sumController.text,
-        "status": "Done"
-      }),
-    );
-    if (response.statusCode == 200) {
-      CustomSnackbar.showSnackbar(
-        title: 'Report sent',
-        message: 'Your report has sent',
-        status: true,
+    try {
+      final consultationId = box.read('consultation_id');
+      final token = box.read('token');
+      final response = await http.put(
+        Uri.parse('${Config.apiEndPoint}/consultation/$consultationId'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          "description": descController.text,
+          "problem": probController.text,
+          "summary": sumController.text,
+          "status": "Done"
+        }),
       );
-      return json.decode(response.body);
-    } else {
+      if (response.statusCode == 200) {
+        CustomSnackbar.showSnackbar(
+          title: 'Report sent',
+          message: 'Your report has sent',
+          status: true,
+        );
+        Get.offAllNamed(Routes.NAVIGATION_BAR, arguments: {"indexPage": 2});
+      } else {
+        CustomSnackbar.showSnackbar(
+          title: 'Oops!',
+          message: 'Your report has not sent',
+          status: false,
+        );
+      }
+    } catch (e) {
       CustomSnackbar.showSnackbar(
-        title: 'Report error',
+        title: 'Try Again',
         message: 'Your report has not sent',
         status: false,
       );
@@ -86,8 +95,7 @@ class ConsultationDetailController extends GetxController {
   void _checkSessionStatus() {
     final now = DateTime.now();
 
-    if (now.isAfter(consultationStartTime) ||
-        now.isAtSameMomentAs(consultationStartTime)) {
+    if (now.isAfter(consultationStartTime)) {
       canEdit.value = true;
       _timer?.cancel();
     }
@@ -104,7 +112,9 @@ class ConsultationDetailController extends GetxController {
       final dateStr = schedule['available_date'] as String;
       final timeStr = schedule['start_time'] as String;
 
-      final fullDateTimeStr = "$dateStr $timeStr";
+      final fullDateTimeStr =
+          "${DateFormat('yyyy-MM-dd').format(DateTime.parse(dateStr))} $timeStr";
+
       consultationStartTime = DateTime.parse(fullDateTimeStr);
 
       _checkSessionStatus();
@@ -112,7 +122,6 @@ class ConsultationDetailController extends GetxController {
         _checkSessionStatus();
       });
     } catch (e) {
-      print("Error parsing consultation time: $e");
       canEdit.value = false;
     }
   }

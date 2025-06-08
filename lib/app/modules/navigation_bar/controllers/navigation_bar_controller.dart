@@ -10,8 +10,16 @@ class NavigationBarController extends GetxController {
 
   var selectedPages = 0.obs;
 
+  List<GetxController> listController = [
+    HomeController(),
+    ArticlePageController(),
+    CounsultationPageController(),
+    ProfilePageController(),
+  ];
+
   void changeIndex(int index) {
     selectedindex.value = index;
+    //listController[index].onInit();
   }
 
   @override

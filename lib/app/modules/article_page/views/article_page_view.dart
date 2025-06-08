@@ -1,11 +1,12 @@
+import 'package:counselor_temanbicara/app/modules/home/views/home_view.dart';
 import 'package:counselor_temanbicara/app/routes/app_pages.dart';
 import 'package:counselor_temanbicara/app/themes/colors.dart';
 import 'package:counselor_temanbicara/app/themes/fonts.dart';
+import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:counselor_temanbicara/app/widgets/article_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../controllers/article_page_controller.dart';
 
@@ -40,76 +41,92 @@ class ArticlePageView extends GetView<ArticlePageController> {
           final articleList = controller.articleList;
           final isLoadingMore = controller.isLoadingMore.value;
           final hasMore = controller.hasMoreData.value;
-          final totalArticles = controller.article['total'];
 
-          return articleList.isEmpty
-              ? ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: [
-                    if (isLoading)
-                     Container()
-                    else
-                      const Padding(
-                        padding: EdgeInsets.only(top: 100),
-                        child: Center(
-                          child: Text(
-                            'No articles yet',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                  ],
-                )
-              : ListView(
-                  controller: controller.scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
-                      child: Text(
-                        'You have created $totalArticles articles',
-                        style: h5SemiBold,
+          return ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(8),
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                child: Text(
+                  'You have created ${controller.totalArticle.value} articles',
+                  style: h5SemiBold,
+                ),
+              ),
+              if (isLoading)
+                ...List.generate(controller.totalArticle.value, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: shimmerLoader(
+                      ArticleCard(
+                        title: '',
+                        content: '',
+                        status: '',
+                        createAt: DateTime.now().toString(),
                       ),
                     ),
-                    ...List.generate(articleList.length, (index) {
-                      final articleItem = articleList[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Get.toNamed(
-                            Routes.ARTICLE_DETAIL,
-                            arguments: articleItem,
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: ArticleCard(
-                            title: articleItem['title'],
-                            content: articleItem['content'],
-                            status: articleItem['status'],
-                            createAt: articleItem['created_at'],
-                          ),
-                        ),
+                  );
+                })
+              else if (articleList.isEmpty)
+                SizedBox(
+                  height: Get.height * 0.7,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/empty_article.png',
+                        scale: 5,
+                      ),
+                      szbY8,
+                      Text(
+                        'No articles yet',
+                        textAlign: TextAlign.center,
+                        style: h5Medium,
+                      ),
+                    ],
+                  ),
+                )
+              else ...[
+                ...List.generate(articleList.length, (index) {
+                  final articleItem = articleList[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Get.toNamed(
+                        Routes.ARTICLE_DETAIL,
+                        arguments: articleItem,
                       );
-                    }),
-                    if (isLoadingMore)
-                      const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: ArticleCard(
+                        title: articleItem['title'],
+                        content: articleItem['content'],
+                        status: articleItem['status'],
+                        createAt: articleItem['created_at'],
                       ),
-                    if (!hasMore && articleList.isNotEmpty && !isLoadingMore)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: Center(
-                          child: Text(
-                            "All articles are displayed",
-                            style: h7Regular.copyWith(color: greyColor),
-                          ),
-                        ),
+                    ),
+                  );
+                }),
+                if (isLoadingMore)
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                if (!hasMore && articleList.isNotEmpty && !isLoadingMore)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Center(
+                      child: Text(
+                        "All articles are displayed",
+                        style: h7Regular.copyWith(color: greyColor),
                       ),
-                  ],
-                );
+                    ),
+                  ),
+              ],
+            ],
+          );
         }),
       ),
     );

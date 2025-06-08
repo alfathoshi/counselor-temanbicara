@@ -1,3 +1,4 @@
+import 'package:counselor_temanbicara/app/themes/sizedbox.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -62,9 +63,7 @@ class VerifyOTPView extends GetView<VerifyOTPController> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
-                  height: 24,
-                ),
+                szbY24,
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
@@ -76,9 +75,7 @@ class VerifyOTPView extends GetView<VerifyOTPController> {
                     }),
                   ),
                 ),
-                SizedBox(
-                  height: 16,
-                ),
+                szbY16,
                 Obx(
                   () => Text(
                     'OTP invalid, try again',
@@ -91,9 +88,7 @@ class VerifyOTPView extends GetView<VerifyOTPController> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 32,
-                ),
+                szbY24,
                 Obx(() {
                   bool canResend = controller.resendSeconds.value == 0;
                   return Text.rich(
@@ -130,11 +125,11 @@ class VerifyOTPView extends GetView<VerifyOTPController> {
                     ),
                   );
                 }),
-                SizedBox(height: 32,),
+                szbY24,
                 Obx(
                   () => ElevatedButton(
                     onPressed: () async {
-                      if (controller.focusedIndex == 0) {
+                      if (controller.focusedIndex.value == 0) {
                         CustomSnackbar.showSnackbar(
                           title: "Oops!",
                           message: "Please Fill the Fields!",
@@ -213,7 +208,7 @@ Widget buildOtpField(int index, var controller, var context) {
       },
       decoration: InputDecoration(
         counterText: '',
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.grey,
             width: 1,
